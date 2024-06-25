@@ -14,10 +14,10 @@ export default function FootBarniere() {
           </div>
           <div className="my-10 flex items-center justify-center gap-4 font-mono flex-wrap">
             <a
-              href="#"
-              className="py-2 px-5 bg-blue-400 text-white rounded hover:bg-orange-400 font-bold"
+              href="/connexion/"
+              className="py-2 px-5 bg-orange-400  text-white rounded hover:bg-blue-400 font-bold hover:border-2 "
             >
-              S'inscrire Maintenant
+              Se Connecter
             </a>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function Accueil() {
   return (
     <>
       <HeadPlace />
-      <Menu page={"a"} />
+      <Menu />
       <BarniereAc />
       <Bande id={"fonctions"} />
       <Fonctionnalite />

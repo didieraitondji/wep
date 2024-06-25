@@ -83,7 +83,7 @@ export default function Menu({ page }) {
               href="/connexion/"
               className="py-1 px-3 bg-orange-400 text-white rounded hover:bg-blue-400 font-bold"
             >
-              Connexion
+              Se connecter
             </a>
           </div>
 
@@ -159,7 +159,7 @@ export default function Menu({ page }) {
           href="/connexion/"
           className="block py-2 px-3 bg-orange-400 text-white rounded hover:bg-blue-400 font-bold text-center w-36 m-auto my-4"
         >
-          Connexion
+          Se connecter
         </a>
       </div>
     </nav>

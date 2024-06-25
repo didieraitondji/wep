@@ -1,30 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function FonctionnaliteElt({ titre, image, text, type = 1 }) {
-  const [propsPerso1, setpropsPerso1] = useState(
-    "w-[40%] max-sm:hidden max-lg:m-auto max-lg:w-[80%] max-lg:mb-12 h-[500px] bg-center bg-no-repeat bg-cover"
-  );
+  const propsPerso1 = `w-[40%] max-sm:hidden max-lg:m-auto max-lg:w-[80%] max-lg:mb-12 h-[500px] bg-[url('/images/${image}')] bg-center bg-no-repeat bg-cover ${
+    type === 2 ? "hidden" : ""
+  }`;
 
-  if (type == 2) {
-    setpropsPerso1(
-      "w-[40%] max-sm:hidden max-lg:m-auto max-lg:w-[80%] max-lg:mb-12 h-[500px] bg-center bg-no-repeat bg-cover hidden "
-    );
-  } else {
-    setpropsPerso1(propsPerso1 + "");
-  }
+  const propsPerso2 = `w-[40%] max-sm:hidden max-lg:m-auto max-lg:w-[80%] max-lg:mb-12 h-[500px] bg-[url('/images/${image}')] bg-center bg-no-repeat bg-cover ${
+    type === 2 ? "" : "hidden"
+  }`;
 
-  const propsPerso2 =
-    type == 2
-      ? "w-[40%] max-sm:hidden max-lg:m-auto max-lg:w-[80%] max-lg:mb-12 h-[500px] bg-[url('/images/" +
-        image +
-        "')] bg-center bg-no-repeat bg-cover"
-      : "w-[40%] max-sm:hidden max-lg:m-auto max-lg:w-[80%] max-lg:mb-12 h-[500px] bg-[url('/images/" +
-        image +
-        "')] bg-center bg-no-repeat bg-cover hidden";
   return (
     <div
       className={
-        type == 2
+        type === 2
           ? "px-5 text-lg font-[Arial] text-justify border-l-2 border-l-orange-500"
           : "px-5 text-lg font-[Arial] text-justify border-r-2 border-r-orange-500"
       }
@@ -44,17 +32,10 @@ export default function FonctionnaliteElt({ titre, image, text, type = 1 }) {
             <div className="text-center leading-loose mb-5">{text}</div>
             <div className="my-5 flex gap-4 font-mono flex-wrap">
               <a
-                href="#"
+                href="/connexion/"
                 className="py-2 px-5 bg-orange-400 text-white rounded hover:bg-blue-400 font-bold"
               >
                 Se Connecter
-              </a>
-
-              <a
-                href="#"
-                className="py-2 px-5 bg-blue-400 text-white rounded hover:bg-orange-400 font-bold"
-              >
-                Nous rejoindre
               </a>
             </div>
           </div>

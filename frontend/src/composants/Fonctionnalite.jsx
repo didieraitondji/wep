@@ -32,7 +32,7 @@ export default function Fonctionnalite() {
             "Assurez une traçabilité complète des travaux soumis et résolvez les litiges rapidement."
           }
           titre={"Pour l'Administration"}
-          image="baniere3.jpg"
+          image="baniere1.jpg"
           type={2}
         />
       </div>
