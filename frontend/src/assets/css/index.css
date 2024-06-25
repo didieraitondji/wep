@@ -1,0 +1,10 @@
+@tailwind base;
+
+* {
+    padding: 0px;
+    margin: 0px;
+    user-select: none;
+}
+
+@tailwind components;
+@tailwind utilities;
