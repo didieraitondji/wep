@@ -1,38 +1,48 @@
 <?php
-
 include_once("./api/model.php");
+header("Content-Type: application/json");
 
-try {
+$method = $_SERVER['REQUEST_METHOD'];
 
-    if (!empty($_GET['demande'])) {
-        $url = explode("/", filter_var($_GET['demande'], FILTER_SANITIZE_URL));
+$request_uri = $_SERVER['REQUEST_URI'];
+$request = explode('/', trim($request_uri, '/'));
 
-        //switch sur les demandes
-        switch ($url[0]) {
-            case 'POST':
-                include_once("./api/post/post.php");
-                break;
-            case 'GET':
-                include_once("./api/get/get.php");
-                break;
-            case 'PUT':
-                include_once("./api/put/put.php");
-                break;
-            case "DELETE":
-                include_once("./api/delete/delete.php");
-                break;
-            default:
-                throw new Exception("Operation Inconnue");
-                break;
-        }
-    } else {
-        throw new Exception("Problème de recupération de données");
-    }
-} catch (Exception $e) {
-    $erreur = [
-        "message" => $e->getMessage(),
-        "code" => $e->getCode()
-    ];
+switch ($method) {
+    case 'GET':
+        handleGet($request);
+        break;
+    case 'POST':
+        handlePost($request);
+        break;
+    case 'PUT':
+        handlePut($request);
+        break;
+    case 'DELETE':
+        handleDelete($request);
+        break;
+    default:
+        echo json_encode(["message" => "Méthode non supportée"]);
+        break;
+}
 
-    print_r($erreur);
+function handleGet($url)
+{
+    include_once("./api/get/get.php");
+}
+
+function handlePost($url)
+{
+    include_once("./api/post/post.php");
+}
+
+function handlePut($request)
+{
+
+    echo json_encode(["message" => "Requête PUT"]);
+}
+
+function handleDelete($request)
+{
+
+    echo json_encode(["message" => "Requête DELETE"]);
 }

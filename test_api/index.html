@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enregistrement des informations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding-right: 40px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .info{
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding-right: 40px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+        .info h3{
+            border-bottom: 1px solid maroon;
+        }
+        .info div{
+            padding: 15px 5px;
+            height: 400px;
+            overflow: auto;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function handleSubmit(event, tableName) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            console.log(`Data for ${tableName}:`, data);
+
+            fetch(`http://wep-api.com/${tableName}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Enregistrement des informations</h2>
+
+    <form onsubmit="handleSubmit(event, 'Admin')">
+        <h3>Admin</h3>
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+        <label for="surName">Sur Name</label>
+        <input type="text" id="surName" name="surName" required>
+        <label for="motDePasse">Password</label>
+        <input type="password" id="motDePasse" name="motDePasse" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <label for="telephone">Telephone</label>
+        <input type="text" id="telephone" name="telephone" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Admins</h3>
+        <iframe src="http://wep-api.com/admins/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Departement')">
+        <h3>Departement</h3>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Départements</h3>
+        <iframe src="http://wep-api.com/departements/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Enseignant')">
+        <h3>Enseignant</h3>
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+        <label for="surName">Sur Name</label>
+        <input type="text" id="surName" name="surName" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <label for="motDePasse">Password</label>
+        <input type="password" id="motDePasse" name="motDePasse" required>
+        <label for="telephone">Telephone</label>
+        <input type="text" id="telephone" name="telephone" required>
+        <label for="id_Departement">Departement ID</label>
+        <input type="number" id="id_Departement" name="id_Departement" required>
+        <label for="photoPath">Photo Path</label>
+        <input type="text" id="photoPath" name="photoPath">
+        <label for="id_Admin">Admin ID</label>
+        <input type="number" id="id_Admin" name="id_Admin" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Enseignants</h3>
+        <iframe src="http://wep-api.com/enseignants/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Etudiant')">
+        <h3>Etudiant</h3>
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+        <label for="surName">Sur Name</label>
+        <input type="text" id="surName" name="surName" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <label for="motDePasse">Password</label>
+        <input type="password" id="motDePasse" name="motDePasse" required>
+        <label for="telephone">Telephone</label>
+        <input type="text" id="telephone" name="telephone" required>
+        <label for="id_filiere">Filiere ID</label>
+        <input type="number" id="id_filiere" name="id_filiere" required>
+        <label for="photoPath">Photo Path</label>
+        <input type="text" id="photoPath" name="photoPath">
+        <label for="id_Admin">Admin ID</label>
+        <input type="number" id="id_Admin" name="id_Admin" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Etudiants</h3>
+        <iframe src="http://wep-api.com/etudiants/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Ecu')">
+        <h3>Ecu</h3>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <label for="credit">Credit</label>
+        <input type="number" id="credit" name="credit" required>
+        <label for="id_Enseignant">Enseignant ID</label>
+        <input type="number" id="id_Enseignant" name="id_Enseignant" required>
+        <label for="id_Ue">Ue ID</label>
+        <input type="number" id="id_Ue" name="id_Ue" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les ECU</h3>
+        <iframe src="http://wep-api.com/ecus/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Ue')">
+        <h3>Ue</h3>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <label for="credit">Credit</label>
+        <input type="number" id="credit" name="credit" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les UE</h3>
+        <iframe src="http://wep-api.com/ues" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Filiere')">
+        <h3>Filiere</h3>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Filieres</h3>
+        <iframe src="http://wep-api.com/filieres" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Travail')">
+        <h3>Travail</h3>
+        <label for="filePath">File Path</label>
+        <input type="text" id="filePath" name="filePath" required>
+        <label for="dateSoumission">Date Soumission</label>
+        <input type="date" id="dateSoumission" name="dateSoumission" required>
+        <label for="note">Note</label>
+        <input type="number" id="note" name="note">
+        <label for="limiteNote">Limite Note</label>
+        <input type="number" id="limiteNote" name="limiteNote" required>
+        <label for="lien">Lien</label>
+        <input type="text" id="lien" name="lien">
+        <label for="id_Etudiant">Etudiant ID</label>
+        <input type="number" id="id_Etudiant" name="id_Etudiant" required>
+        <label for="id_travailPratique">Travail Pratique ID</label>
+        <input type="number" id="id_travailPratique" name="id_travailPratique" required>
+        <label for="id_Enseignant">Enseignant ID</label>
+        <input type="number" id="id_Enseignant" name="id_Enseignant" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Travaux</h3>
+        <iframe src="http://wep-api.com/travaux/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'TravailPratique')">
+        <h3>Travail Pratique</h3>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+        <label for="datePublier">Date Publier</label>
+        <input type="date" id="datePublier" name="datePublier" required>
+        <label for="dateSoumission">Date Soumission</label>
+        <input type="date" id="dateSoumission" name="dateSoumission" required>
+        <label for="filePath">File Path</label>
+        <input type="text" id="filePath" name="filePath">
+        <label for="id_Enseignant">Enseignant ID</label>
+        <input type="number" id="id_Enseignant" name="id_Enseignant" required>
+        <label for="id_Ecu">Ecu ID</label>
+        <input type="number" id="id_Ecu" name="id_Ecu" required>
+        <label for="id_filiere">Filiere ID</label>
+        <input type="number" id="id_filiere" name="id_filiere" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les TPs</h3>
+        <iframe src="http://wep-api.com/tps/" frameborder="0" width="100%"></iframe>
+    </div>
+
+    <form onsubmit="handleSubmit(event, 'Messages')">
+        <h3>Messages</h3>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+        <label for="filePath">File Path</label>
+        <input type="text" id="filePath" name="filePath">
+        <label for="id_travailPratique">Travail Pratique ID</label>
+        <input type="number" id="id_travailPratique" name="id_travailPratique" required>
+        <label for="id_Etudiant">Etudiant ID</label>
+        <input type="number" id="id_Etudiant" name="id_Etudiant" required>
+        <label for="id_Enseignant">Enseignant ID</label>
+        <input type="number" id="id_Enseignant" name="id_Enseignant" required>
+        <label for="id_Travail">Travail ID</label>
+        <input type="number" id="id_Travail" name="id_Travail" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="info">
+        <h3>Les Messages</h3>
+        <iframe src="http://wep-api.com/messages" frameborder="0" width="100%"></iframe>
+    </div>
+
+</body>
+
+</html>

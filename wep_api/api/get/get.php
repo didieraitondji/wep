@@ -16,108 +16,158 @@ $tp = new TravailPratique();
 
 // operations sur les routes
 
-switch ($url[1]) {
+switch (strtolower($url[0])) {
     case 'enseignants':
         $enseignant->toutLesEnseignants();
         break;
     case 'enseignant':
-        if (!empty($url[2])) {
-            $enseignant->unEnseignant($url[2]);
+        if (!empty($url[1])) {
+            $enseignant->unEnseignant($url[1]);
         } else {
-            throw new Exception("Identifiant de enseignant introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'etudiants':
         $etudiant->toutLesEtudiants();
         break;
     case 'etudiant':
-        if (!empty($url[2])) {
-            $etudiant->unEtudiant($url[2]);
+        if (!empty($url[1])) {
+            $etudiant->unEtudiant($url[1]);
         } else {
-            throw new Exception("Identifiant de etudiant introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'messages':
         $message->toutLesMessages();
         break;
     case 'message':
-        if (!empty($url[2])) {
-            $message->unMessage($url[2]);
+        if (!empty($url[1])) {
+            $message->unMessage($url[1]);
         } else {
-            throw new Exception("Identifiant de Message Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'travaux':
         $travail->toutLesTravaux();
         break;
     case 'travail':
-        if (!empty($url[2])) {
-            $travail->unTravail($url[2]);
+        if (!empty($url[1])) {
+            $travail->unTravail($url[1]);
         } else {
-            throw new Exception("Identifiant de Travail Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'ues':
         $ue->toutLesUes();
         break;
     case 'ue':
-        if (!empty($url[2])) {
-            $ue->uneUE($url[2]);
+        if (!empty($url[1])) {
+            $ue->uneUE($url[1]);
         } else {
-            throw new Exception("Identifiant de UE Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'filieres':
         $filiere->toutLesFiliere();
         break;
     case 'filiere':
-        if (!empty($url[2])) {
-            $filiere->uneFiliere($url[2]);
+        if (!empty($url[1])) {
+            $filiere->uneFiliere($url[1]);
         } else {
-            throw new Exception("Identifiant de Filière Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'ecus':
         $ecu->toutLesEcu();
         break;
     case 'ecu':
-        if (!empty($url[2])) {
-            $ecu->unEcu($url[2]);
+        if (!empty($url[1])) {
+            $ecu->unEcu($url[1]);
         } else {
-            throw new Exception("Identifiant de ECU Introuvable !");
-        }
-        break;
-    case 'tp':
-        if (!empty($url[2])) {
-            $tp->unTP($url[2]);
-        } else {
-            throw new Exception("Identifiant de TP Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'tps':
         $tp->toutLesTPs();
         break;
+    case 'tp':
+        if (!empty($url[1])) {
+            $tp->unTP($url[1]);
+        } else {
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
+        }
+        break;
     case 'admins':
         $admin->toutLesAdmins();
         break;
     case 'admin':
-        if (!empty($url[2])) {
-            $admin->unAdmin($url[2]);
+        if (!empty($url[1])) {
+            $admin->unAdmin($url[1]);
         } else {
-            throw new Exception("Identifiant Admin Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     case 'departements':
         $departement->toutLesDepartements();
         break;
     case 'departement':
-        if (!empty($url[2])) {
-            $departement->unDepartement($url[2]);
+        if (!empty($url[1])) {
+            $departement->unDepartement($url[1]);
         } else {
-            throw new Exception("Identifiant de Département Introuvable !");
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
         }
         break;
     default:
-        throw new Exception("La demande n'est pas valide, vérifiez l'url");
+        echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
         break;
 }

@@ -24,16 +24,22 @@ function connectToDB()
 
 class Utilisateur
 {
-    protected $name;
+    protected $firstName;
+    protected $surName;
     protected $email;
     protected $motDePasse;
+    protected $telephone;
     protected $typeUtilisateur;
     protected $photoPath;
 
-    public function __construct($name = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null)
+
+    public function __construct($firstName = null, $surName = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null, $telephone = null)
     {
-        if ($name != null) {
-            $this->name = $name;
+        if ($firstName != null) {
+            $this->firstName = $firstName;
+        }
+        if ($surName != null) {
+            $this->surName = $surName;
         }
         if ($email != null) {
             $this->email = $email;
@@ -46,6 +52,9 @@ class Utilisateur
         }
         if ($photoPath != null) {
             $this->photoPath = $photoPath;
+        }
+        if ($telephone != null) {
+            $this->telephone = $telephone;
         }
     }
 
@@ -67,9 +76,9 @@ class Enseignant extends Utilisateur
 {
     protected $departement;
 
-    public function __construct($departement = null, $name = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null)
+    public function __construct($departement = null, $firstName = null, $surName = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null, $telephone = null)
     {
-        parent::__construct($name, $email, $motDePasse, $typeUtilisateur, $photoPath);
+        parent::__construct($firstName, $surName, $email, $motDePasse, $typeUtilisateur, $photoPath, $telephone);
         if ($departement != null) {
             $this->departement = $departement;
         }
@@ -78,15 +87,12 @@ class Enseignant extends Utilisateur
     public function toutLesEnseignants()
     {
         $pdo = connectToDB();
-
         $sql = 'SELECT * FROM enseignant';
         $req = $pdo->prepare($sql);
         $req->execute();
         $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
 
         $jsonData = json_encode($reqs);
-        header('Content-Type: application/json');
-
         echo $jsonData;
         $pdo = null;
     }
@@ -94,17 +100,18 @@ class Enseignant extends Utilisateur
     public function unEnseignant($id)
     {
         $pdo = connectToDB();
-
         $sql = 'SELECT * FROM enseignant WHERE enseignant.id =' . $id . '';
         $req = $pdo->prepare($sql);
         $req->execute();
         $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
-
         $jsonData = json_encode($reqs);
-        header('Content-Type: application/json');
-
         echo $jsonData;
         $pdo = null;
+    }
+
+    public function addEnseignant()
+    {
+        $pdo = connectToDB();
     }
 }
 
@@ -112,9 +119,9 @@ class Etudiant extends Utilisateur
 {
     protected $matricule;
 
-    public function __construct($matricule = null, $name = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null)
+    public function __construct($matricule = null, $firstName = null, $surName = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null, $telephone = null)
     {
-        parent::__construct($name, $email, $motDePasse, $typeUtilisateur, $photoPath);
+        parent::__construct($firstName, $surName, $email, $motDePasse, $typeUtilisateur, $photoPath, $telephone);
         if ($matricule != null) {
             $this->matricule = $matricule;
         }
@@ -155,9 +162,9 @@ class Etudiant extends Utilisateur
 
 class Admin extends Utilisateur
 {
-    public function __construct($name = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null)
+    public function __construct($firstName = null, $surName = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null, $telephone = null)
     {
-        parent::__construct($name, $email, $motDePasse, $typeUtilisateur, $photoPath);
+        parent::__construct($firstName, $surName, $email, $motDePasse, $typeUtilisateur, $photoPath, $telephone);
     }
 
     public function toutLesAdmins()
@@ -191,7 +198,62 @@ class Admin extends Utilisateur
         echo $jsonData;
         $pdo = null;
     }
+
+    public function addAdmin()
+    {
+        $pdo = connectToDB();
+
+        $adminQuery = "INSERT INTO Admin (firstName, surName, motDePasse, email, telephone) 
+                   VALUES (:firstName, :surName, :motDePasse, :email, :telephone)";
+        $stmt = $pdo->prepare($adminQuery);
+
+        try {
+            $stmt->execute([
+                ':firstName' => $this->firstName,
+                ':surName' => $this->surName,
+                ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
+                ':email' => $this->email,
+                ':telephone' => $this->telephone
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
 }
+
+/*
+try {
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        } 
+ */
 
 class TravailPratique
 {
@@ -468,6 +530,34 @@ class Departement
 
         echo $jsonData;
         $pdo = null;
+    }
+
+    public function addDepartement()
+    {
+        $pdo = connectToDB();
+
+        $departementQuery = "INSERT INTO departement (name) VALUES (:name)";
+        $stmt = $pdo->prepare($departementQuery);
+
+        try {
+            $stmt->execute([':name' => $this->name]);
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 
