@@ -3,7 +3,7 @@ import 'typeface-poppins';
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Destination from "./destination";
+import Destination from "./Destination";
 
 
 const Root = () => {
