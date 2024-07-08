@@ -38,7 +38,7 @@ switch (strtolower($url[0])) {
 
         break;
     case 'tp':
-        
+        $tp = new TravailPratique();
         break;
     case 'admin':
         $admin = new Admin($data['firstName'], $data['surName'], $data['email'], $data['motDePasse'], null, null, $data['telephone']);

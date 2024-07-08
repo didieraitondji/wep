@@ -17,7 +17,7 @@ const ConnexionPage = () => {
   return (
     <>
       <Menu />
-      <div className="min-h-screen font-mono flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-c1 font-poppins">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Connexion</h2>
           <form onSubmit={handleSubmit}>

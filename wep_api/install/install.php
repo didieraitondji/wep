@@ -9,28 +9,28 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $queries = [
-        "CREATE TABLE IF NOT EXISTS Enseignant (
+        "CREATE TABLE IF NOT EXISTS enseignant (
             id BIGINT NOT NULL AUTO_INCREMENT,
             firstName VARCHAR(255),
             surName VARCHAR(255),
             email VARCHAR(255),
             motDePasse TEXT,
             telephone VARCHAR(20),
-            id_Departement INT,
+            id_departement INT,
             photoPath VARCHAR(255),
             id_Admin INT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS Departement (
+        "CREATE TABLE IF NOT EXISTS departement (
             id INT NOT NULL AUTO_INCREMENT,
             name VARCHAR(255),
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS Etudiant (
+        "CREATE TABLE IF NOT EXISTS etudiant (
             id BIGINT NOT NULL AUTO_INCREMENT,
             firstName VARCHAR(255),
             surName VARCHAR(255),
@@ -44,17 +44,17 @@ try {
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS Ecu (
+        "CREATE TABLE IF NOT EXISTS ecu (
             id INT NOT NULL AUTO_INCREMENT,
             name VARCHAR(255),
             credit INT,
-            id_Enseignant BIGINT,
-            id_Ue INT,
+            id_enseignant BIGINT,
+            id_ue INT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS Ue (
+        "CREATE TABLE IF NOT EXISTS ue (
             id INT NOT NULL AUTO_INCREMENT,
             name VARCHAR(255),
             credit INT,
@@ -69,97 +69,97 @@ try {
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS Travail (
+        "CREATE TABLE IF NOT EXISTS travail (
             id BIGINT NOT NULL AUTO_INCREMENT,
             filePath VARCHAR(255),
             dateSoumission DATE,
             note FLOAT,
             limiteNote INT,
             lien VARCHAR(255),
-            id_Etudiant BIGINT,
-            id_travailPratique BIGINT,
-            id_Enseignant BIGINT,
+            id_etudiant BIGINT,
+            id_travailpratique BIGINT,
+            id_enseignant BIGINT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS travailPratique (
+        "CREATE TABLE IF NOT EXISTS travailpratique (
             id BIGINT NOT NULL AUTO_INCREMENT,
             title VARCHAR(255),
             description TEXT,
             datePublier DATE,
             dateSoumission DATE,
             filePath VARCHAR(255),
-            id_Enseignant BIGINT,
-            id_Ecu INT,
+            id_enseignant BIGINT,
+            id_ecu INT,
             id_filiere BIGINT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "CREATE TABLE IF NOT EXISTS Messages (
+        "CREATE TABLE IF NOT EXISTS messages (
             id BIGINT NOT NULL AUTO_INCREMENT,
             description TEXT,
             filePath VARCHAR(255),
-            id_travailPratique BIGINT,
-            id_Etudiant BIGINT,
-            id_Enseignant BIGINT,
-            id_Travail BIGINT,
+            id_travailpratique BIGINT,
+            id_etudiant BIGINT,
+            id_enseignant BIGINT,
+            id_travail BIGINT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "ALTER TABLE Enseignant ADD CONSTRAINT Departement_fk FOREIGN KEY (id_Departement)
-        REFERENCES Departement (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE travailPratique ADD CONSTRAINT Enseignant_fk FOREIGN KEY (id_Enseignant)
-        REFERENCES Enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Ecu ADD CONSTRAINT Enseignant_fk FOREIGN KEY (id_Enseignant)
-        REFERENCES Enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE travailPratique ADD CONSTRAINT Ecu_fk FOREIGN KEY (id_Ecu)
-        REFERENCES Ecu (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE travailPratique ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
+        "ALTER TABLE enseignant ADD CONSTRAINT departement_fk FOREIGN KEY (id_departement)
+        REFERENCES departement (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE travailpratique ADD CONSTRAINT enseignant_fk FOREIGN KEY (id_enseignant)
+        REFERENCES enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE ecu ADD CONSTRAINT enseignant_fk FOREIGN KEY (id_enseignant)
+        REFERENCES enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE travailpratique ADD CONSTRAINT ecu_fk FOREIGN KEY (id_ecu)
+        REFERENCES ecu (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE travailpratique ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
         REFERENCES filiere (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Ecu ADD CONSTRAINT Ue_fk FOREIGN KEY (id_Ue)
-        REFERENCES Ue (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE ecu ADD CONSTRAINT ue_fk FOREIGN KEY (id_ue)
+        REFERENCES ue (id) ON DELETE SET NULL ON UPDATE CASCADE",
         "CREATE TABLE IF NOT EXISTS ueFiliere (
-            id_Ue INT NOT NULL,
+            id_ue INT NOT NULL,
             id_filiere BIGINT NOT NULL,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (id_Ue, id_filiere)
+            PRIMARY KEY (id_ue, id_filiere)
         )",
-        "ALTER TABLE ueFiliere ADD CONSTRAINT Ue_fk FOREIGN KEY (id_Ue)
-        REFERENCES Ue (id) ON DELETE RESTRICT ON UPDATE CASCADE",
+        "ALTER TABLE ueFiliere ADD CONSTRAINT ue_fk FOREIGN KEY (id_ue)
+        REFERENCES ue (id) ON DELETE RESTRICT ON UPDATE CASCADE",
         "ALTER TABLE ueFiliere ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
         REFERENCES filiere (id) ON DELETE RESTRICT ON UPDATE CASCADE",
-        "ALTER TABLE Travail ADD CONSTRAINT Etudiant_fk FOREIGN KEY (id_Etudiant)
-        REFERENCES Etudiant (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Travail ADD CONSTRAINT travailPratique_fk FOREIGN KEY (id_travailPratique)
-        REFERENCES travailPratique (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Travail ADD CONSTRAINT Travail_uq UNIQUE (id_travailPratique)",
-        "ALTER TABLE Travail ADD CONSTRAINT Enseignant_fk FOREIGN KEY (id_Enseignant)
-        REFERENCES Enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Messages ADD CONSTRAINT travailPratique_fk FOREIGN KEY (id_travailPratique)
-        REFERENCES travailPratique (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Messages ADD CONSTRAINT Etudiant_fk FOREIGN KEY (id_Etudiant)
-        REFERENCES Etudiant (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Messages ADD CONSTRAINT Enseignant_fk FOREIGN KEY (id_Enseignant)
-        REFERENCES Enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Etudiant ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
+        "ALTER TABLE travail ADD CONSTRAINT etudiant_fk FOREIGN KEY (id_etudiant)
+        REFERENCES etudiant (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE travail ADD CONSTRAINT travailpratique_fk FOREIGN KEY (id_travailpratique)
+        REFERENCES travailpratique (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE travail ADD CONSTRAINT travail_uq UNIQue (id_travailpratique)",
+        "ALTER TABLE travail ADD CONSTRAINT enseignant_fk FOREIGN KEY (id_enseignant)
+        REFERENCES enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE messages ADD CONSTRAINT travailpratique_fk FOREIGN KEY (id_travailpratique)
+        REFERENCES travailpratique (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE messages ADD CONSTRAINT etudiant_fk FOREIGN KEY (id_etudiant)
+        REFERENCES etudiant (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE messages ADD CONSTRAINT enseignant_fk FOREIGN KEY (id_enseignant)
+        REFERENCES enseignant (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE etudiant ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
         REFERENCES filiere (id) ON DELETE SET NULL ON UPDATE CASCADE",
         "CREATE TABLE IF NOT EXISTS enseignantFiliere (
             id_filiere BIGINT NOT NULL,
-            id_Enseignant BIGINT NOT NULL,
+            id_enseignant BIGINT NOT NULL,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (id_filiere, id_Enseignant)
+            PRIMARY KEY (id_filiere, id_enseignant)
         )",
         "ALTER TABLE enseignantFiliere ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
         REFERENCES filiere (id) ON DELETE RESTRICT ON UPDATE CASCADE",
-        "ALTER TABLE enseignantFiliere ADD CONSTRAINT Enseignant_fk FOREIGN KEY (id_Enseignant)
-        REFERENCES Enseignant (id) ON DELETE RESTRICT ON UPDATE CASCADE",
-        "ALTER TABLE Messages ADD CONSTRAINT Travail_fk FOREIGN KEY (id_Travail)
-        REFERENCES Travail (id) ON DELETE SET NULL ON UPDATE CASCADE",
+        "ALTER TABLE enseignantFiliere ADD CONSTRAINT enseignant_fk FOREIGN KEY (id_enseignant)
+        REFERENCES enseignant (id) ON DELETE RESTRICT ON UPDATE CASCADE",
+        "ALTER TABLE messages ADD CONSTRAINT travail_fk FOREIGN KEY (id_travail)
+        REFERENCES travail (id) ON DELETE SET NULL ON UPDATE CASCADE",
         "CREATE TABLE IF NOT EXISTS Admin (
             id INT NOT NULL AUTO_INCREMENT,
             firstName VARCHAR(255),
@@ -171,9 +171,9 @@ try {
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         )",
-        "ALTER TABLE Etudiant ADD CONSTRAINT Admin_fk FOREIGN KEY (id_Admin)
+        "ALTER TABLE etudiant ADD CONSTRAINT Admin_fk FOREIGN KEY (id_Admin)
         REFERENCES Admin (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "ALTER TABLE Enseignant ADD CONSTRAINT Admin_fk FOREIGN KEY (id_Admin)
+        "ALTER TABLE enseignant ADD CONSTRAINT Admin_fk FOREIGN KEY (id_Admin)
         REFERENCES Admin (id) ON DELETE SET NULL ON UPDATE CASCADE"
     ];
 
@@ -186,7 +186,7 @@ try {
     echo "Tables created successfully !<br />";
 
     $adminQuery = "INSERT INTO Admin (firstName, surName, motDePasse, email, telephone) 
-                   VALUES (:firstName, :surName, :motDePasse, :email, :telephone)";
+                   VALueS (:firstName, :surName, :motDePasse, :email, :telephone)";
     $stmt = $conn->prepare($adminQuery);
     $stmt->execute([
         ':firstName' => 'Admin',

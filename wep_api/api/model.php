@@ -109,21 +109,60 @@ class Enseignant extends Utilisateur
         $pdo = null;
     }
 
-    public function addEnseignant()
+    public function addEnseignant(int $id = 1)
     {
         $pdo = connectToDB();
+
+        $enseignantQuery = "INSERT INTO enseignant (firstName, surName, email, motDePasse, telephone, id_departement, photoPath, id_Admin) 
+                        VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_departement, :photoPath, :id_Admin)";
+        $stmt = $pdo->prepare($enseignantQuery);
+
+        try {
+
+            $stmt->execute([
+                ':firstName' => $this->firstName,
+                ':surName' => $this->surName,
+                ':email' => $this->email,
+                ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
+                ':telephone' => $this->telephone,
+                ':id_departement' => $this->departement,
+                ':photoPath' => $this->photoPath,
+                ':id_Admin' => $id
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 
 class Etudiant extends Utilisateur
 {
     protected $matricule;
+    protected $filiere;
 
-    public function __construct($matricule = null, $firstName = null, $surName = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null, $telephone = null)
+    public function __construct($matricule = null, $firstName = null, $surName = null, $email = null, $motDePasse = null, $typeUtilisateur = null, $photoPath = null, $telephone = null, $filiere = null)
     {
         parent::__construct($firstName, $surName, $email, $motDePasse, $typeUtilisateur, $photoPath, $telephone);
         if ($matricule != null) {
             $this->matricule = $matricule;
+        }
+        if ($filiere != null) {
+            $this->filiere = $filiere;
         }
     }
 
@@ -157,6 +196,45 @@ class Etudiant extends Utilisateur
 
         echo $jsonData;
         $pdo = null;
+    }
+
+    public function addEtudiant(int $id = 1)
+    {
+        $pdo = connectToDB();
+        $etudiantQuery = "INSERT INTO etudiant (firstName, surName, email, motDePasse, telephone, id_filiere, photoPath, id_Admin) 
+                      VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_filiere, :photoPath, :id_Admin)";
+        $stmt = $pdo->prepare($etudiantQuery);
+
+        try {
+
+            $stmt->execute([
+                ':firstName' => $this->firstName,
+                ':surName' => $this->surName,
+                ':email' => $this->email,
+                ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
+                ':telephone' => $this->telephone,
+                ':id_filiere' => $this->filiere,
+                ':photoPath' => $this->photoPath,
+                ':id_Admin' => $id
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 
@@ -298,6 +376,45 @@ class TravailPratique
         echo $jsonData;
         $pdo = null;
     }
+
+    public function addTP(int $id_enseignant = null, int $id_ecu = null, int $id_filiere = null)
+    {
+        $pdo = connectToDB();
+
+        $travailpratiqueQuery = "INSERT INTO travailpratique (title, description, datePublier, dateSoumission, filePath, id_enseignant, id_ecu, id_filiere) 
+                             VALUES (:title, :description, :datePublier, :dateSoumission, :filePath, :id_enseignant, :id_ecu, :id_filiere)";
+        $stmt = $pdo->prepare($travailpratiqueQuery);
+
+        try {
+            $stmt->execute([
+                ':title' => $this->title,
+                ':description' => $this->description,
+                ':datePublier' => $this->datePublier,
+                ':dateSoumission' => $this->dateSoumission,
+                ':filePath' => $this->filePath,
+                ':id_enseignant' => $id_enseignant,
+                ':id_ecu' => $id_ecu,
+                ':id_filiere' => $id_filiere
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
 }
 
 class Travail
@@ -343,6 +460,43 @@ class Travail
         echo $jsonData;
         $pdo = null;
     }
+
+    public function addTravail(int $id_etudiant = null, int $id_travailpratique = null, int $id_enseignant = null)
+    {
+        $pdo = connectToDB();
+        $travailQuery = "INSERT INTO travail (filePath, limiteNote, lien, id_etudiant, id_travailpratique, id_enseignant) 
+                     VALueS (:filePath, :limiteNote, :lien, :id_etudiant, :id_travailpratique, :id_enseignant)";
+        $stmt = $pdo->prepare($travailQuery);
+
+        try {
+
+            $stmt->execute([
+                ':filePath' => $this->filePath,
+                ':limiteNote' => 3,
+                ':lien' => $this->lien,
+                ':id_etudiant' => $id_etudiant,
+                ':id_travailpratique' => $id_travailpratique,
+                ':id_enseignant' => $id_enseignant
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
 }
 
 class Filiere
@@ -386,6 +540,35 @@ class Filiere
 
         echo $jsonData;
         $pdo = null;
+    }
+
+    public function addFiliere()
+    {
+        $pdo = connectToDB();
+        $filiereQuery = "INSERT INTO Filiere (name) VALUES (:name)";
+        $stmt = $pdo->prepare($filiereQuery);
+
+        try {
+
+            $stmt->execute([':name' => $this->name]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 
@@ -434,6 +617,38 @@ class Ue
 
         echo $jsonData;
         $pdo = null;
+    }
+
+    public function addUe()
+    {
+        $pdo = connectToDB();
+        $ueQuery = "INSERT INTO ue (name, credit) VALUES (:name, :credit)";
+        $stmt = $pdo->prepare($ueQuery);
+
+        try {
+
+            $stmt->execute([
+                ':name' => $this->name,
+                ':credit' => $this->credit
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 
@@ -486,6 +701,40 @@ class Ecu
 
         echo $jsonData;
         $pdo = null;
+    }
+
+    public function addEcu(int $id_enseignant = null, int $id_ue = null)
+    {
+        $pdo = connectToDB();
+        $ecuQuery = "INSERT INTO ecu (name, credit, id_enseignant, id_ue) VALUES (:name, :credit, :id_enseignant, :id_ue)";
+        $stmt = $pdo->prepare($ecuQuery);
+
+        try {
+
+            $stmt->execute([
+                ':name' => $this->name,
+                ':credit' => $this->credit,
+                ':id_enseignant' => $id_enseignant,
+                ':id_ue' => $id_ue
+            ]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 

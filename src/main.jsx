@@ -1,4 +1,5 @@
 import React from "react";
+import 'typeface-poppins';
 import ReactDOM from "react-dom/client";
 import "./assets/css/index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
