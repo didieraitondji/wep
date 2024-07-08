@@ -3,12 +3,14 @@ import 'typeface-poppins';
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Destination from "./destination";
+
 
 const Root = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={} />
+        <Route exact path="/" element={<Destination />} />
       </Routes>
     </Router>
   );
