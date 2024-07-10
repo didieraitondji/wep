@@ -5,11 +5,12 @@ import Footer from './composants/destination/Footer'
 import Wep from './composants/destination/Wep'
 import Objectifs from './composants/destination/Objectifs'
 import Fonctionnalites from './composants/destination/Fonctionnalites'
+import Faq from './composants/destination/Faq'
 
 export default function Destination() {
   return (
     <>
-      <header className=' fixed top-0 left-0 right-0 z-50'>
+      <header className=' fixed top-0 left-0 right-0 z-50 bg-c1 shadow-lg'>
         <Menus />
       </header>
       <div className='h-[55px] bg-c1'></div>
@@ -18,6 +19,7 @@ export default function Destination() {
         <Wep />
         <Objectifs />
         <Fonctionnalites />
+        <Faq />
         <Footer />
       </div>
     </>

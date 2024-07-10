@@ -58,5 +58,10 @@
     animation: slideUp1 1.5s forwards;
 }
 
+.accordion-content {
+    height: auto;
+    transition: height 0.3s ease;
+}
+
 @tailwind components;
 @tailwind utilities;
