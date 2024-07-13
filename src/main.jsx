@@ -8,14 +8,14 @@ import ConnexionEtudiant from "./etudiant/Connexion";
 
 
 const Root = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Destination />} />
-        <Route exact path="/etudiant-connexion/" element={<ConnexionEtudiant />} />
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route exact path="/" element={<Destination />} />
+                <Route exact path="/etudiant-connexion/" element={<ConnexionEtudiant />} />
+            </Routes>
+        </Router>
+    );
 };
 
 const rootElement = document.getElementById("root");
