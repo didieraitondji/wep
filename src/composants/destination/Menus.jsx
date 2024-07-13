@@ -9,7 +9,7 @@ export default function Menus() {
 
     return (
         <>
-            <div className='bg-c1 font-poppins'>
+            <div className=' font-poppins'>
                 <div className=' w-[80%] mx-auto bg-c1'>
                     <nav className="flex items-center justify-between p-3">
                         <div className="flex items-baseline">

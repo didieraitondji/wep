@@ -11,7 +11,7 @@ export default function Footer() {
                     <div className='flex flex-row flex-wrap py-12'>
                         <div className='w-[100%] pb-10 border-b mb-10 lg:mb-0 lg:border-b-0 border-b-gray-600 lg:pb-0 lg:w-6/12 flex flex-col p-3'>
                             <div className='text-start'>
-                                <img src="/public/images/logo_wep_white.png" alt="" className='w-[50px] h-[37px]' />
+                                <img src="/images/logo_wep_white.png" alt="" className='w-[50px] h-[37px]' />
                                 <form action="" className='pt-4'>
                                     <label htmlFor="rejoins-nous" className='text-white font-bold block p-2'>Rejoins-nous !</label>
                                     <input type="text" name='name' placeholder='nom et prénom *' className='w-[90%] px-4 py-2 rounded-full text-sm max-lg:w-[100%]' /><br /><br />
