@@ -140,7 +140,7 @@ export default function ConnexionEtudiant() {
                             name="motDePasse"
                             id="motDePasse"
                             onInput={followPasse}
-                            className="border-b border-l border-t border-c3 rounded-l-md outline-none px-3 py-2 "
+                            className="border-b border-l border-t border-c3 rounded-l-md outline-none px-3 py-2 w-[100%]"
                         />
                         <span onClick={showPasse} className='h-[100%] bg-gray-300 border-t border-b border-r cursor-pointer border-c3 rounded-r-md flex items-center justify-center text-blue-700'>
                             {
