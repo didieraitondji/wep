@@ -7,6 +7,10 @@
     scroll-behavior: smooth;
 }
 
+#contenu {
+    margin-top: - calc(50vh - 50px);
+}
+
 @keyframes slideDown {
     0% {
         transform: translateY(-100%);

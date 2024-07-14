@@ -28,12 +28,25 @@ export default function DashboardEnseignant() {
         }
     }, [navigate]);
 
+    let data = JSON.parse(localStorage.getItem("userData")).data;
 
     return (
-        <div>
-            Enseignant
+        <div className=''>
+            <div className='fixed w-[250px] h-[100vh] bg-c3'>
+                <LogoutEnseignant />
+            </div>
+            <div className='fixed h-[100vh] left-[250px] bottom-0 right-0 top-0'>
+                <div className='fixed top-0 right-0 left-[250px] bg-c1 min-h-[40px] flex items-center flex-row-reverse pr-5'>
+                    <span>
 
-            <LogoutEnseignant />
+                    </span>
+                    <span className='font-bold'>
+                        {
+                            data.firstName
+                        }
+                    </span>
+                </div>
+            </div>
         </div>
     )
 }
