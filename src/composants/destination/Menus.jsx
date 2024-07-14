@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Menus() {
+export default function Menus({ menu1 }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -17,7 +17,7 @@ export default function Menus() {
                         </div>
                         <ul className="hidden lg:flex space-x-10 font-bold">
                             <li><a href="#" className="text-black hover:border-b-4 hover:border-b-black capitalize">WeP c’est quoi ?</a></li>
-                            <li><a href="#" className="text-black hover:border-b-4 hover:border-b-black capitalize">Nos Fonctionnalités</a></li>
+                            <li><a href="/#fonctions" className={`text-black hover:border-b-4 border-b-black capitalize`}>Nos Fonctionnalités</a></li>
                             <li><a href="#" className="text-black hover:border-b-4 hover:border-b-black capitalize">à propos</a></li>
                             <li><a href="#" className="text-black hover:border-b-4 hover:border-b-black">FAQ</a></li>
                         </ul>

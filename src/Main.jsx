@@ -5,6 +5,8 @@ import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Destination from "./Destination";
 import ConnexionEtudiant from "./etudiant/Connexion";
+import DashboardEtudiant from "./etudiant/Dashboard";
+import ConnexionEnseignant from "./enseignant/Connexion";
 
 
 const Root = () => {
@@ -13,6 +15,8 @@ const Root = () => {
             <Routes>
                 <Route exact path="/" element={<Destination />} />
                 <Route exact path="/etudiant-connexion/" element={<ConnexionEtudiant />} />
+                <Route exact path="/etudiant/" element={<DashboardEtudiant />} />
+                <Route exact path="/enseignant-connexion/" element={<ConnexionEnseignant />} />
             </Routes>
         </Router>
     );

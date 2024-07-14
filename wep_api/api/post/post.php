@@ -14,41 +14,59 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 
 // operations sur les routes
+if (empty($url[0])) {
+    switch ($data['type']) {
+        case 'enseignant':
 
-switch (strtolower($url[0])) {
-    case 'enseignant':
+            break;
+        case 'etudiant':
+            $etu = new Etudiant();
+            $etu->logEtudiant($data['email'], $data['motDePasse']);
+            break;
+        case 'admin':
 
-        break;
-    case 'etudiant':
+            break;
+        default:
+            echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => "se229"]);
+            break;
+    }
+} else {
 
-        break;
-    case 'message':
+    switch (strtolower($url[0])) {
+        case 'enseignant':
 
-        break;
-    case 'travail':
+            break;
+        case 'etudiant':
 
-        break;
-    case 'ue':
+            break;
+        case 'message':
 
-        break;
-    case 'filiere':
+            break;
+        case 'travail':
 
-        break;
-    case 'ecu':
+            break;
+        case 'ue':
 
-        break;
-    case 'tp':
-        $tp = new TravailPratique();
-        break;
-    case 'admin':
-        $admin = new Admin($data['firstName'], $data['surName'], $data['email'], $data['motDePasse'], null, null, $data['telephone']);
-        $admin->addAdmin();
-        break;
-    case 'departement':
-        $departement = new Departement($data["name"]);
-        $departement->addDepartement();
-        break;
-    default:
-        echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
-        break;
+            break;
+        case 'filiere':
+
+            break;
+        case 'ecu':
+
+            break;
+        case 'tp':
+            $tp = new TravailPratique();
+            break;
+        case 'admin':
+            $admin = new Admin($data['firstName'], $data['surName'], $data['email'], $data['motDePasse'], null, null, $data['telephone']);
+            $admin->addAdmin();
+            break;
+        case 'departement':
+            $departement = new Departement($data["name"]);
+            $departement->addDepartement();
+            break;
+        default:
+            echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
+            break;
+    }
 }

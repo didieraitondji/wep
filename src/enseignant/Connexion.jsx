@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function ConnexionEtudiant() {
+export default function ConnexionEnseignant() {
     const navigate = useNavigate();
 
     const keyExists = (key) => {
@@ -16,8 +16,12 @@ export default function ConnexionEtudiant() {
                 navigate('/etudiant/');
             } else if (data.type === "enseignant") {
                 navigate('/enseignant/');
-            } else {
+            } else if (data.type === "admin") {
                 navigate('/admin/');
+            }
+            else {
+                localStorage.removeItem("userData");
+                navigate('/');
             }
         }
     }, [navigate]);
@@ -99,7 +103,7 @@ export default function ConnexionEtudiant() {
         e.preventDefault();
 
         const data = {
-            type: "etudiant",
+            type: "enseignant",
             email: formData.email,
             motDePasse: formData.motDePasse
         };
@@ -127,7 +131,7 @@ export default function ConnexionEtudiant() {
                         if (data.code == 1) {
                             localStorage.setItem("userData", JSON.stringify(data))
                             //console.log(JSON.parse(localStorage.getItem("userData")));
-                            navigate('/etudiant/');
+                            navigate('/enseignant/');
                         }
                         else {
                             console.log("connexion impossible");
@@ -154,7 +158,7 @@ export default function ConnexionEtudiant() {
                     <span className="font-bold text-2xl">We Practice</span>
                 </div>
                 <div className="max-lg:mb-[50px] lg:mb-[100px]">
-                    <h1 className="text-5xl font-bold mb-[100px]">Portail Étudiant</h1>
+                    <h1 className="text-5xl font-bold mb-[100px]">Portail Enseignant</h1>
                     Veuillez vous connecter <br /> pour explorer toute la puissance du WeP.
                 </div>
                 <div>
@@ -168,7 +172,7 @@ export default function ConnexionEtudiant() {
                 <form onSubmit={handleSubmit} className="text-left flex flex-col space-y-2 max-sm:w-[100%] sm:w-[400px] mx-auto p-5 shadow-lg bg-c2 rounded-md px-10 slide-down">
                     <img src="/images/logo_wep_dark.png" alt="Logo WeP" className="w-[50px] mx-auto h-[38px] md:hidden mb-[-10px]" /> <br />
                     <h1 className="text-center font-bold max-sm:text-[1.2rem] sm:text-4xl mb-[25px]">Connexion</h1>
-                    <h2 className="font-bold text-sm text-center md:hidden">Portail Étudiant</h2>
+                    <h2 className="font-bold text-sm text-center md:hidden">Portail Enseignant</h2>
 
                     <label htmlFor="email">Email</label>
                     <input

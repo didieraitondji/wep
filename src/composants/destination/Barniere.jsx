@@ -18,7 +18,7 @@ export default function Barniere() {
                     </span>
                     <br /><br /><br />
                     <span>
-                        <a href='/etudiant-connexion/' target='_blank' className='bg-white text-c3 px-10 py-2 rounded-full font-bold slide-up1 text-xl hover:bg-c1 hover:text-lg hover:px-6'> Démarre ici </a>
+                        <a href='/#fonctions' className='bg-white text-c3 px-10 py-2 rounded-full font-bold slide-up1 text-xl hover:bg-c1 hover:text-lg hover:px-6'> Démarre ici </a>
                     </span>
                 </div>
             </div>

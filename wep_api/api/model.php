@@ -236,6 +236,31 @@ class Etudiant extends Utilisateur
         $pdo = null;
         echo json_encode($response);
     }
+
+    public function logEtudiant($email, $motDePasse)
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM etudiant WHERE email = :email';
+        $req = $pdo->prepare($sql);
+        $req->bindParam(':email', $email);
+        $req->execute();
+
+        // Récupérer le résultat
+        $etudiant = $req->fetch(PDO::FETCH_ASSOC);
+
+        // Vérifier si l'étudiant existe et vérifier le mot de passe
+        if ($etudiant && password_verify($motDePasse, $etudiant['motDePasse'])) {
+            header('Content-Type: application/json');
+            echo json_encode(["code" => 1, "type" => "etudiant", "data" => $etudiant]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(["code" => 0, "type" => "etudiant", "message" => 'Invalid email or password']);
+        }
+
+        $pdo = null; // Fermer la connexion
+    }
 }
 
 class Admin extends Utilisateur
