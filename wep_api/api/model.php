@@ -148,6 +148,31 @@ class Enseignant extends Utilisateur
         $pdo = null;
         echo json_encode($response);
     }
+
+    public function logEnseignant($email, $motDePasse)
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM enseignant WHERE email = :email';
+        $req = $pdo->prepare($sql);
+        $req->bindParam(':email', $email);
+        $req->execute();
+
+        // Récupérer le résultat
+        $enseignant = $req->fetch(PDO::FETCH_ASSOC);
+
+        // Vérifier si l'étudiant existe et vérifier le mot de passe
+        if ($enseignant && password_verify($motDePasse, $enseignant['motDePasse'])) {
+            header('Content-Type: application/json');
+            echo json_encode(["code" => 1, "type" => "enseignant", "data" => $enseignant]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(["code" => 0, "type" => "enseignant", "message" => 'Invalid email or password']);
+        }
+
+        $pdo = null; // Fermer la connexion
+    }
 }
 
 class Etudiant extends Utilisateur
@@ -336,6 +361,31 @@ class Admin extends Utilisateur
 
         $pdo = null;
         echo json_encode($response);
+    }
+
+    public function logAdmin($email, $motDePasse)
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM admin WHERE email = :email';
+        $req = $pdo->prepare($sql);
+        $req->bindParam(':email', $email);
+        $req->execute();
+
+        // Récupérer le résultat
+        $admin = $req->fetch(PDO::FETCH_ASSOC);
+
+        // Vérifier si l'étudiant existe et vérifier le mot de passe
+        if ($admin && password_verify($motDePasse, $admin['motDePasse'])) {
+            header('Content-Type: application/json');
+            echo json_encode(["code" => 1, "type" => "admin", "data" => $admin]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(["code" => 0, "type" => "admin", "message" => 'Invalid email or password']);
+        }
+
+        $pdo = null; // Fermer la connexion
     }
 }
 

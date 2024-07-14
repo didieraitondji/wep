@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import LogoutEnseignant from '../composants/enseignant/Logout'
+import LogoutAdmin from '../composants/admin/Logout'
 import { useNavigate } from 'react-router-dom';
 
-export default function DashboardEnseignant() {
+export default function DashboardAdmin() {
+
     const navigate = useNavigate();
 
     const keyExists = (key) => {
@@ -12,13 +13,13 @@ export default function DashboardEnseignant() {
     useEffect(() => {
         if (keyExists("userData")) {
             const data = JSON.parse(localStorage.getItem("userData"));
-            if (data.type === "etudiant") {
+            if (data.type === "enseignant") {
+                navigate('/enseignant/');
+            } else if (data.type === "etudiant") {
                 navigate('/etudiant/');
-            } else if (data.type === "admin") {
-                navigate('/admin/');
             }
             else {
-                if (data.type !== "enseignant") {
+                if (data.type !== "admin") {
                     navigate('/');
                 }
             }
@@ -29,11 +30,12 @@ export default function DashboardEnseignant() {
     }, [navigate]);
 
 
+
     return (
         <div>
-            Enseignant
+            admin
 
-            <LogoutEnseignant />
+            <LogoutAdmin />
         </div>
     )
 }
