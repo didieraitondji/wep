@@ -1,6 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
+import { VisibilityContext } from './VisibilityContext'
 
 export default function Faq() {
+
+    const wepRefdeux = useRef(null);
+    const { setFaqVisible } = useContext(VisibilityContext);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setFaqVisible(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+
+        if (wepRefdeux.current) {
+            observer.observe(wepRefdeux.current);
+        }
+
+        return () => {
+            if (wepRefdeux.current) {
+                observer.unobserve(wepRefdeux.current);
+            }
+        };
+    }, [wepRefdeux, setFaqVisible]);
+
     const [isWep, setIsWep] = useState(false);
     const [isUnique, setIsUnique] = useState(false);
     const [inscrire, setInscrire] = useState(false);
@@ -38,7 +62,7 @@ export default function Faq() {
         <>
             <div className='h-[110px] bg-c2' id='faq'></div>
             <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center font-bold w-max mx-auto border-b-[20px] border-b-c1'>
-                <span className='slide-down1'>FAQ</span>
+                <span className='slide-down1' ref={wepRefdeux}>FAQ</span>
             </h1>
             <div className='h-[80px] bg-white'></div>
             <div className='w-[100%] font-poppins'>

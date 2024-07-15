@@ -1,6 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
+import { VisibilityContext } from './VisibilityContext'
 
 export default function Fonctionnalites() {
+
+    const wepRefun = useRef(null);
+    const { setFonctionalityVisible } = useContext(VisibilityContext);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setFonctionalityVisible(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+
+        if (wepRefun.current) {
+            observer.observe(wepRefun.current);
+        }
+
+        return () => {
+            if (wepRefun.current) {
+                observer.unobserve(wepRefun.current);
+            }
+        };
+    }, [wepRefun, setFonctionalityVisible]);
 
     const [isEnd, setIsEnd] = useState(true);
     const [isfutur, setIsFutur] = useState(false);
@@ -22,7 +45,7 @@ export default function Fonctionnalites() {
                 <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center font-bold w-max mx-auto border-b-[20px] border-b-c1'>
                     <span className=' text-white'>Nos Fonctionnalités</span>
                 </h1>
-                <div className='h-[50px] bg-c3'></div>
+                <div className='h-[50px] bg-c3' ref={wepRefun}></div>
                 <div className='text-center'>
 
                     <span onClick={toggleisEnd} className={` font-bold ${!isEnd && 'bg-gray-600 text-white'} px-4 py-1 rounded-full cursor-pointer hover:bg-c1 hover:text-c3 mx-4 ${isEnd && 'bg-c1 text-c3'}`}> Disponibles </span>

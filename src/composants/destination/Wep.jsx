@@ -1,11 +1,34 @@
-import React from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
+import { VisibilityContext } from './VisibilityContext'
 
 export default function Wep() {
+    const wepRef = useRef(null);
+    const { setIsWepVisible } = useContext(VisibilityContext);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsWepVisible(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+
+        if (wepRef.current) {
+            observer.observe(wepRef.current);
+        }
+
+        return () => {
+            if (wepRef.current) {
+                observer.unobserve(wepRef.current);
+            }
+        };
+    }, [wepRef, setIsWepVisible]);
+
     return (
         <>
             <div className='h-[150px] bg-white' id='wep'></div>
             <div className='w-[80%] mx-auto z-0'>
-                <div className='flex flex-col lg:flex-row py-3 font-poppins items-center max-lg:border-b border-b-c3 pb-[100px]'>
+                <div ref={wepRef} className='flex flex-col lg:flex-row py-3 font-poppins items-center max-lg:border-b border-b-c3 pb-[100px]'>
                     <div className='w-[100%] lg:w-[50%] max-lg:mb-10'>
                         <img src="/images/baniere4.jpg" alt="Prof enseigne à l'élève" className='w-[98%] mx-auto rounded-lg shadow-md' />
                     </div>

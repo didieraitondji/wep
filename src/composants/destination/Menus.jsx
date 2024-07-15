@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { VisibilityContext } from './VisibilityContext';
 
 export default function Menus({ menu1 }) {
     const [isOpen, setIsOpen] = useState(false);
+    const { visibilityState } = useContext(VisibilityContext);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -16,10 +18,38 @@ export default function Menus({ menu1 }) {
                             <img src="/images/logo_wep_dark.png" alt="Logo" className="w-[40px] h-[32px]" />
                         </div>
                         <ul className="hidden lg:flex space-x-10 font-bold">
-                            <li><a href="/#wep" className="text-black hover:border-b-4 hover:border-b-black capitalize">WeP c’est quoi ?</a></li>
-                            <li><a href="/#fonctions" className={`text-black hover:border-b-4 border-b-black capitalize`}>Nos Fonctionnalités</a></li>
-                            <li><a href="/#apropos" className="text-black hidden hover:border-b-4 hover:border-b-black capitalize">à propos</a></li>
-                            <li><a href="/#faq" className="text-black hover:border-b-4 hover:border-b-black">FAQ</a></li>
+                            <li>
+                                <a
+                                    href="/#wep"
+                                    className={`text-black ${visibilityState.wepVisible && "border-b-4"} hover:border-b-4 hover:border-b-black ${visibilityState.wepVisible && "border-b-black"} capitalize`}>
+                                    WeP c’est quoi ?
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    href="/#fonctions"
+                                    className={`text-black hover:border-b-4 border-b-black capitalize ${visibilityState.fonctionalityVisible && "border-b-4"} ${visibilityState.fonctionalityVisible && "border-b-black"} `}>
+                                    Nos Fonctionnalités
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    href="/#apropos"
+                                    className="text-black hidden hover:border-b-4 hover:border-b-black capitalize">
+                                    à propos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    href="/#faq"
+                                    className={`text-black hover:border-b-4 hover:border-b-black ${visibilityState.faqVisible && " border-b-4"} ${visibilityState.faqVisible && "border-b-black"}`}>
+                                    FAQ
+                                </a>
+                            </li>
+
                         </ul>
                         <div className="block text-center lg:hidden">
                             <button onClick={toggleMenu} className="text-black block p-1 rounded-sm text-center bg-gray-400">
@@ -40,18 +70,46 @@ export default function Menus({ menu1 }) {
                         </div>
                     </nav>
                 </div>
-            </div>
+            </div >
             {isOpen && (<div className='bg-c1 slide-down lg:hidden'>
                 <div className='bg-c1 w-[80%] mx-auto pt-3'>
                     <ul className="flex flex-col space-y-2 py-4 px-1 border-t-2 border-t-black w-[97%] mx-auto font-bold">
-                        <li><a href="/#wep" className="text-black hover:border-b-4 hover:border-b-black capitalize">WeP c’est quoi ?</a></li>
-                        <li><a href="/#fonctions" className="text-black hover:border-b-4 hover:border-b-black capitalize">Nos Fonctionnalités</a></li>
-                        <li><a href="/#apropos" className="text-black hidden hover:border-b-4 hover:border-b-black capitalize">à propos</a></li>
-                        <li><a href="/#faq" className="text-black hover:border-b-4 hover:border-b-black">FAQ</a></li>
+                        <li>
+                            <a
+                                href="/#wep"
+                                className={`text-black ${visibilityState.wepVisible && "border-b-4"} hover:border-b-4 hover:border-b-black ${visibilityState.wepVisible && "border-b-black"} capitalize`}>
+                                WeP c’est quoi ?
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="/#fonctions"
+                                className={`text-black hover:border-b-4 border-b-black capitalize ${visibilityState.fonctionalityVisible && "border-b-4"} ${visibilityState.fonctionalityVisible && "border-b-black"} `}>
+                                Nos Fonctionnalités
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="/#apropos"
+                                className="text-black hidden hover:border-b-4 hover:border-b-black capitalize">
+                                à propos
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="/#faq"
+                                className={`text-black hover:border-b-4 hover:border-b-black ${visibilityState.faqVisible && " border-b-4"} ${visibilityState.faqVisible && "border-b-black"}`}>
+                                FAQ
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
-            )}
+            )
+            }
         </>
     );
 }
