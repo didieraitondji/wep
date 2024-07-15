@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ThreeDots } from 'react-loader-spinner';
 
 
 export default function ConnexionEtudiant() {
@@ -24,19 +25,14 @@ export default function ConnexionEtudiant() {
         }
     }, [navigate]);
 
-
     const currentYear = new Date().getFullYear();
-
+    const [onProgress, setOnProgress] = useState(false);
     const [error, setError] = useState('');
     const [isError, setIsError] = useState(false);
     const [isWhite, setIsWhite] = useState(true);
-
-
     const [isText, setIsText] = useState(false);
-
     const [isMail, setIsMail] = useState(false);
     const [mailvide, setMailVide] = useState(true);
-
     const [isPasse, setIsPasse] = useState(false);
     const [passeVide, setPasseVide] = useState(true);
 
@@ -109,6 +105,7 @@ export default function ConnexionEtudiant() {
         };
 
         if (isMail && isPasse) {
+            setOnProgress(true);
             fetch('http://wep-api.com/', {
                 method: 'POST',
                 headers: {
@@ -137,18 +134,21 @@ export default function ConnexionEtudiant() {
                             setError("Aucun étudiant ne correspond à ces données ! \n Veuillez réessayer.");
                             setIsError(true);
                             setIsWhite(true);
+                            setOnProgress(false);
                         }
 
                     } catch (error) {
                         setError('Response was not valid JSON : (' + error + ').');
                         setIsError(true);
                         setIsWhite(true);
+                        setOnProgress(false);
                     }
                 })
                 .catch(error => {
                     setError("Une erreur s'est produite.Veuillez réessayer : (" + error + ").");
                     setIsError(true);
                     setIsWhite(true);
+                    setOnProgress(false);
                 });
         }
     };
@@ -268,8 +268,10 @@ export default function ConnexionEtudiant() {
 
                         <div className="flex max-sm:flex-col items-center justify-between flex-wrap">
                             <button
+                                disabled={!isMail || !isPasse}
                                 type="submit"
-                                className="px-4 py-2 bg-c1 font-semibold rounded-md shadow-sm hover:bg-c1 hover:text-c3 hover:px-3 max-sm:w-full max-sm:mb-5 text-white"
+                                className={`px-4 py-2 bg-c1 font-semibold rounded-md shadow-sm max-sm:w-full max-sm:mb-5 text-c3 ${(!isMail || !isPasse) ? 'opacity-75' : 'hover:font-bold hover:px-3'
+                                    }`}
                             >
                                 Se connecter
                             </button>
@@ -293,6 +295,13 @@ export default function ConnexionEtudiant() {
                 isError && isWhite && (
                     <div id="contenu" className='bg-c2 px-8 py-5 rounded-md slide-down min-h-[100px] max-w-[350px] mt-[-60vh] float-end mr-[40%] text-center text-c3 font-bold font-poppins'>
                         {error}
+                    </div>
+                )
+            }
+            {
+                onProgress && (
+                    <div id="blockError" onClick={handleError} className='fixed top-0 left-0 right-0 bottom-0 bg-[#00000068] w-[100%] h-[100vh] flex flex-col items-center justify-center'>
+                        <ThreeDots color='#FFCB05' />
                     </div>
                 )
             }

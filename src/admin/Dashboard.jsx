@@ -32,10 +32,15 @@ export default function DashboardAdmin() {
 
 
     return (
-        <div>
-            admin
+        <>
+            <div className=''>
 
-            <LogoutAdmin />
-        </div>
+            </div>
+            <div>
+
+
+                <LogoutAdmin />
+            </div>
+        </>
     )
 }
