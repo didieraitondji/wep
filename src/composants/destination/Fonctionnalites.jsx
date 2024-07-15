@@ -40,12 +40,12 @@ export default function Fonctionnalites() {
 
     return (
         <>
-            <div className='w-[100%] min-h-[400px] bg-c3 font-poppins scroll-smooth' id='fonctions' >
+            <div className='w-[100%] min-h-[400px] bg-c3 font-poppins scroll-smooth' id='fonctions' ref={wepRefun}>
                 <div className='h-[110px] bg-c3'></div>
                 <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center font-bold w-max mx-auto border-b-[20px] border-b-c1'>
                     <span className=' text-white'>Nos Fonctionnalités</span>
                 </h1>
-                <div className='h-[50px] bg-c3' ref={wepRefun}></div>
+                <div className='h-[50px] bg-c3'></div>
                 <div className='text-center'>
 
                     <span onClick={toggleisEnd} className={` font-bold ${!isEnd && 'bg-gray-600 text-white'} px-4 py-1 rounded-full cursor-pointer hover:bg-c1 hover:text-c3 mx-4 ${isEnd && 'bg-c1 text-c3'}`}> Disponibles </span>
