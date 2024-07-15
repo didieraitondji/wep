@@ -22,7 +22,6 @@ export default function Barniere() {
                     </span>
                 </div>
             </div>
-            <div className='h-[150px] bg-white'></div>
         </>
     )
 }

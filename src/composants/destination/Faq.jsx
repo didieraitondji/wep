@@ -36,7 +36,7 @@ export default function Faq() {
 
     return (
         <>
-            <div className='h-[110px] bg-c2'></div>
+            <div className='h-[110px] bg-c2' id='faq'></div>
             <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center font-bold w-max mx-auto border-b-[20px] border-b-c1'>
                 <span className='slide-down1'>FAQ</span>
             </h1>
@@ -61,7 +61,7 @@ export default function Faq() {
 
                             </span>
                         </div>
-                        <div className={`w-[100%] px-8 py-5 bg-c3 border border-c3 text-white text-sm text-justify leading-8 ${!isWep && 'hidden'} slide-down2`}>
+                        <div className={`w-[100%] px-8 py-5 bg-c3 border border-c3 text-white text-sm text-justify leading-8 ${!isWep && 'hidden'} slide-down1`}>
                             <span className='text-c1 font-bold'>WeP</span>, <span className='text-c1 font-bold'>We Pratice</span>, c'est une plateforme de soumission de TP pensée pour faciliter principalement la soumission des TPs aux étudiants de la L3-TiC en particulier, et la soumission pour les autre filière en générale.
                         </div>
                     </div>
