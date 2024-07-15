@@ -144,13 +144,13 @@ export default function ConnexionEnseignant() {
                         }
 
                     } catch (error) {
-                        setError('Response was not valid JSON : (', error, ').');
+                        setError('Response was not valid JSON : (' + error + ').');
                         setIsError(true);
                         setIsWhite(true);
                     }
                 })
                 .catch(error => {
-                    setError("Une erreur s'est produite.Veuillez réessayer : (", error, ").");
+                    setError("Une erreur s'est produite.Veuillez réessayer : (" + error + ").");
                     setIsError(true);
                     setIsWhite(true);
                 });
