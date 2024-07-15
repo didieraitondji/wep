@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ConnexionEtudiant() {
+    document.getElementsByTagName("title")[0].innerHTML = "Connexion | Etudiant, utilisateur WeP";
+
     const navigate = useNavigate();
 
     const keyExists = (key) => {
@@ -155,7 +157,6 @@ export default function ConnexionEtudiant() {
         setIsError(false);
         setIsWhite(false);
     }
-
 
     return (
         <>

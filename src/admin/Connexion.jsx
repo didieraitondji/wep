@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ConnexionAdmin() {
+    document.getElementsByTagName("title")[0].innerHTML = "Connexion | Admin WeP";
     const navigate = useNavigate();
 
     const keyExists = (key) => {

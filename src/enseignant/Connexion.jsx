@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ConnexionEnseignant() {
+
+    document.getElementsByTagName("title")[0].innerHTML = "Connexion | Enseingnant, utilisateur WeP";
+
     const navigate = useNavigate();
 
     const keyExists = (key) => {
