@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TopBarAdmin({ text, prenom }) {
+export default function TopBarEnseignant({ text, prenom }) {
     const dateObject = new Date();
 
     return (
@@ -19,7 +19,7 @@ export default function TopBarAdmin({ text, prenom }) {
                         </svg>
                     </span>
                     <span className='pl-3'>
-                        Administrateur {prenom}
+                        Enseignant, &nbsp; {prenom}
                     </span>
                 </div>
             </div>

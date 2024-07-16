@@ -5,6 +5,9 @@ import TopBarAdmin from '../composants/admin/TopBar';
 
 export default function DashboardAdmin() {
     document.getElementsByTagName("title")[0].innerHTML = "Tableau de bord | Admin WeP";
+    // récupération des données utilisateur
+    let userData = JSON.parse(localStorage.getItem("userData")).data;
+
     const navigate = useNavigate();
 
     const keyExists = (key) => {
@@ -29,9 +32,6 @@ export default function DashboardAdmin() {
             navigate('/');
         }
     }, [navigate]);
-
-    // récupération des données utilisateur
-    let userData = JSON.parse(localStorage.getItem("userData")).data;
 
     return (
         <>
