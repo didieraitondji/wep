@@ -23,10 +23,10 @@ export default function Footer() {
                         </div>
                         <div className='max-md:w-[100%] pb-10 border-b mb-10 md:mb-0 md:border-b-0 border-b-gray-600 max-lg:w-[50%] lg:w-3/12 max-lg:px-4'>
                             <h3 className='text-c1 font-bold uppercase mt-3'>Liens rapides</h3>
-                            <h6 className='px-2 pt-4 font-semibold'><a href="" className='text-white text-sm capitalize hover:text-c1'>WeP c'est quoi ?</a></h6>
-                            <h6 className='px-2 pt-4 font-semibold'><a href="" className='text-white text-sm capitalize hover:text-c1'>Nos fonctionnalités</a></h6>
-                            <h6 className='px-2 pt-4 font-semibold'><a href="" className='text-white text-sm capitalize hover:text-c1'>à propos</a></h6>
-                            <h6 className='px-2 pt-4 font-semibold'><a href="" className='text-white text-sm capitalize hover:text-c1'>FAQ</a></h6>
+                            <h6 className='px-2 pt-4 font-semibold'><a href="/#wep" className='text-white text-sm capitalize hover:text-c1'>WeP c'est quoi ?</a></h6>
+                            <h6 className='px-2 pt-4 font-semibold'><a href="/#fonctions" className='text-white text-sm capitalize hover:text-c1'>Nos fonctionnalités</a></h6>
+                            <h6 className='px-2 pt-4 hidden font-semibold'><a href="/#apropos" className='text-white text-sm capitalize hover:text-c1'>à propos</a></h6>
+                            <h6 className='px-2 pt-4 font-semibold'><a href="/#faq" className='text-white text-sm capitalize hover:text-c1'>FAQ</a></h6>
 
                         </div>
                         <div className='max-lg:px-4 max-md:w-[100%] max-lg:w-[50%] lg:w-3/12'>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThreeDots } from 'react-loader-spinner';
+import Home from '../composants/destination/Home';
 
 
 export default function ConnexionEnseignant() {
@@ -171,6 +172,7 @@ export default function ConnexionEnseignant() {
 
     return (
         <>
+            <Home />
             <div className="flex flex-row min-h-[100vh] font-poppins text-center bg-gray-300">
                 <div className="max-md:hidden md:w-[40%] bg-c1 min-h-[100%] flex flex-col p-5 items-center pt-[30px] justify-center overflow-auto">
                     <div className="text-center max-lg:mb-[50px] lg:mb-[100px]">

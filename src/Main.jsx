@@ -11,6 +11,9 @@ import DashboardEnseignant from "./enseignant/Dashboard";
 import ConnexionAdmin from "./admin/Connexion";
 import DashboardAdmin from "./admin/Dashboard";
 import NotFound from "./NotFound";
+import TpsAdmin from "./admin/Tps";
+import TravauxAdmin from "./admin/Travaux";
+import Utilisateurs from "./admin/Users";
 
 
 const Root = () => {
@@ -25,6 +28,9 @@ const Root = () => {
                 <Route exact path="/enseignant/" element={<DashboardEnseignant />} />
                 <Route exact path="/admin/" element={<DashboardAdmin />} />
                 <Route exact path="/admin/dashboard/" element={<DashboardAdmin />} />
+                <Route exact path="/admin/tps/" element={<TpsAdmin />} />
+                <Route exact path="/admin/travaux/" element={<TravauxAdmin />} />
+                <Route exact path="/admin/users/" element={<Utilisateurs />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
