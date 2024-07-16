@@ -19,7 +19,7 @@ export default function TopBarEtudiant({ text, prenom }) {
                         </svg>
                     </span>
                     <span className='pl-3'>
-                        Enseignant, &nbsp; {prenom}
+                        Etudiant, &nbsp; {prenom}
                     </span>
                 </div>
             </div>
