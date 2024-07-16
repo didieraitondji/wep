@@ -24,6 +24,7 @@ const Root = () => {
                 <Route exact path="/etudiant/" element={<DashboardEtudiant />} />
                 <Route exact path="/enseignant/" element={<DashboardEnseignant />} />
                 <Route exact path="/admin/" element={<DashboardAdmin />} />
+                <Route exact path="/admin/dashboard/" element={<DashboardAdmin />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

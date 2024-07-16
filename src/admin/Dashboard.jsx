@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import LogoutAdmin from '../composants/admin/Logout'
 import { useNavigate } from 'react-router-dom';
+import MenuAdmin from '../composants/admin/Menu';
+import TopBarAdmin from '../composants/admin/TopBar';
 
 export default function DashboardAdmin() {
-
+    document.getElementsByTagName("title")[0].innerHTML = "Tableau de bord | Admin WeP";
     const navigate = useNavigate();
 
     const keyExists = (key) => {
@@ -29,17 +30,21 @@ export default function DashboardAdmin() {
         }
     }, [navigate]);
 
-
+    // récupération des données utilisateur
+    let userData = JSON.parse(localStorage.getItem("userData")).data;
 
     return (
         <>
-            <div className=''>
+            <div className='font-poppins'>
+                <div className='bg-c3 fixed left-0 top-0 bottom-0 w-[80px] px-2 py-2'>
+                    <MenuAdmin page={"accueil"} />
+                </div>
+                <div className='bg-c1 fixed left-[80px] right-0 top-0 h-[54px]'>
+                    <TopBarAdmin text={"Tableau de bord"} prenom={userData.firstName} />
+                </div>
+                <div className='fixed top-[54px] left-[80px] bottom-0 right-0 overflow-auto px-5 py-3'>
 
-            </div>
-            <div>
-
-
-                <LogoutAdmin />
+                </div>
             </div>
         </>
     )
