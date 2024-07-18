@@ -6,34 +6,32 @@ import TopBarAdmin from '../composants/admin/TopBar';
 export default function TravauxAdmin() {
 
     document.getElementsByTagName("title")[0].innerHTML = "Les Soumissions des Etudiants | Admin WeP";
-    // récupération des données utilisateur
-    let userData = JSON.parse(localStorage.getItem("userData")).data;
 
     const navigate = useNavigate();
+    const [nav, setNav] = useState(false);
+    const [userData, setUserData] = useState("");
 
     const keyExists = (key) => {
         return localStorage.getItem(key) !== null;
     };
 
     useEffect(() => {
-        if (keyExists("userData")) {
+        if (keyExists("userData") && JSON.parse(localStorage.getItem("userData")).type === "enseignant") {
+            navigate('/enseignant/');
+        }
+        else if (keyExists("userData") && JSON.parse(localStorage.getItem("userData")).type === "etudiant") {
+            navigate('/etudiant/');
+        }
+        else if (keyExists("userData") && JSON.parse(localStorage.getItem("userData")).type === "admin") {
+            //navigate('/admin/');
             const data = JSON.parse(localStorage.getItem("userData"));
-            if (data.type === "enseignant") {
-                navigate('/enseignant/');
-            } else if (data.type === "etudiant") {
-                navigate('/etudiant/');
-            }
-            else {
-                if (data.type !== "admin") {
-                    navigate('/');
-                }
-            }
+            setNav(true);
+            setUserData(JSON.parse(localStorage.getItem("userData")).data);
         }
         else {
             navigate('/');
         }
-    }, [navigate]);
-
+    }, [navigate, setNav, setNav]);
 
     return (
         <>
