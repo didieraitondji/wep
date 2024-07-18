@@ -10,7 +10,7 @@ export default function Home() {
     }
 
     return (
-        <div className='fixed top-0 left-0 w-[70px] h-[50px] flex flex-row items-center justify-center'>
+        <div className='fixed top-0 left-0 w-[70px] h-[50px] flex flex-row items-center justify-center z-50'>
             <span onClick={handleBack} className='slide-down1 font-bold hover:text-white' title="retour à l'Accueil">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left cursor-pointer" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
