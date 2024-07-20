@@ -1,5 +1,80 @@
 <?php
 
+require("./vendor/autoload.php");
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+$secretKey = "chancelle@didier@eliel-2024";
+
+// fonction pour créer un token
+function generateJWT($userId, $secretKey)
+{
+    $issuedAt = time();
+    $expirationTime = $issuedAt + 3600;  // jwt valide pour 1 heure
+    $payload = array(
+        'iat' => $issuedAt,
+        'exp' => $expirationTime,
+        'id' => $userId
+    );
+
+    $jwt = JWT::encode($payload, $secretKey, 'HS256');
+    return $jwt;
+}
+
+// fonction pour vérifier un token
+/* function verifyJWT($jwt, $secretKey)
+{
+    try {
+        $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
+        return (array) $decoded;
+    } catch (Exception $e) {
+        return false;
+    }
+} */
+
+function verifyJWT()
+{
+    global $secretKey;
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+    if ($authHeader) {
+        list($jwt) = sscanf($authHeader, 'Bearer %s');
+
+        if ($jwt) {
+            try {
+
+                $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
+
+                // Décoder le JWT retourne un objet, le convertir en tableau
+                $decodedArray = (array) $decoded;
+
+                // Vérifier si l'ID existe dans les données décodées
+                if (isset($decodedArray['id'])) {
+                    return $decodedArray['id'];
+                } else {
+                    http_response_code(400);
+                    echo json_encode(["message" => "ID non trouvé dans le token"]);
+                    exit;
+                }
+            } catch (Exception $e) {
+                http_response_code(401);
+                echo json_encode(["message" => "Token invalide"]);
+                exit;
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(["message" => "Token manquant"]);
+            exit;
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode(["message" => "Authorization header manquant"]);
+        exit;
+    }
+}
+
+
+
 // quelques fonctions
 
 function connectToDB()
@@ -164,8 +239,10 @@ class Enseignant extends Utilisateur
 
         // Vérifier si l'étudiant existe et vérifier le mot de passe
         if ($enseignant && password_verify($motDePasse, $enseignant['motDePasse'])) {
+            global $secretKey;
+            $jwt = generateJWT($enseignant["id"], $secretKey);
             header('Content-Type: application/json');
-            echo json_encode(["code" => 1, "type" => "enseignant", "data" => $enseignant]);
+            echo json_encode(["code" => 1, "type" => "enseignant", "data" => $enseignant, "token" => $jwt]);
         } else {
             header('Content-Type: application/json');
             echo json_encode(["code" => 0, "type" => "enseignant", "message" => 'Invalid email or password']);
@@ -277,8 +354,10 @@ class Etudiant extends Utilisateur
 
         // Vérifier si l'étudiant existe et vérifier le mot de passe
         if ($etudiant && password_verify($motDePasse, $etudiant['motDePasse'])) {
+            global $secretKey;
+            $jwt = generateJWT($etudiant["id"], $secretKey);
             header('Content-Type: application/json');
-            echo json_encode(["code" => 1, "type" => "etudiant", "data" => $etudiant]);
+            echo json_encode(["code" => 1, "type" => "etudiant", "data" => $etudiant, "token" => $jwt]);
         } else {
             header('Content-Type: application/json');
             echo json_encode(["code" => 0, "type" => "etudiant", "message" => 'Invalid email or password']);
@@ -378,8 +457,10 @@ class Admin extends Utilisateur
 
         // Vérifier si l'étudiant existe et vérifier le mot de passe
         if ($admin && password_verify($motDePasse, $admin['motDePasse'])) {
+            global $secretKey;
+            $jwt = generateJWT($admin["id"], $secretKey);
             header('Content-Type: application/json');
-            echo json_encode(["code" => 1, "type" => "admin", "data" => $admin]);
+            echo json_encode(["code" => 1, "type" => "admin", "data" => $admin, "token" => $jwt]);
         } else {
             header('Content-Type: application/json');
             echo json_encode(["code" => 0, "type" => "admin", "message" => 'Invalid email or password']);

@@ -8,6 +8,7 @@ export default function DashboardEnseignant() {
     const navigate = useNavigate();
     const [nav, setNav] = useState(false);
     const [userData, setUserData] = useState("");
+    const [token, setToken] = useState("");
 
     const keyExists = (key) => {
         return localStorage.getItem(key) !== null;
@@ -17,8 +18,9 @@ export default function DashboardEnseignant() {
         if (keyExists("userData") && JSON.parse(localStorage.getItem("userData")).type === "enseignant") {
             //navigate('/enseignant/');
             const data = JSON.parse(localStorage.getItem("userData"));
+            setToken(data.token);
             setNav(true);
-            setUserData(JSON.parse(localStorage.getItem("userData")).data);
+            setUserData(data.data);
         }
         else if (keyExists("userData") && JSON.parse(localStorage.getItem("userData")).type === "etudiant") {
             navigate('/etudiant/');
