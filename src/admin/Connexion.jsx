@@ -204,7 +204,8 @@ export default function ConnexionAdmin() {
                                     </span>
                                     <span className="text-[0.7em]">Email valide</span>
                                 </div>
-                            )}
+                            )
+                        }
 
                         {!isMail && !mailvide && (
                             <div className="flex flex-row items-center text-red-600">
@@ -215,7 +216,8 @@ export default function ConnexionAdmin() {
                                 </span>
                                 <span className="text-[0.7em]">Email invalide</span>
                             </div>
-                        )}
+                        )
+                        }
                         <br />
 
                         <label htmlFor="motDePasse">Mot de Passe</label>

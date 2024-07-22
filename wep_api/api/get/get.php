@@ -33,7 +33,23 @@ switch (strtolower($url[0])) {
         }
         break;
     case 'etudiants':
-        $etudiant->toutLesEtudiants();
+        if (empty($url[1])) {
+            $etudiant->toutLesEtudiants();
+        } else {
+            switch (strtolower($url[1])) {
+                case 'filiere':
+                    $etudiant->toutLesEtudiantsFiliere($url[2]);
+                    break;
+                default:
+                    $jsonData = json_encode(array(
+                        "status" => "Erreur",
+                        "message" => "Identifiant invalide",
+                        "code" => 0
+                    ));
+                    echo $jsonData;
+                    break;
+            }
+        }
         break;
     case 'etudiant':
         if (!empty($url[1])) {
@@ -158,6 +174,47 @@ switch (strtolower($url[0])) {
     case 'departement':
         if (!empty($url[1])) {
             $departement->unDepartement($url[1]);
+        } else {
+            $jsonData = json_encode(array(
+                "status" => "Erreur",
+                "message" => "Identifiant invalide",
+                "code" => 1
+            ));
+            echo $jsonData;
+        }
+        break;
+    case 'total':
+        if (!empty($url[1])) {
+            switch (strtolower($url[1])) {
+                case 'enseignants':
+                    $enseignant->totalEnseignant();
+                    break;
+                case 'etudiants':
+                    $etudiant->totalEtudiant();
+                    break;
+                case 'filieres':
+                    $filiere->totalFiliere();
+                    break;
+                case 'ue':
+                    $ue->totalUe();
+                    break;
+                case 'tp':
+                    $tp->totalTP();
+                    break;
+                case 'soumissions':
+                    $travail->totalSoumission();
+                    break;
+                case 'ecu':
+                    $ecu->totalEcu();
+                    break;
+                case 'departement':
+                    $departement->totalDepartement();
+                    break;
+
+                default:
+                    echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
+                    break;
+            }
         } else {
             $jsonData = json_encode(array(
                 "status" => "Erreur",

@@ -162,7 +162,7 @@ class Enseignant extends Utilisateur
     public function toutLesEnseignants()
     {
         $pdo = connectToDB();
-        $sql = 'SELECT * FROM enseignant';
+        $sql = 'SELECT E.id, E.firstName, E.surName, E.email, E.telephone, D.name AS dname FROM enseignant E, departement D WHERE E.id_Departement = D.id ORDER BY E.id DESC';
         $req = $pdo->prepare($sql);
         $req->execute();
         $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -188,8 +188,8 @@ class Enseignant extends Utilisateur
     {
         $pdo = connectToDB();
 
-        $enseignantQuery = "INSERT INTO enseignant (firstName, surName, email, motDePasse, telephone, id_departement, photoPath, id_Admin) 
-                        VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_departement, :photoPath, :id_Admin)";
+        $enseignantQuery = "INSERT INTO enseignant (firstName, surName, email, motDePasse, telephone, id_Departement, photoPath, id_Admin) 
+                        VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_Departement, :photoPath, :id_Admin)";
         $stmt = $pdo->prepare($enseignantQuery);
 
         try {
@@ -200,7 +200,7 @@ class Enseignant extends Utilisateur
                 ':email' => $this->email,
                 ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
                 ':telephone' => $this->telephone,
-                ':id_departement' => $this->departement,
+                ':id_Departement' => $this->departement,
                 ':photoPath' => $this->photoPath,
                 ':id_Admin' => $id
             ]);
@@ -250,6 +250,22 @@ class Enseignant extends Utilisateur
 
         $pdo = null; // Fermer la connexion
     }
+
+    public function totalEnseignant()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM enseignant';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $enseignant = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($enseignant), "type" => "enseignant (s) "]);
+        $pdo = null; // Fermer la connexion
+    }
 }
 
 class Etudiant extends Utilisateur
@@ -272,7 +288,7 @@ class Etudiant extends Utilisateur
     {
         $pdo = connectToDB();
 
-        $sql = 'SELECT * FROM etudiant';
+        $sql = 'SELECT E.id, E.firstName, E.surName, E.email, E.telephone, F.name AS fname FROM etudiant E, filiere F WHERE E.id_filiere = F.id ORDER BY E.id DESC';
         $req = $pdo->prepare($sql);
         $req->execute();
         $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -283,6 +299,37 @@ class Etudiant extends Utilisateur
         echo $jsonData;
         $pdo = null;
     }
+
+    public function toutLesEtudiantsFiliere(int $id = null)
+    {
+        try {
+            $pdo = connectToDB();
+
+            if ($id === null) {
+                throw new Exception('L\'ID de la filière ne peut pas être nul.');
+            }
+
+            $sql = 'SELECT E.id, E.firstName, E.surName, E.email, E.telephone, F.name as fname FROM etudiant E, filiere F WHERE E.id_filiere = :id_d AND F.id=:id_d ORDER BY E.surName DESC';
+            $req = $pdo->prepare($sql);
+            $req->execute([
+                ':id_d' => $id,
+            ]);
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
+
 
     public function unEtudiant($id)
     {
@@ -363,6 +410,22 @@ class Etudiant extends Utilisateur
             echo json_encode(["code" => 0, "type" => "etudiant", "message" => 'Invalid email or password']);
         }
 
+        $pdo = null; // Fermer la connexion
+    }
+
+    public function totalEtudiant()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM etudiant';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $etudiant = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($etudiant), "type" => "etudiant (s) "]);
         $pdo = null; // Fermer la connexion
     }
 }
@@ -470,25 +533,6 @@ class Admin extends Utilisateur
     }
 }
 
-/*
-try {
-
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
-        } catch (PDOException $e) {
-            $response = array(
-                "status" => "Erreur !",
-                "message" => "Echec d'enregistrement de données !",
-                "code" => 0,
-                "pdoMessage" => $e->getMessage(),
-                "pdoCode" => $e->getCode()
-            );
-        } 
- */
-
 class TravailPratique
 {
     protected $title;
@@ -570,6 +614,22 @@ class TravailPratique
 
         $pdo = null;
         echo json_encode($response);
+    }
+
+    public function totalTP()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM travailpratique';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $tp = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($tp), "type" => " TP "]);
+        $pdo = null; // Fermer la connexion
     }
 }
 
@@ -653,6 +713,22 @@ class Travail
         $pdo = null;
         echo json_encode($response);
     }
+
+    public function totalSoumission()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM travail';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $travail = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($travail), "type" => "Soumission(s)"]);
+        $pdo = null; // Fermer la connexion
+    }
 }
 
 class Filiere
@@ -725,6 +801,21 @@ class Filiere
 
         $pdo = null;
         echo json_encode($response);
+    }
+    public function totalFiliere()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM filiere';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $filiere = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($filiere), "type" => "Filière (s)"]);
+        $pdo = null; // Fermer la connexion
     }
 }
 
@@ -805,6 +896,22 @@ class Ue
 
         $pdo = null;
         echo json_encode($response);
+    }
+
+    public function totalUe()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM ue';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $ue = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($ue), "type" => " UE "]);
+        $pdo = null; // Fermer la connexion
     }
 }
 
@@ -892,6 +999,23 @@ class Ecu
         $pdo = null;
         echo json_encode($response);
     }
+
+
+    public function totalEcu()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM ecu';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $donnees = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($donnees), "type" => " Ecu "]);
+        $pdo = null;
+    }
 }
 
 class Departement
@@ -963,6 +1087,21 @@ class Departement
 
         $pdo = null;
         echo json_encode($response);
+    }
+    public function totalDepartement()
+    {
+        $pdo = connectToDB();
+
+        // Préparer la requête pour récupérer l'étudiant par email
+        $sql = 'SELECT * FROM departement';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+
+        // Récupérer le résultat
+        $donnees = $req->fetchAll(PDO::FETCH_ASSOC);
+        header('Content-Type: application/json');
+        echo json_encode(["total" => count($donnees), "type" => "département(s) "]);
+        $pdo = null;
     }
 }
 

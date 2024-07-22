@@ -14,6 +14,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 
 // operations sur les routes
+// gestion de la connexion
 if (empty($url[0])) {
     switch ($data['type']) {
         case 'enseignant':
@@ -36,10 +37,12 @@ if (empty($url[0])) {
 
     switch (strtolower($url[0])) {
         case 'enseignant':
-
+            $en = new Enseignant($data['departement'], $data['firstName'], $data['surName'], $data['email'], $data['motDePasse'], null, null, $data['telephone']);
+            $en->addEnseignant();
             break;
         case 'etudiant':
-
+            $en = new Etudiant($data['matricule'], $data['firstName'], $data['surName'], $data['email'], $data['motDePasse'], null, null, $data['telephone'], $data['filiere']);
+            $en->addEtudiant();
             break;
         case 'message':
 
@@ -48,13 +51,15 @@ if (empty($url[0])) {
 
             break;
         case 'ue':
-
+            $ue = new Ue($data['name']);
+            $ue->addUe();
             break;
         case 'filiere':
-
+            $filiere = new Filiere($data['name']);
+            $filiere->addFiliere();
             break;
         case 'ecu':
-
+            $ecu = new Ecu();
             break;
         case 'tp':
             $tp = new TravailPratique();

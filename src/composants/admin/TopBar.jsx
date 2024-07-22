@@ -5,7 +5,7 @@ export default function TopBarAdmin({ text, prenom }) {
 
     return (
         <>
-            <div className='w-[100%] h-[100%] grid grid-cols-[1fr_1fr_1fr] font-bold pr-10 text-sm'>
+            <div className='w-[100%] h-[100%] grid grid-cols-[1fr_1fr_1fr] font-bold pr-10 text-sm shadow-lg border-b border-b-c2'>
                 <div className='flex flex-col justify-center px-3'>
                     {">>"} &nbsp; {text}
                 </div>
