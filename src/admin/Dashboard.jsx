@@ -83,10 +83,10 @@ export default function DashboardAdmin() {
                         <div className='mb-2 md:col-span-2 bg-c3 text-center font-bold py-4 px-3 text-c2'>
                             Filière & UE
                         </div>
-                        <div className='mb-6 mr-1'>
+                        <div className='mb-6 mr-1 max-md:col-span-1 max-xl:col-span-2'>
                             <AddUeFiliere filieres={filieres} />
                         </div>
-                        <div className='mb-6 ml-1'>
+                        <div className='mb-6 ml-1 max-md:col-span-1 max-xl:col-span-2'>
                             <MovUeFiliere filieres={filieres} />
                         </div>
                     </div>
