@@ -39,7 +39,7 @@ export default function Filiere() {
 
     return (
         <>
-            <div className='p-3 rounded-lg bg-c5 grid grid-rows-[1fr_auto]'>
+            <div className='p-3 rounded-lg h-full bg-c5 grid grid-rows-[1fr_auto]'>
                 <div>
                     <div className='p-2'>
                         <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-xl'>
