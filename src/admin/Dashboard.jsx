@@ -42,7 +42,7 @@ export default function DashboardAdmin() {
                 <div className='bg-c1 fixed left-[80px] right-0 top-0 h-[54px]'>
                     <TopBarAdmin text={"Tableau de bord"} prenom={userData.firstName} />
                 </div>
-                <div className='fixed top-[54px] left-[80px] bottom-0 right-0 overflow-auto px-5 py-3'>
+                <div className='fixed top-[54px] left-[80px] bottom-0 right-0 overflow-auto px-5 py-5'>
                     {
                         // quelques chiffres
                     }
@@ -66,11 +66,11 @@ export default function DashboardAdmin() {
                     {
                         // block pour les formulaire d'ajout de filieres, ue, ecu et départements
                     }
-                    <div className='py-5'>
-                        <div className='w-[100%] p-1 mb-5'>
+                    <div className='py-5 grid md:grid-cols-[1fr_1fr] w-full'>
+                        <div className='mb-6 mr-4'>
                             <Filiere />
                         </div>
-                        <div className='w-[100%] p-1 mb-5'>
+                        <div className='mb-6 ml-4'>
                             <Ue />
                         </div>
                     </div>

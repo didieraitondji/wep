@@ -57,15 +57,15 @@ export default function Utilisateurs() {
                 </div>
                 <div className='fixed top-[54px] left-[80px] bottom-0 right-0 overflow-auto px-5 py-3'>
 
-                    <div className='flex flex-wrap items-center bg-c3 p-3 m-5'>
-                        <div className='w-1/2 text-center '>
-                            <span onClick={handleChoiceEnseignant} className={`rounded-full px-4 py-1 hover:bg-c1 cursor-pointer font-bold ${isEnseignant ? "bg-c1" : "bg-c5"}`} > Enseignants </span>
+                    <div className='flex flex-wrap items-center mr-5 mb-0'>
+                        <div className='w-auto text-center '>
+                            <span onClick={handleChoiceEnseignant} className={`px-4 py-2 hover:bg-c1 cursor-pointer font-bold ${isEnseignant ? "bg-c5" : ""}`} > Enseignants </span>
                         </div>
-                        <div className='w-1/2 text-center '>
-                            <span onClick={handleChoiceEtudiant} className={`rounded-full px-4 py-1 font-bold hover:bg-c1 cursor-pointer ${isEtudiant ? "bg-c1" : "bg-c5"}`}>Etudiants</span>
+                        <div className='w-auto text-center '>
+                            <span onClick={handleChoiceEtudiant} className={`px-4 py-2 font-bold hover:bg-c1 cursor-pointer ${isEtudiant ? "bg-c5" : "border border-c5"}`}>Etudiants</span>
                         </div>
                     </div>
-                    <div className='m-3'>
+                    <div className='m-0 mt-1 bg-c5 pb-4 pt-3 rounded-r-xl rounded-bl-xl'>
                         {
                             // ajouter enseignant
 

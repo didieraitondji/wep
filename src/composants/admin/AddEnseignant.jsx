@@ -99,6 +99,14 @@ export default function AddEnseignant() {
         return isValide;
     }
 
+    const downloadTemplate = () => {
+        // Remplacez l'URL ci-dessous par le lien de téléchargement réel de votre template Excel
+        const link = document.createElement('a');
+        link.href = 'path/to/your/excel-template.xlsx';
+        link.download = 'template_liste_enseignants.xlsx';
+        link.click();
+    };
+
     return (
         <>
             {
@@ -126,15 +134,42 @@ export default function AddEnseignant() {
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="emailEn" className='w-[100%] lg:w-1/4'>Email :</label>
-                                    <input
-                                        type="email"
-                                        name="emailEn"
-                                        id="emailEn"
-                                        placeholder='entrer le mail*'
-                                        className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm'
-                                        required
-                                        onChange={addFormeData}
-                                    />
+                                    <div className='w-[100%] lg:w-3/4'>
+                                        <input
+                                            type="email"
+                                            name="emailEn"
+                                            id="emailEn"
+                                            placeholder='entrer le mail*'
+                                            className='w-[100%] p-2 border border-c1 rounded-sm'
+                                            required
+                                            onChange={addFormeData}
+                                            onInput={followMailEns}
+                                        />
+                                        {
+                                            isMail && (
+                                                <div className="flex flex-row items-center text-blue-600">
+                                                    <span className="pr-2 font-bold">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                        </svg>
+                                                    </span>
+                                                    <span className="text-[0.7em]">Email valide</span>
+                                                </div>
+                                            )
+                                        }
+
+                                        {!isMail && !mailvide && (
+                                            <div className="flex flex-row items-center text-red-600">
+                                                <span className="pr-2 font-bold">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                                                    </svg>
+                                                </span>
+                                                <span className="text-[0.7em]">Email invalide</span>
+                                            </div>
+                                        )
+                                        }
+                                    </div>
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="telephoneEn" className='w-[100%] lg:w-1/4'>Téléphone :</label>
@@ -156,12 +191,12 @@ export default function AddEnseignant() {
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="motDePasseEn" className='w-[100%] lg:w-1/4'>Mot de passe :</label>
-                                    <input type="text" name="motDePasseEn" id="motDePasseEnEn" value={"Enseignant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required disabled />
+                                    <input type="text" name="motDePasseEn" id="motDePasseEnEn" value={"Enseignant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required />
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
-                                    <label htmlFor="" className='w-[100%] lg:w-1/4'>Département :</label>
+                                    <label htmlFor="" className='w-[100%] lg:w-1/4'>Département :*</label>
                                     <select name="departement" id="departement" required className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' onChange={addFormeData}>
-                                        <option value=""></option>
+                                        <option value="">Choisir un département</option>
                                         {
                                             departements.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
@@ -170,7 +205,7 @@ export default function AddEnseignant() {
                                     </select>
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
-                                    <label htmlFor="" className='w-[100%] lg:w-1/4 text-c2'>d</label>
+                                    <label htmlFor="" className='w-[100%] lg:w-1/4 text-c5'>d</label>
                                     <button type="submit" className='w-[100%] lg:w-3/4 text-center bg-c1 p-2 rounded-sm hover:font-bold'>
                                         Ajouter
                                     </button>
@@ -186,23 +221,28 @@ export default function AddEnseignant() {
             }
 
             <div className='shadow-md m-5 shadow-black'>
-                <div className='bg-c3 text-c2 px-4 py-10'>
+                <div className='bg-c3 text-c2 px-4 py-5'>
                     <form>
                         <div className='flex flex-wrap items-center '>
                             <div className='w-[100%] lg:w-1/2 text-center'>
                                 Importez un fichier Excel
                             </div>
-                            <div className='w-[100%] lg:w-1/2 flex flex-wrap items-center bg-c2 p-2'>
-                                <input
-                                    type="file"
-                                    name="donneesexcel"
-                                    id="donneesexcel"
-                                    placeholder='Ajouter un fichier '
-                                    className='hidden-file-input p-2 w-1/2 bg-white text-c1'
-                                    accept=".xlsx, .xls"
-                                    onChange={handleFileChange}
-                                />
-                                <button type="submit" className='w-1/2 bg-c1 rounded-sm px-4 py-2'> Ajouter </button>
+                            <div className='w-[100%] lg:w-1/2'>
+                                <div className='flex flex-wrap items-center bg-c2 p-2'>
+                                    <input
+                                        type="file"
+                                        name="donneesexcel"
+                                        id="donneesexcel"
+                                        placeholder='Ajouter un fichier '
+                                        className='hidden-file-input p-2 w-1/2 bg-white text-c1'
+                                        accept=".xlsx, .xls"
+                                        onChange={handleFileChange}
+                                    />
+                                    <button type="submit" className='w-1/2 bg-c1 rounded-sm px-4 py-2'> Ajouter </button>
+                                </div>
+                                <div className='text-center pt-6'>
+                                    Téléchargez le template Excel <span onClick={downloadTemplate} className='text-c1 cursor-pointer' title='Télécharger le Template Excel'> ici </span> !
+                                </div>
                             </div>
                         </div>
                     </form>

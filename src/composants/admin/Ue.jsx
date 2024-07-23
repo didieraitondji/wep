@@ -34,42 +34,38 @@ export default function Ue() {
 
     return (
         <>
-            <div className='p-1 border border-c3 rounded-lg'>
-                <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-lg'>
-                    <h1 className='p-2'>
-                        Unités d'enseignement
-                    </h1>
-                    <span className='bg-c1 p-2 text-center rounded-tr-lg font-bold'>
-                        + {
-                            totalFiliere.total
-                        }
-                    </span>
-                </div>
-                <div className='border border-c1 text-c3'>
-                    <div className=' grid grid-cols-[80px_1fr_1fr] font-bold bg-c1'>
-                        <span className='text-center border border-c1 p-2'>N°</span>
-                        <span className='p-2 border border-c1'>
-                            Libellé
-                        </span>
-                        <span className='p-2 border border-c1'>
-                            Dates
+            <div className='p-5 border bg-c5 rounded-xl h-full grid grid-rows-[1fr_auto]'>
+                <div>
+                    <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-xl'>
+                        <h1 className='p-2 bg-c2 rounded-tl-xl'>
+                            Unités d'enseignement
+                        </h1>
+                        <span className='bg-c1 p-2 text-center rounded-tr-xl font-bold'>
+                            {
+                                totalFiliere.total
+                            }+
                         </span>
                     </div>
-                    {
-                        filieres.map((item, index) => (
-                            <div key={item.id} className='grid grid-cols-[80px_1fr_1fr] font-bold'>
-                                <span className='text-center border border-c1 p-2'>{index + 1}</span>
-                                <span className='p-2 border border-c1'>
-                                    {item.name}
-                                </span>
-                                <span className='p-2 border border-c1'>
-                                    {item.createdAt}
-                                </span>
-                            </div>
-                        ))
-                    }
+                    <div className='border border-c1 text-c3'>
+                        <div className=' grid grid-cols-[80px_1fr] font-bold bg-c1'>
+                            <span className='text-center border border-c1 p-2'>N°</span>
+                            <span className='p-2 border border-c1'>
+                                Libellé
+                            </span>
+                        </div>
+                        {
+                            filieres.map((item, index) => (
+                                <div key={item.id} className='grid grid-cols-[80px_1fr] font-bold'>
+                                    <span className='flex items-center text-center border border-c1 p-2'>{index + 1}</span>
+                                    <span className='flex items-center p-2 border border-c1'>
+                                        {item.name}
+                                    </span>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
-                <div className='mt-3'>
+                <div className='mt-3 relative'>
                     <div className='bg-c3 text-c2 font-bold p-2'>
                         Ajouter une UE
                     </div>

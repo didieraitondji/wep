@@ -97,6 +97,14 @@ export default function AddEtudiant() {
         return isValide;
     }
 
+    const downloadTemplate = () => {
+        // Remplacez l'URL ci-dessous par le lien de téléchargement réel de votre template Excel
+        const link = document.createElement('a');
+        link.href = 'path/to/your/excel-template.xlsx';
+        link.download = 'template_liste_etudiants.xlsx';
+        link.click();
+    };
+
     return (
         <>
             {
@@ -160,12 +168,12 @@ export default function AddEtudiant() {
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="" className='w-[100%] lg:w-1/4'>Mot de passe :</label>
-                                    <input type="text" name="motDePasse" id="motDePasseEn" value={"Etudiant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required disabled />
+                                    <input type="text" name="motDePasse" id="motDePasseEn" value={"Etudiant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required />
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="" className='w-[100%] lg:w-1/4'>Filière :</label>
                                     <select name="filiere" id="filiere" className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required onChange={addFormeDataEt} >
-                                        <option value=""></option>
+                                        <option value="">Choisir une filière</option>
                                         {
                                             filieres.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
@@ -175,7 +183,7 @@ export default function AddEtudiant() {
                                 </div>
 
                                 <div className='flex items-center mb-5 flex-wrap'>
-                                    <label htmlFor="" className='w-[100%] lg:w-1/4 text-c2'>d</label>
+                                    <label htmlFor="" className='w-[100%] lg:w-1/4 text-c5'>d</label>
                                     <button type="submit" className='w-[100%] lg:w-3/4 text-center bg-c1 p-2 rounded-sm hover:font-bold'>
                                         Ajouter
                                     </button>
@@ -197,18 +205,24 @@ export default function AddEtudiant() {
                             <div className='w-[100%] lg:w-1/2 text-center'>
                                 Importez un fichier Excel
                             </div>
-                            <div className='w-[100%] lg:w-1/2 flex flex-wrap items-center bg-c2 p-2'>
-                                <input
-                                    type="file"
-                                    name="donneesexcel"
-                                    id="donneesexcel"
-                                    placeholder='Ajouter un fichier '
-                                    className='hidden-file-input p-2 w-1/2 bg-white text-c1'
-                                    accept=".xlsx, .xls"
-                                    onChange={handleFileChange}
-                                />
-                                <button type="submit" className='w-1/2 bg-c1 rounded-sm px-4 py-2'> Ajouter </button>
+                            <div className='w-[100%] lg:w-1/2'>
+                                <div className='w-[100%] flex flex-wrap items-center bg-c2 p-2'>
+                                    <input
+                                        type="file"
+                                        name="donneesexcel"
+                                        id="donneesexcel"
+                                        placeholder='Ajouter un fichier '
+                                        className='hidden-file-input p-2 w-1/2 bg-white text-c1'
+                                        accept=".xlsx, .xls"
+                                        onChange={handleFileChange}
+                                    />
+                                    <button type="submit" className='w-1/2 bg-c1 rounded-sm px-4 py-2'> Ajouter </button>
+                                </div>
+                                <div className='text-center pt-6'>
+                                    Téléchargez le template Excel <span onClick={downloadTemplate} className='text-c1 cursor-pointer' title='Télécharger le Template Excel'> ici </span> !
+                                </div>
                             </div>
+
                         </div>
                     </form>
                 </div>
