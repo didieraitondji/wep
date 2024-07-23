@@ -10,7 +10,7 @@ export default function ListeEnseignant({ list, total }) {
                 <table className='w-[100%] border border-c1'>
                     <thead>
                         <tr className='bg-c1 text-md'>
-                            <th className="py-2 px-1 text-left">N°</th>
+                            <th className="py-2 px-1 text-center">N°</th>
                             <th className="py-2 px-1 text-left">Nom</th>
                             <th className="py-2 px-1 text-left">Prénoms</th>
                             <th className="py-2 px-1 text-left">Email</th>
@@ -22,7 +22,7 @@ export default function ListeEnseignant({ list, total }) {
                         {
                             list.map((item, index) => (
                                 <tr key={item.id} className='border-b border-b-c1 text-sm'>
-                                    <td className='py-2 px-1'>{index + 1}</td>
+                                    <td className='py-2 px-1 text-center'>{index + 1}</td>
                                     <td className='py-2 px-1'>{item.surName}</td>
                                     <td className='py-2 px-1'>{item.firstName}</td>
                                     <td className='py-2 px-1'>{item.email}</td>
@@ -32,7 +32,6 @@ export default function ListeEnseignant({ list, total }) {
                             ))
                         }
                     </tbody>
-
                 </table>
             </div>
 

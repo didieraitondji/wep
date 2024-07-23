@@ -56,8 +56,8 @@ export default function Ue() {
                         {
                             filieres.map((item, index) => (
                                 <div key={item.id} className='grid grid-cols-[80px_1fr] font-bold'>
-                                    <span className='flex items-center text-center border border-c1 p-2'>{index + 1}</span>
-                                    <span className='flex items-center p-2 border border-c1'>
+                                    <span className='flex items-center text-center bg-c2 border border-c1 p-2'>{index + 1}</span>
+                                    <span className='flex items-center bg-c2 p-2 border border-c1'>
                                         {item.name}
                                     </span>
                                 </div>

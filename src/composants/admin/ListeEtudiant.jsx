@@ -42,7 +42,7 @@ export default function ListeEtudiant({ filieres }) {
                 <table className='w-[100%] border border-c1'>
                     <thead>
                         <tr className='bg-c1 text-md'>
-                            <th className="py-2 px-1 text-left">N°</th>
+                            <th className="py-2 px-1 text-center">N°</th>
                             <th className="py-2 px-1 text-left">Nom</th>
                             <th className="py-2 px-1 text-left">Prénoms</th>
                             <th className="py-2 px-1 text-left">Email</th>
@@ -54,7 +54,7 @@ export default function ListeEtudiant({ filieres }) {
                         {
                             etudiantFiliere.map((etudiant, index) => (
                                 <tr key={etudiant.id} className='text-md'>
-                                    <td className="py-2 px-1 text-left">{index + 1}</td>
+                                    <td className="py-2 px-1 text-center">{index + 1}</td>
                                     <td className="py-2 px-1 text-left">{etudiant.surName}</td>
                                     <td className="py-2 px-1 text-left">{etudiant.firstName}</td>
                                     <td className="py-2 px-1 text-left">{etudiant.email}</td>
