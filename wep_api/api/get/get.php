@@ -113,7 +113,29 @@ switch (strtolower($url[0])) {
         break;
     case 'filiere':
         if (!empty($url[1])) {
-            $filiere->uneFiliere($url[1]);
+            if (empty($url[2])) {
+                $filiere->uneFiliere($url[1]);
+            } else {
+                switch (strtolower($url[2])) {
+                    case 'ecus':
+                        $filiere->ecusFiliere($url[1]);
+                        break;
+                    case 'ues':
+                        $filiere->uesFiliere($url[1]);
+                        break;
+                    case 'nues':
+                        $filiere->nuesFiliere($url[1]);
+                        break;
+                    default:
+                        $jsonData = json_encode(array(
+                            "status" => "Erreur",
+                            "message" => "Identifiant invalide",
+                            "code" => 1
+                        ));
+                        echo $jsonData;
+                        break;
+                }
+            }
         } else {
             $jsonData = json_encode(array(
                 "status" => "Erreur",
@@ -139,7 +161,25 @@ switch (strtolower($url[0])) {
         }
         break;
     case 'tps':
-        $tp->toutLesTPs();
+        if (empty($url[1])) {
+            $tp->toutLesTPs();
+        } else {
+            switch (strtolower($url[2])) {
+                case 'ecus':
+                    break;
+                case 'necus':
+                    break;
+                default:
+                    $jsonData = json_encode(array(
+                        "status" => "Erreur",
+                        "message" => "Identifiant invalide",
+                        "code" => 1
+                    ));
+                    echo $jsonData;
+                    break;
+            }
+        }
+
         break;
     case 'tp':
         if (!empty($url[1])) {

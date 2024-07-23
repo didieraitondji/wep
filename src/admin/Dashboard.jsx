@@ -5,6 +5,9 @@ import TopBarAdmin from '../composants/admin/TopBar';
 import CardNumber from '../composants/admin/CardNumber';
 import Filiere from '../composants/admin/Filiere';
 import Ue from '../composants/admin/Ue';
+import AddUeFiliere from '../composants/admin/AddUeFiliere';
+import MovUeFiliere from '../composants/admin/MovUeFiliere';
+import { loadGetData } from '../composants/Fonctions';
 
 export default function DashboardAdmin() {
     document.getElementsByTagName("title")[0].innerHTML = "Tableau de bord | Admin WeP";
@@ -12,6 +15,7 @@ export default function DashboardAdmin() {
     const navigate = useNavigate();
     const [nav, setNav] = useState(false);
     const [userData, setUserData] = useState("");
+    const [filieres, setFilieres] = useState([]);
 
     const keyExists = (key) => {
         return localStorage.getItem(key) !== null;
@@ -34,6 +38,8 @@ export default function DashboardAdmin() {
         else {
             navigate('/');
         }
+
+        loadGetData('filieres', setFilieres);
     }, [navigate, setNav, setNav]);
 
     return (
@@ -46,13 +52,13 @@ export default function DashboardAdmin() {
                     {
                         // quelques chiffres
                     }
-                    <div className='px-5 py-5 bg-c5 rounded-lg shadow-md'>
+                    <div className='px-5 py-5 bg-c5  shadow-md'>
                         <h1 className='text-lg font-bold pb-2 border-b border-b-c3'>We Pratice, c'est : </h1>
-                        <div className='mt-4 p-3 grid sm:grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr]'>
+                        <div className='mt-4 pt-3 grid sm:grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr]'>
                             <div className='px-2'>
                                 <CardNumber url={'http://wep-api.com/total/enseignants'} forme={3} />
                             </div>
-                            <div className='px-2'>
+                            <div className='px-2 '>
                                 <CardNumber url={'http://wep-api.com/total/etudiants'} forme={1} />
                             </div>
                             <div className='px-2'>
@@ -72,6 +78,16 @@ export default function DashboardAdmin() {
                         </div>
                         <div className='mb-6 ml-4'>
                             <Ue />
+                        </div>
+
+                        <div className='mb-2 md:col-span-2 bg-c3 text-center font-bold py-4 px-3 text-c2'>
+                            Filière & UE
+                        </div>
+                        <div className='mb-6 mr-1'>
+                            <AddUeFiliere filieres={filieres} />
+                        </div>
+                        <div className='mb-6 ml-1'>
+                            <MovUeFiliere filieres={filieres} />
                         </div>
                     </div>
                 </div>

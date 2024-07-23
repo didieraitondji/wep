@@ -36,9 +36,8 @@ export const fetchPostData = async (type, donnees) => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        console.log(response.text());
-        //const data = await response.json();
-        //return data;
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error('Erreur lors de la récupération des données fetchPost', error);
         throw error;
@@ -56,6 +55,46 @@ export const loadPostData = async (type, data, setData, callback) => {
     }
 };
 
+
+// fonctions pour supprimer des doonnées
+export const fetchDeleteData = async (type, donnees) => {
+    let url = 'http://wep-api.com/' + type;
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(donnees)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        //console.log(response.text());
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Erreur lors de la suppression des données fetchDelete', error);
+        throw error;
+    }
+};
+
+export const loadDeleteData = async (type, data, setData, callback) => {
+    try {
+        const donnees = await fetchDeleteData(type, data);
+        setData(true);
+        callback(data);
+    } catch (error) {
+        console.error('Erreur lors de la suppression des données loadDelete', error);
+        setData(false);
+    }
+};
+
+
+// fonction pour stopper la propagation d'événement
 export const childCliked = (e) => {
     e.stopPropagation();
 }

@@ -58,6 +58,10 @@ if (empty($url[0])) {
             $filiere = new Filiere($data['name']);
             $filiere->addFiliere();
             break;
+        case 'uefiliere':
+            $uef = new uefiliere($data['id_Ue'], $data['id_filiere']);
+            $uef->addUeFiliere();
+            break;
         case 'ecu':
             $ecu = new Ecu();
             break;

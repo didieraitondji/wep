@@ -10,7 +10,6 @@ export default function ListeEtudiant({ filieres }) {
         let valeur = document.getElementById("filierespEt").value;
         if (valeur !== "") {
             let chemin = "etudiants/filiere/" + valeur;
-            console.log(chemin);
             loadGetData(chemin, setEtudiantFiliere);
         }
     };

@@ -35,14 +35,13 @@ function handlePost($url)
     include_once("./api/post/post.php");
 }
 
-function handlePut($request)
+function handlePut($url)
 {
 
     echo json_encode(["message" => "Requête PUT"]);
 }
 
-function handleDelete($request)
+function handleDelete($url)
 {
-
-    echo json_encode(["message" => "Requête DELETE"]);
+    include_once("./api/delete/delete.php");
 }

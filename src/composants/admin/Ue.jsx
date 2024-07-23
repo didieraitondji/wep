@@ -34,13 +34,13 @@ export default function Ue() {
 
     return (
         <>
-            <div className='p-5 border bg-c5 rounded-xl h-full grid grid-rows-[1fr_auto]'>
+            <div className='p-5 border bg-c5 h-full grid grid-rows-[1fr_auto]'>
                 <div>
-                    <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-xl'>
-                        <h1 className='p-2 bg-c2 rounded-tl-xl'>
+                    <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-lg'>
+                        <h1 className='p-2 bg-c2 rounded-tl-lg'>
                             Unités d'enseignement
                         </h1>
-                        <span className='bg-c1 p-2 text-center rounded-tr-xl font-bold'>
+                        <span className='bg-c1 p-2 text-center rounded-tr-lg font-bold'>
                             {
                                 totalFiliere.total
                             }+
@@ -69,7 +69,7 @@ export default function Ue() {
                     <div className='bg-c3 text-c2 font-bold p-2'>
                         Ajouter une UE
                     </div>
-                    <div className='pt-2 border border-c3 rounded-b-md'>
+                    <div className='pt-2 border border-c3 rounded-b-lg'>
                         <form onSubmit={handleAcceptAddFiliere} className='py-8 px-4'>
                             <div className='flex flex-row items-center'>
                                 <label htmlFor="" className='w-1/3 text-center'>Nom :</label>

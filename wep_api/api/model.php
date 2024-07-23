@@ -817,6 +817,110 @@ class Filiere
         echo json_encode(["total" => count($filiere), "type" => "Filière (s)"]);
         $pdo = null; // Fermer la connexion
     }
+
+    public function ecusFiliere(int $id)
+    {
+        $pdo = connectToDB();
+
+        if ($pdo) {
+            $sql = 'SELECT E.id, E.name AS ecuName FROM ecu E 
+                INNER JOIN ue U ON E.id_Ue = U.id 
+                INNER JOIN uefiliere UF ON UF.id_Ue = U.id 
+                WHERE UF.id_filiere = :id_f';
+
+            $req = $pdo->prepare($sql);
+            $req->execute([':id_f' => $id]);
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            $jsonData = json_encode($reqs);
+            header('Content-Type: application/json');
+            echo $jsonData;
+
+            // Fermer la connexion à la base de données
+            $pdo = null;
+        } else {
+            // Gérer l'erreur de connexion à la base de données
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => 'Erreur de connexion à la base de données']);
+        }
+    }
+
+    public function uesFiliere(int $id)
+    {
+        try {
+            $pdo = connectToDB();
+            if ($pdo) {
+                $sql = 'SELECT U.id, U.name AS ueName 
+                    FROM ue U 
+                    INNER JOIN uefiliere UF ON UF.id_Ue = U.id 
+                    WHERE UF.id_filiere = :id_f';
+
+                $req = $pdo->prepare($sql);
+                $req->execute([':id_f' => $id]);
+
+                // Récupérer le résultat
+                $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+                $req->closeCursor();
+
+                $jsonData = json_encode($reqs);
+                header('Content-Type: application/json');
+                echo $jsonData;
+
+                // Fermer la connexion à la base de données
+                $pdo = null;
+            } else {
+                // Gérer l'erreur de connexion à la base de données
+                header('HTTP/1.1 500 Internal Server Error');
+                echo json_encode(['error' => 'Erreur de connexion à la base de données']);
+            }
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function nuesFiliere(int $id)
+    {
+        try {
+            $pdo = connectToDB();
+            if ($pdo) {
+                // SQL pour sélectionner les UE qui ne sont pas associées à la filière donnée
+                $sql = 'SELECT U.id, U.name AS ueName 
+                    FROM ue U 
+                    WHERE U.id NOT IN (
+                        SELECT UF.id_Ue 
+                        FROM uefiliere UF 
+                        WHERE UF.id_filiere = :id_f
+                    )';
+
+                $req = $pdo->prepare($sql);
+                $req->execute([':id_f' => $id]);
+
+                // Récupérer le résultat
+                $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+                $req->closeCursor();
+
+                $jsonData = json_encode($reqs);
+                header('Content-Type: application/json');
+                echo $jsonData;
+
+                // Fermer la connexion à la base de données
+                $pdo = null;
+            } else {
+                // Gérer l'erreur de connexion à la base de données
+                header('HTTP/1.1 500 Internal Server Error');
+                echo json_encode(['error' => 'Erreur de connexion à la base de données']);
+            }
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => 'Une erreur s\'est produite : ' . $e->getMessage()]);
+        }
+    }
 }
 
 class Ue
@@ -1150,5 +1254,79 @@ class Messages
 
         echo $jsonData;
         $pdo = null;
+    }
+}
+
+class uefiliere
+{
+    protected $id_Ue;
+    protected $id_filiere;
+
+    public function __construct(int $id1 = null, int $id2 = null)
+    {
+        if ($id1 != null) {
+            $this->id_Ue = $id1;
+        }
+
+        if ($id2 != null) {
+            $this->id_filiere = $id2;
+        }
+    }
+
+    public function addUeFiliere()
+    {
+        $pdo = connectToDB();
+        $req = "INSERT INTO uefiliere (id_Ue,id_filiere) VALUES (:id_Ue, :id_filiere)";
+        $stmt = $pdo->prepare($req);
+
+        try {
+
+            $stmt->execute([':id_Ue' => $this->id_Ue, ':id_filiere' => $this->id_filiere]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
+
+    public function deleteUeFiliere(int $id_Ue, int $id_filiere)
+    {
+        $pdo = connectToDB();
+        $req = "DELETE FROM uefiliere WHERE id_Ue = :id_Ue AND id_filiere = :id_filiere";
+        $stmt = $pdo->prepare($req);
+
+        try {
+            $stmt->execute([':id_Ue' => $id_Ue, ':id_filiere' => $id_filiere]);
+
+            $response = array(
+                "status" => "Success!",
+                "message" => "Donnée supprimée avec succès!",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur!",
+                "message" => "Échec de la suppression des données!",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
     }
 }
