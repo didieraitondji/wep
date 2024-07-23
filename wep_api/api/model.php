@@ -309,7 +309,7 @@ class Etudiant extends Utilisateur
                 throw new Exception('L\'ID de la filière ne peut pas être nul.');
             }
 
-            $sql = 'SELECT E.id, E.firstName, E.surName, E.email, E.telephone, F.name as fname FROM etudiant E, filiere F WHERE E.id_filiere = :id_d AND F.id=:id_d ORDER BY E.surName DESC';
+            $sql = 'SELECT E.id, E.firstName, E.surName, E.email, E.telephone, F.name as fname FROM etudiant E, filiere F WHERE E.id_filiere = :id_d AND F.id=:id_d ORDER BY E.surName';
             $req = $pdo->prepare($sql);
             $req->execute([
                 ':id_d' => $id,
