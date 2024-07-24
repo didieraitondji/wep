@@ -1181,7 +1181,9 @@ class Ecu
     {
         $pdo = connectToDB();
 
-        $sql = 'SELECT * FROM ecu';
+        $sql = 'SELECT E.id, E.credit, E.name AS ecuname, U.name AS uename, F.name AS fname FROM ecu E
+                INNER JOIN ue U ON E.id_Ue = U.id 
+                INNER JOIN filiere F ON F.id = U.id_filiere';
         $req = $pdo->prepare($sql);
         $req->execute();
         $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -1209,16 +1211,16 @@ class Ecu
         $pdo = null;
     }
 
-    public function addEcu(int $id_enseignant = null, int $id_ue = null)
+    public function addEcu()
     {
         $pdo = connectToDB();
-        $checkQuery = "SELECT COUNT(*) FROM ecu WHERE name = :name";
-        $insertQuery = "INSERT INTO ecu (name, credit, id_enseignant, id_ue) VALUES (:name, :credit, :id_enseignant, :id_ue)";
+        $checkQuery = "SELECT COUNT(*) FROM ecu WHERE name = :name AND id_Ue = :id_Ue";
+        $insertQuery = "INSERT INTO ecu (name, credit, id_Ue) VALUES (:name, :credit, :id_Ue)";
 
         try {
             // Préparer la requête de vérification
             $checkStmt = $pdo->prepare($checkQuery);
-            $checkStmt->execute([':name' => $this->name]);
+            $checkStmt->execute([':name' => $this->name, ':id_Ue' => $this->ue]);
             $count = $checkStmt->fetchColumn();
 
             if ($count > 0) {
@@ -1234,8 +1236,7 @@ class Ecu
                 $stmt->execute([
                     ':name' => $this->name,
                     ':credit' => $this->credit,
-                    ':id_enseignant' => $id_enseignant,
-                    ':id_ue' => $id_ue
+                    ':id_Ue' => $this->ue,
                 ]);
 
                 $response = array(

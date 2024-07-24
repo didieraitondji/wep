@@ -131,92 +131,94 @@ export default function EnseignantFiliere() {
     // retour HTML
     return (
         <>
-            <div className='h-full bg-c5 pt-6'>
-                <div className='ml-8 mr-8 mb-8 bg-c3'>
-                    <div className='w-[100%] bg-c1 px-2 py-3 font-bold'>
-                        <h1>
-                            Ajouter une Filière à un Enseignant
-                        </h1>
-                    </div>
-                    <div className='px-2 py-5'>
-                        <form onSubmit={handleAddEnseignantFiliere} className='grid lg:grid-cols-[1fr_1fr_1fr] max-lg:grid-cols-[1fr_1fr] py-4'>
-                            <select name="idEnseignant" id="idEnseignant" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2 cursor-pointer' onChange={handleFiliereEnseignant} >
-                                <option value="">Choisissez l'enseignant</option>
+            <div className='h-full bg-c5 pt-6 flex flex-row flex-wrap'>
+                <div className=' w-[100%] lg:w-1/2 px-4 mb-8'>
+                    <div className='bg-[#00000080] pb-1'>
+                        <div className='bg-c1 px-2 py-3 font-bold'>
+                            <h1>
+                                Ajouter une Filière à un Enseignant
+                            </h1>
+                        </div>
+                        <div className='px-2 py-5'>
+                            <form onSubmit={handleAddEnseignantFiliere} className='py-4 flex flex-col'>
+                                <select name="idEnseignant" id="idEnseignant" className='p-2 mb-4 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 cursor-pointer rounded-full' onChange={handleFiliereEnseignant} >
+                                    <option value="">Choisissez l'enseignant</option>
+                                    {
+                                        enseignants.map((item) => (
+                                            <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
+                                        ))
+                                    }
+                                </select>
+                                <select name="filiereEn" id="filiereEn" className='p-2 mb-4 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 cursor-pointer rounded-full'>
+                                    <option value="">Choisissez la filière</option>
+                                    {
+                                        autoAdd && nfiliereEnseignant.map((item) => (
+                                            <option key={item.id} value={item.id}>{item.fname}</option>
+                                        ))
+                                    }
+                                </select>
+                                <button type="submit" className='bg-c1 max-lg:w-[90%] max-lg:mx-auto hover:font-bold px-6 py-2 mx-2 rounded-full'>Ajouter</button>
+                            </form>
+                        </div>
+                        <div className='bg-c5 w-max mx-auto max-w-[80%] rounded-2xl px-2 mb-5 pb-2'>
+                            <h1 className=' text-c3 p-2 font-bold rounded-full text-center'> Les filières actuelles de l'enseignant sélectionné </h1>
+                            <div className='w-max max-w-[100%]  p-4 text-center rounded-2xl text-wrap'>
                                 {
-                                    enseignants.map((item) => (
-                                        <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
+                                    autoAdd && filiereEnseignant.map((item) => (
+                                        <span key={item.id} className='italic px-2 mr-1 bg-c5 rounded-full w-max inline-block font-bold my-1'>{item.fname}</span>
                                     ))
                                 }
-                            </select>
-                            <select name="filiereEn" id="filiereEn" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2 cursor-pointer'>
-                                <option value="">Choisissez la filière</option>
-                                {
-                                    autoAdd && nfiliereEnseignant.map((item) => (
-                                        <option key={item.id} value={item.id}>{item.fname}</option>
-                                    ))
-                                }
-                            </select>
-                            <button type="submit" className='bg-c1 max-lg:w-[90%] max-lg:mx-auto hover:font-bold px-6 py-2 mx-2 max-lg:col-span-2'>Ajouter</button>
-                        </form>
-                    </div>
-                    <div>
-                        <h1 className='bg-c1 w-max p-2 font-bold'> Les filières actuelles de l'enseignant sélectionné </h1>
-                        <div className='w-auto bg-c2 p-2 mb-1'>
-                            {
-                                autoAdd && filiereEnseignant.map((item) => (
-                                    <span key={item.id} className='italic px-2 mr-1 bg-c5 rounded-full'>{item.fname}</span>
-                                ))
-                            }
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div className='bg-c2 px-2 py-2 font-bold min-h-[40px] mx-8'>
-
                 </div>
 
                 {
                     // formulaire de retrait de filière
                 }
 
-                <div className='m-8 bg-c3'>
-                    <div className='w-full bg-c1 px-2 py-3 font-bold'>
-                        <h1>
-                            Retirer une filiere à un Enseignant
-                        </h1>
-                    </div>
-                    <div className='px-2 py-5'>
-                        <form onSubmit={handleMovEnseignantFiliere} className='grid lg:grid-cols-[1fr_1fr_1fr] max-lg:grid-cols-[1fr_1fr] py-4'>
-                            <select name="filieresb" id="idEnseignant2" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2 cursor-pointer' onChange={handleFiliereEnseignant2}>
-                                <option value="">Choisissez l'Enseignant</option>
-                                {
-                                    enseignants.map((item) => (
-                                        <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
-                                    ))
-                                }
-                            </select>
-                            <select name="ecub" id="filiereEn2" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2 cursor-pointer'>
-                                <option value=""> Choisissez la filière </option>
+                <div className=' w-[100%] lg:w-1/2 px-4 mb-8'>
+                    <div className='bg-[#00000080] pb-1'>
+                        <div className='bg-c1 px-2 py-3 font-bold'>
+                            <h1>
+                                Retirer une filiere à un Enseignant
+                            </h1>
+                        </div>
+                        <div className='px-2 py-5'>
+                            <form onSubmit={handleMovEnseignantFiliere} className='py-4 flex flex-col'>
+                                <select name="filieresb" id="idEnseignant2" className='p-2 mb-4 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 cursor-pointer rounded-full' onChange={handleFiliereEnseignant2}>
+                                    <option value="">Choisissez l'Enseignant</option>
+                                    {
+                                        enseignants.map((item) => (
+                                            <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
+                                        ))
+                                    }
+                                </select>
+                                <select name="ecub" id="filiereEn2" className='p-2 max-lg:w-[90%] mb-4 max-lg:mx-auto mx-2 max-lg:mb-4 rounded-full cursor-pointer'>
+                                    <option value=""> Choisissez la filière </option>
+                                    {
+                                        autoMov && filiereEnseignant2.map((item) => (
+                                            <option key={item.id} value={item.id}>{item.fname}</option>
+                                        ))
+                                    }
+                                </select>
+                                <button type="submit" className='bg-c1 max-lg:w-[90%] max-lg:mx-auto hover:font-bold px-6 py-2 mx-2 rounded-full'>Retirer</button>
+                            </form>
+                        </div>
+                        <div className='bg-c5 w-max mx-auto max-w-[80%] rounded-2xl px-2 mb-5 pb-2'>
+                            <h1 className=' text-c3 p-2 font-bold rounded-full text-center'> Les filières actuelles de l'enseignant sélectionné </h1>
+                            <div className='w-max max-w-[100%] bg-c1 p-4 text-center rounded-2xl text-wrap'>
                                 {
                                     autoMov && filiereEnseignant2.map((item) => (
-                                        <option key={item.id} value={item.id}>{item.fname}</option>
+                                        <span key={item.id} className='italic px-2 mr-1 bg-c5 rounded-full w-max inline-block font-bold my-1'>{item.fname}</span>
                                     ))
                                 }
-                            </select>
-                            <button type="submit" className='bg-c1 max-lg:w-[90%] max-lg:mx-auto hover:font-bold px-6 py-2 mx-2 max-lg:col-span-2'>Retirer</button>
-                        </form>
-                    </div>
-                    <div>
-                        <h1 className='bg-c1 w-max p-2 font-bold'>Les filières actuelles de l'enseignant sélectionné </h1>
-                        <div className='w-auto bg-c2 p-2'>
-                            {
-                                autoMov && filiereEnseignant2.map((item) => (
-                                    <span key={item.id} className='italic px-2 mr-1 bg-c5 rounded-full'>{item.fname}</span>
-                                ))
-                            }
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
             <Loader value={loadAdd} />

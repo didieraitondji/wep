@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { loadGetData, loadPostData, childCliked } from '../Fonctions';
+import Warning from '../Warning';
+import Succefful from '../Succefful';
+import Loader from '../Loader';
 
 export default function Ue() {
     const [filieres, setFilieres] = useState([]);
     const [ues, setUes] = useState([]);
-    const [totalFiliere, setTotalFiliere] = useState([]);
     const [postData, setPostData] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [formData, setFormeData] = useState("");
     const [formData2, setFormeData2] = useState("");
     const [formData3, setFormeData3] = useState("");
+    const [warning, setWarning] = useState(false);
+    const [load, setLoad] = useState(false);
 
     useEffect(() => {
         loadGetData('ues', setUes);
         loadGetData('filieres', setFilieres);
-        loadGetData('total/ue', setTotalFiliere);
     }, []);
 
     // fonction d'appel à l'ajout de filière
     const handleAddFiliere = (e) => {
+        setLoad(true);
         const data = {
             name: formData,
             credit: formData2,
@@ -27,9 +31,16 @@ export default function Ue() {
 
         loadPostData('ue', data, setPostData, () => {
             loadGetData('ues', setUes);
-            loadGetData('total/ue', setTotalFiliere);
             setConfirm(!confirm);
         });
+        setWarning(!postData);
+
+
+        setInterval(() => {
+            setWarning(false);
+            setLoad(false);
+            setPostData(false);
+        }, 3000);
     }
 
     const handleAcceptAddFiliere = (e) => {
@@ -50,7 +61,7 @@ export default function Ue() {
                         </h1>
                         <span className='bg-c1 p-2 text-center rounded-tr-lg font-bold'>
                             {
-                                totalFiliere.total
+                                ues.length
                             }+
                         </span>
                     </div>
@@ -139,6 +150,11 @@ export default function Ue() {
                     </div>
                 )
             }
+
+            <Loader value={load} />
+            <Warning value={warning} text={"L'UE existe déjà !"} />
+            <Succefful value={postData} text={"UE ajoutée avec succès !"} />
+
         </>
     )
 }

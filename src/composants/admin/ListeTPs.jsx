@@ -32,7 +32,7 @@ export default function ListeTPsAdmin() {
                         <select
                             name="filieres"
                             id="filieres"
-                            className='p-2 min-w-[80%]'
+                            className='p-2 min-w-[80%] cursor-pointer'
                             required
                             onChange={handleChargeIdFiliere}
                         >
@@ -46,7 +46,7 @@ export default function ListeTPsAdmin() {
                         <select
                             name="ecus"
                             id="ecus"
-                            className='p-2 min-w-[80%]'
+                            className='p-2 min-w-[80%] cursor-pointer'
                             required
                             onChange={handleEcuChange}
                             value={selectedEcu}

@@ -5,10 +5,9 @@ import TopBarAdmin from '../composants/admin/TopBar';
 import CardNumber from '../composants/admin/CardNumber';
 import Filiere from '../composants/admin/Filiere';
 import Ue from '../composants/admin/Ue';
-import AddUeFiliere from '../composants/admin/AddUeFiliere';
-import MovUeFiliere from '../composants/admin/MovUeFiliere';
 import { loadGetData } from '../composants/Fonctions';
 import Departement from '../composants/admin/Departement';
+import EcuAdmin from '../composants/admin/Ecu';
 
 export default function DashboardAdmin() {
     document.getElementsByTagName("title")[0].innerHTML = "Tableau de bord | Admin WeP";
@@ -83,6 +82,9 @@ export default function DashboardAdmin() {
 
                         <div className='mb-6 mr-4'>
                             <Departement />
+                        </div>
+                        <div className='mb-6 ml-4'>
+                            <EcuAdmin />
                         </div>
 
                     </div>

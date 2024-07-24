@@ -78,7 +78,7 @@ export default function Utilisateurs() {
                             <span onClick={handleChoiceEF} className={`px-4 py-2 font-bold hover:bg-c1 cursor-pointer ${isEF ? "bg-c5" : "border border-c5"}`}>Enseignant & Filière</span>
                         </div>
                     </div>
-                    <div className='m-0 mt-1 bg-c5 pb-4 pt-3 rounded-r-xl rounded-bl-xl'>
+                    <div className='m-0 mt-1 bg-c5 pb-4 pt-3'>
                         {
                             // ajouter enseignant
 

@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { loadGetData, loadPostData, childCliked } from '../Fonctions';
-
+import Warning from '../Warning';
+import Succefful from '../Succefful';
+import Loader from '../Loader';
 
 
 export default function Departement() {
 
     const [departements, setDepartements] = useState([]);
-    const [totalFiliere, setTotalFiliere] = useState([]);
     const [postData, setPostData] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [formData, setFormeData] = useState("");
+    const [warning, setWarning] = useState(false);
+    const [load, setLoad] = useState(false);
 
     useEffect(() => {
         loadGetData('departements', setDepartements);
     }, []);
 
     const handleAddDepartement = (e) => {
+        setLoad(true);
+
         const data = {
             name: formData,
         }
@@ -24,6 +29,15 @@ export default function Departement() {
             loadGetData('departements', setDepartements);
             setConfirm(!confirm);
         });
+
+        setWarning(!postData);
+
+
+        setInterval(() => {
+            setWarning(false);
+            setLoad(false);
+            setPostData(false);
+        }, 3000);
     }
 
     const handleAcceptAddDepartement = (e) => {
@@ -69,7 +83,7 @@ export default function Departement() {
                 </div>
                 <div className='mt-3 p-2'>
                     <div className='bg-c3 text-c2 font-bold p-2'>
-                        Ajouter une filière
+                        Ajouter un département
                     </div>
                     <div className='pt-2 border border-c3 rounded-b-lg'>
                         <form onSubmit={handleAcceptAddDepartement} className='py-8 px-4'>
@@ -105,6 +119,10 @@ export default function Departement() {
                     </div>
                 )
             }
+
+            <Loader value={load} />
+            <Warning value={warning} text={"Le Département existe déjà !"} />
+            <Succefful value={postData} text={"Département ajoutée avec succès !"} />
         </>
     )
 }

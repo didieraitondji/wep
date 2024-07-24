@@ -6,7 +6,7 @@ export default function Loader({ value }) {
         <>
             {
                 value && (
-                    <div id="blockError" className='fixed top-[50px] left-[80px] right-0 bottom-0 bg-[#00000068] w-[100%] h-[100vh] flex flex-col items-center justify-center'>
+                    <div id="blockError" className='fixed top-[50px] left-[80px] right-0 bottom-0 bg-[#00000068] w-[100%] h-[100vh] flex flex-col items-center justify-center z-50'>
                         <ThreeDots color='#FFCB05' />
                     </div>
                 )

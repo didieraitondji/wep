@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { loadGetData, loadPostData, childCliked } from '../Fonctions';
+import Warning from '../Warning';
+import Succefful from '../Succefful';
+import Loader from '../Loader';
 
 export default function Filiere() {
     // les données utilies
@@ -8,6 +11,8 @@ export default function Filiere() {
     const [postData, setPostData] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [formData, setFormeData] = useState("");
+    const [warning, setWarning] = useState(false);
+    const [load, setLoad] = useState(false);
 
     // 
 
@@ -18,6 +23,7 @@ export default function Filiere() {
 
     // fonction d'appel à l'ajout de filière
     const handleAddFiliere = (e) => {
+        setLoad(true);
         const data = {
             name: formData,
         }
@@ -27,6 +33,14 @@ export default function Filiere() {
             loadGetData('total/filieres', setTotalFiliere);
             setConfirm(!confirm);
         });
+
+        setWarning(!postData);
+
+        setInterval(() => {
+            setWarning(false);
+            setLoad(false);
+            setPostData(false);
+        }, 3000);
     }
 
     const handleAcceptAddFiliere = (e) => {
@@ -108,6 +122,10 @@ export default function Filiere() {
                     </div>
                 )
             }
+
+            <Loader value={load} />
+            <Warning value={warning} text={"La filière existe déjà !"} />
+            <Succefful value={postData} text={"Filière ajoutée avec succès !"} />
         </>
     )
 }
