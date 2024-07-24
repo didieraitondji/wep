@@ -22,7 +22,25 @@ switch (strtolower($url[0])) {
         break;
     case 'enseignant':
         if (!empty($url[1])) {
-            $enseignant->unEnseignant($url[1]);
+            if (empty($url[2])) {
+                $enseignant->unEnseignant($url[1]);
+            } else {
+                switch (strtolower($url[2])) {
+                    case 'filieres':
+                        $enseignant->filieresEnseignants($url[1]);
+                        break;
+                    case 'nfilieres':
+                        $enseignant->nfilieresEnseignants($url[1]);
+                        break;
+                    default:
+                        $jsonData = json_encode(array(
+                            "status" => "Erreur",
+                            "message" => "Identifiant invalide",
+                            "code" => 1
+                        ));
+                        echo $jsonData;
+                }
+            }
         } else {
             $jsonData = json_encode(array(
                 "status" => "Erreur",

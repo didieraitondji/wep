@@ -51,7 +51,7 @@ if (empty($url[0])) {
 
             break;
         case 'ue':
-            $ue = new Ue($data['name']);
+            $ue = new Ue($data['name'], $data['credit'], $data['filiere']);
             $ue->addUe();
             break;
         case 'filiere':
@@ -62,6 +62,9 @@ if (empty($url[0])) {
             $uef = new uefiliere($data['id_Ue'], $data['id_filiere']);
             $uef->addUeFiliere();
             break;
+        case 'enseignantfiliere':
+            $efiliere = new enseignantfiliere($data['id_Enseignant'], $data['id_filiere']);
+            $efiliere->addEnseignantFiliere();
         case 'ecu':
             $ecu = new Ecu();
             break;

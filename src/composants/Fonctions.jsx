@@ -47,7 +47,9 @@ export const fetchPostData = async (type, donnees) => {
 export const loadPostData = async (type, data, setData, callback) => {
     try {
         const donnees = await fetchPostData(type, data);
-        setData(true);
+        if (donnees.code == 1) {
+            setData(true);
+        }
         callback(data);
     } catch (error) {
         console.error('Erreur lors de la récupération des données loadPost', error);

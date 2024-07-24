@@ -8,6 +8,7 @@ import Ue from '../composants/admin/Ue';
 import AddUeFiliere from '../composants/admin/AddUeFiliere';
 import MovUeFiliere from '../composants/admin/MovUeFiliere';
 import { loadGetData } from '../composants/Fonctions';
+import Departement from '../composants/admin/Departement';
 
 export default function DashboardAdmin() {
     document.getElementsByTagName("title")[0].innerHTML = "Tableau de bord | Admin WeP";
@@ -80,15 +81,10 @@ export default function DashboardAdmin() {
                             <Ue />
                         </div>
 
-                        <div className='mb-2 md:col-span-2 bg-c3 text-center font-bold py-4 px-3 text-c2'>
-                            Filière & UE
+                        <div className='mb-6 mr-4'>
+                            <Departement />
                         </div>
-                        <div className='mb-6 mr-1 max-md:col-span-1 max-xl:col-span-2'>
-                            <AddUeFiliere filieres={filieres} />
-                        </div>
-                        <div className='mb-6 ml-1 max-md:col-span-1 max-xl:col-span-2'>
-                            <MovUeFiliere filieres={filieres} />
-                        </div>
+
                     </div>
                 </div>
                 <div className='bg-c3 fixed left-0 top-0 bottom-0 w-[80px] px-2 py-2'>

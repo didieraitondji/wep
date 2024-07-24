@@ -58,6 +58,7 @@ try {
             id INT NOT NULL AUTO_INCREMENT,
             name VARCHAR(255),
             credit INT,
+            id_filiere INT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
@@ -121,16 +122,7 @@ try {
         REFERENCES filiere (id) ON DELETE SET NULL ON UPDATE CASCADE",
         "ALTER TABLE ecu ADD CONSTRAINT ue_fk FOREIGN KEY (id_ue)
         REFERENCES ue (id) ON DELETE SET NULL ON UPDATE CASCADE",
-        "CREATE TABLE IF NOT EXISTS ueFiliere (
-            id_ue INT NOT NULL,
-            id_filiere BIGINT NOT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (id_ue, id_filiere)
-        )",
-        "ALTER TABLE ueFiliere ADD CONSTRAINT ue_fk FOREIGN KEY (id_ue)
-        REFERENCES ue (id) ON DELETE RESTRICT ON UPDATE CASCADE",
-        "ALTER TABLE ueFiliere ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
+        "ALTER TABLE ue ADD CONSTRAINT filiere_fk FOREIGN KEY (id_filiere)
         REFERENCES filiere (id) ON DELETE RESTRICT ON UPDATE CASCADE",
         "ALTER TABLE travail ADD CONSTRAINT etudiant_fk FOREIGN KEY (id_etudiant)
         REFERENCES etudiant (id) ON DELETE SET NULL ON UPDATE CASCADE",

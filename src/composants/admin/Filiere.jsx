@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { loadGetData, loadPostData, childCliked } from '../Fonctions';
 
 export default function Filiere() {
-    const [error, setError] = useState("");
-
     // les données utilies
     const [filieres, setFilieres] = useState([]);
     const [totalFiliere, setTotalFiliere] = useState([]);
@@ -93,7 +91,7 @@ export default function Filiere() {
 
             {
                 confirm && (
-                    <div onClick={handleAcceptAddFiliere} className='fixed top-0 left-[80px] right-0 bottom-0 bg-[#00000065] flex items-center justify-center'>
+                    <div onClick={handleAcceptAddFiliere} className='fixed z-50 top-0 left-[80px] right-0 bottom-0 bg-[#00000065] flex items-center justify-center'>
                         <div onClick={childCliked} className='bg-c2 p-5 shadow-lg rounded-md slide-down min-w-[200px]'>
                             <div>
                                 Ajouter la filière "{formData}" ?

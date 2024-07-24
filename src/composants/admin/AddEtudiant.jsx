@@ -168,7 +168,7 @@ export default function AddEtudiant() {
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="" className='w-[100%] lg:w-1/4'>Mot de passe :</label>
-                                    <input type="text" name="motDePasse" id="motDePasseEn" value={"Etudiant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required />
+                                    <input type="text" name="motDePasse" id="motDePasseEt" onChange={addFormeDataEt} value={"Etudiant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required />
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="" className='w-[100%] lg:w-1/4'>Filière :</label>

@@ -191,7 +191,7 @@ export default function AddEnseignant() {
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="motDePasseEn" className='w-[100%] lg:w-1/4'>Mot de passe :</label>
-                                    <input type="text" name="motDePasseEn" id="motDePasseEnEn" value={"Enseignant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required />
+                                    <input type="text" name="motDePasseEn" id="motDePasseEnEn" onChange={addFormeData} value={"Enseignant123"} className='w-[100%] lg:w-3/4 p-2 border border-c1 rounded-sm' required />
                                 </div>
                                 <div className='flex items-center mb-5 flex-wrap'>
                                     <label htmlFor="" className='w-[100%] lg:w-1/4'>Département :*</label>

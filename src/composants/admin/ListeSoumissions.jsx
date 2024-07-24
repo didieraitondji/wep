@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { loadGetData } from '../Fonctions';
 
-export default function ListeTPsAdmin() {
+export default function ListeSoumissionsAdmin() {
     const [filieres, setFilieres] = useState([]);
     const [ecus, setEcus] = useState([]);
+    const [selectedFiliere, setSelectedFiliere] = useState('');
     const [selectedEcu, setSelectedEcu] = useState('');
 
     const handleChargeIdFiliere = (e) => {
         const filiereId = e.target.value;
+        setSelectedFiliere(filiereId);
         let chemin = `filiere/${filiereId}/ecus/`;
         loadGetData(chemin, setEcus);
     };
@@ -35,6 +37,7 @@ export default function ListeTPsAdmin() {
                             className='p-2 min-w-[80%]'
                             required
                             onChange={handleChargeIdFiliere}
+                            value={selectedFiliere}
                         >
                             <option value="">Choisissez la filière</option>
                             {filieres.map((item) => (
@@ -64,7 +67,7 @@ export default function ListeTPsAdmin() {
             </div>
             <div className='bg-c3 mx-12 p-4 text-c2 mt-[-30px]'>
                 <h1>
-                    Les Travaux Pratiques
+                    Les Soumissions
                 </h1>
             </div>
         </>

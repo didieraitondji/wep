@@ -63,7 +63,7 @@ export default function AddUeFiliere({ filieres }) {
                 </div>
                 <div className='px-2 py-5'>
                     <form onSubmit={handleAddUeFiliere} className='grid lg:grid-cols-[1fr_1fr_1fr] max-lg:grid-cols-[1fr_1fr]'>
-                        <select name="filieresa" id="filieresa" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2' onChange={handleUesFilierea}>
+                        <select name="filieresa" id="filieresa" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2 cursor-pointer' onChange={handleUesFilierea}>
                             <option value="">Choisissez la filière</option>
                             {
                                 filieres.map((item) => (
@@ -71,7 +71,7 @@ export default function AddUeFiliere({ filieres }) {
                                 ))
                             }
                         </select>
-                        <select name="ecua" id="ecua" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2'>
+                        <select name="ecua" id="ecua" className='p-2 max-lg:w-[90%] max-lg:mx-auto mx-2 max-lg:mb-4 max-lg:col-span-2 cursor-pointer'>
                             <option value="">Choisissez l'UE</option>
                             {
                                 nUesFilierea.map((item) => (

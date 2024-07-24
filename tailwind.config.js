@@ -11,6 +11,7 @@ export default {
       },
       colors: {
         c1: '#FFCB05',
+        //c1: '#F4D35E',
         c2: '#FFFFFF',
         c3: '#262E33',
         c4: '#EBECED',

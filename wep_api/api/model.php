@@ -74,7 +74,6 @@ function verifyJWT()
 }
 
 
-
 // quelques fonctions
 
 function connectToDB()
@@ -187,29 +186,43 @@ class Enseignant extends Utilisateur
     public function addEnseignant(int $id = 1)
     {
         $pdo = connectToDB();
-
-        $enseignantQuery = "INSERT INTO enseignant (firstName, surName, email, motDePasse, telephone, id_Departement, photoPath, id_Admin) 
-                        VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_Departement, :photoPath, :id_Admin)";
-        $stmt = $pdo->prepare($enseignantQuery);
+        $checkQuery = "SELECT COUNT(*) FROM enseignant WHERE email = :email";
+        $insertQuery = "INSERT INTO enseignant (firstName, surName, email, motDePasse, telephone, id_Departement, photoPath, id_Admin) 
+                    VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_Departement, :photoPath, :id_Admin)";
 
         try {
+            // Préparer la requête de vérification
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([':email' => $this->email]);
+            $count = $checkStmt->fetchColumn();
 
-            $stmt->execute([
-                ':firstName' => $this->firstName,
-                ':surName' => $this->surName,
-                ':email' => $this->email,
-                ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
-                ':telephone' => $this->telephone,
-                ':id_Departement' => $this->departement,
-                ':photoPath' => $this->photoPath,
-                ':id_Admin' => $id
-            ]);
+            if ($count > 0) {
+                // Si l'enseignant existe déjà
+                $response = array(
+                    "status" => "Erreur !",
+                    "message" => "Cet enseignant existe déjà.",
+                    "code" => 0
+                );
+            } else {
+                // Préparer la requête d'insertion
+                $stmt = $pdo->prepare($insertQuery);
+                $stmt->execute([
+                    ':firstName' => $this->firstName,
+                    ':surName' => $this->surName,
+                    ':email' => $this->email,
+                    ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
+                    ':telephone' => $this->telephone,
+                    ':id_Departement' => $this->departement,
+                    ':photoPath' => $this->photoPath,
+                    ':id_Admin' => $id
+                ]);
 
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
+                $response = array(
+                    "status" => "Sucess !",
+                    "message" => "Donnée enregistrées avec succès !",
+                    "code" => 1
+                );
+            }
         } catch (PDOException $e) {
             $response = array(
                 "status" => "Erreur !",
@@ -223,6 +236,78 @@ class Enseignant extends Utilisateur
         $pdo = null;
         echo json_encode($response);
     }
+
+    public function filieresEnseignants($id)
+    {
+        try {
+            $pdo = connectToDB();
+
+            $sql = 'SELECT F.id, F.name AS fname FROM filiere F
+                INNER JOIN enseignantfiliere EF ON EF.id_filiere = F.id
+                INNER JOIN enseignant E ON E.id = EF.id_Enseignant
+                WHERE E.id = :id_f';
+
+            $req = $pdo->prepare($sql);
+            $req->execute([':id_f' => $id]);
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            // Encoder en JSON et envoyer la réponse
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            // Fermer la connexion à la base de données
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
+
+    public function nfilieresEnseignants($id)
+    {
+        try {
+            $pdo = connectToDB();
+
+            $sql = 'SELECT F.id, F.name AS fname 
+                FROM filiere F
+                WHERE F.id NOT IN (
+                    SELECT EF.id_filiere 
+                    FROM enseignantfiliere EF
+                    WHERE EF.id_Enseignant = :id_f
+                )';
+
+            $req = $pdo->prepare($sql);
+            $req->execute([':id_f' => $id]);
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            // Encoder en JSON et envoyer la réponse
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            // Fermer la connexion à la base de données
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
+
 
     public function logEnseignant($email, $motDePasse)
     {
@@ -350,28 +435,43 @@ class Etudiant extends Utilisateur
     public function addEtudiant(int $id = 1)
     {
         $pdo = connectToDB();
-        $etudiantQuery = "INSERT INTO etudiant (firstName, surName, email, motDePasse, telephone, id_filiere, photoPath, id_Admin) 
-                      VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_filiere, :photoPath, :id_Admin)";
-        $stmt = $pdo->prepare($etudiantQuery);
+        $checkQuery = "SELECT COUNT(*) FROM etudiant WHERE email = :email";
+        $insertQuery = "INSERT INTO etudiant (firstName, surName, email, motDePasse, telephone, id_filiere, photoPath, id_Admin) 
+                    VALUES (:firstName, :surName, :email, :motDePasse, :telephone, :id_filiere, :photoPath, :id_Admin)";
 
         try {
+            // Préparer la requête de vérification
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([':email' => $this->email]);
+            $count = $checkStmt->fetchColumn();
 
-            $stmt->execute([
-                ':firstName' => $this->firstName,
-                ':surName' => $this->surName,
-                ':email' => $this->email,
-                ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
-                ':telephone' => $this->telephone,
-                ':id_filiere' => $this->filiere,
-                ':photoPath' => $this->photoPath,
-                ':id_Admin' => $id
-            ]);
+            if ($count > 0) {
+                // Si l'étudiant existe déjà
+                $response = array(
+                    "status" => "Erreur !",
+                    "message" => "Cet étudiant existe déjà.",
+                    "code" => 0
+                );
+            } else {
+                // Préparer la requête d'insertion
+                $stmt = $pdo->prepare($insertQuery);
+                $stmt->execute([
+                    ':firstName' => $this->firstName,
+                    ':surName' => $this->surName,
+                    ':email' => $this->email,
+                    ':motDePasse' => password_hash($this->motDePasse, PASSWORD_DEFAULT),
+                    ':telephone' => $this->telephone,
+                    ':id_filiere' => $this->filiere,
+                    ':photoPath' => $this->photoPath,
+                    ':id_Admin' => $id
+                ]);
 
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
+                $response = array(
+                    "status" => "Sucess !",
+                    "message" => "Donnée enregistrées avec succès !",
+                    "code" => 1
+                );
+            }
         } catch (PDOException $e) {
             $response = array(
                 "status" => "Erreur !",
@@ -385,6 +485,7 @@ class Etudiant extends Utilisateur
         $pdo = null;
         echo json_encode($response);
     }
+
 
     public function logEtudiant($email, $motDePasse)
     {
@@ -777,18 +878,33 @@ class Filiere
     public function addFiliere()
     {
         $pdo = connectToDB();
-        $filiereQuery = "INSERT INTO Filiere (name) VALUES (:name)";
-        $stmt = $pdo->prepare($filiereQuery);
+        $checkQuery = "SELECT COUNT(*) FROM Filiere WHERE name = :name";
+        $insertQuery = "INSERT INTO Filiere (name) VALUES (:name)";
 
         try {
+            // Préparer la requête de vérification
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([':name' => $this->name]);
+            $count = $checkStmt->fetchColumn();
 
-            $stmt->execute([':name' => $this->name]);
+            if ($count > 0) {
+                // Si la filière existe déjà
+                $response = array(
+                    "status" => "Erreur !",
+                    "message" => "Cette filière existe déjà.",
+                    "code" => 0
+                );
+            } else {
+                // Préparer la requête d'insertion
+                $stmt = $pdo->prepare($insertQuery);
+                $stmt->execute([':name' => $this->name]);
 
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
+                $response = array(
+                    "status" => "Sucess !",
+                    "message" => "Donnée enregistrées avec succès !",
+                    "code" => 1
+                );
+            }
         } catch (PDOException $e) {
             $response = array(
                 "status" => "Erreur !",
@@ -802,6 +918,8 @@ class Filiere
         $pdo = null;
         echo json_encode($response);
     }
+
+
     public function totalFiliere()
     {
         $pdo = connectToDB();
@@ -825,8 +943,8 @@ class Filiere
         if ($pdo) {
             $sql = 'SELECT E.id, E.name AS ecuName FROM ecu E 
                 INNER JOIN ue U ON E.id_Ue = U.id 
-                INNER JOIN uefiliere UF ON UF.id_Ue = U.id 
-                WHERE UF.id_filiere = :id_f';
+                INNER JOIN filiere F ON F.id = U.id_filiere 
+                WHERE F.id = :id_f';
 
             $req = $pdo->prepare($sql);
             $req->execute([':id_f' => $id]);
@@ -927,8 +1045,9 @@ class Ue
 {
     protected $name;
     protected $credit;
+    protected $filiere;
 
-    public function __construct($name = null, $credit = null)
+    public function __construct($name = null, $credit = null, $filiere = null)
     {
         if ($name != null) {
             $this->name = $name;
@@ -936,13 +1055,16 @@ class Ue
         if ($credit != null) {
             $this->credit = $credit;
         }
+        if ($filiere != null) {
+            $this->filiere = $filiere;
+        }
     }
 
     public function toutLesUes()
     {
         $pdo = connectToDB();
 
-        $sql = 'SELECT * FROM ue';
+        $sql = 'SELECT U.id, U.name, U.credit, F.name AS fname FROM ue U, filiere F WHERE U.id_filiere = F.id';
         $req = $pdo->prepare($sql);
         $req->execute();
         $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -973,21 +1095,37 @@ class Ue
     public function addUe()
     {
         $pdo = connectToDB();
-        $ueQuery = "INSERT INTO ue (name, credit) VALUES (:name, :credit)";
-        $stmt = $pdo->prepare($ueQuery);
+        $checkQuery = "SELECT COUNT(*) FROM ue WHERE name = :name AND id_filiere = :filiere";
+        $insertQuery = "INSERT INTO ue (name, credit, id_filiere) VALUES (:name, :credit, :filiere)";
 
         try {
+            // Préparer la requête de vérification
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([':name' => $this->name, ':filiere' => $this->filiere]);
+            $count = $checkStmt->fetchColumn();
 
-            $stmt->execute([
-                ':name' => $this->name,
-                ':credit' => $this->credit
-            ]);
+            if ($count > 0) {
+                // Si l'UE existe déjà
+                $response = array(
+                    "status" => "Erreur !",
+                    "message" => "Cette UE existe déjà.",
+                    "code" => 0
+                );
+            } else {
+                // Préparer la requête d'insertion
+                $stmt = $pdo->prepare($insertQuery);
+                $stmt->execute([
+                    ':name' => $this->name,
+                    ':credit' => $this->credit,
+                    ':filiere' => $this->filiere,
+                ]);
 
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
+                $response = array(
+                    "status" => "Sucess !",
+                    "message" => "Donnée enregistrées avec succès !",
+                    "code" => 1
+                );
+            }
         } catch (PDOException $e) {
             $response = array(
                 "status" => "Erreur !",
@@ -1001,6 +1139,7 @@ class Ue
         $pdo = null;
         echo json_encode($response);
     }
+
 
     public function totalUe()
     {
@@ -1073,23 +1212,38 @@ class Ecu
     public function addEcu(int $id_enseignant = null, int $id_ue = null)
     {
         $pdo = connectToDB();
-        $ecuQuery = "INSERT INTO ecu (name, credit, id_enseignant, id_ue) VALUES (:name, :credit, :id_enseignant, :id_ue)";
-        $stmt = $pdo->prepare($ecuQuery);
+        $checkQuery = "SELECT COUNT(*) FROM ecu WHERE name = :name";
+        $insertQuery = "INSERT INTO ecu (name, credit, id_enseignant, id_ue) VALUES (:name, :credit, :id_enseignant, :id_ue)";
 
         try {
+            // Préparer la requête de vérification
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([':name' => $this->name]);
+            $count = $checkStmt->fetchColumn();
 
-            $stmt->execute([
-                ':name' => $this->name,
-                ':credit' => $this->credit,
-                ':id_enseignant' => $id_enseignant,
-                ':id_ue' => $id_ue
-            ]);
+            if ($count > 0) {
+                // Si l'ECU existe déjà
+                $response = array(
+                    "status" => "Erreur !",
+                    "message" => "Cette ECU existe déjà.",
+                    "code" => 0
+                );
+            } else {
+                // Préparer la requête d'insertion
+                $stmt = $pdo->prepare($insertQuery);
+                $stmt->execute([
+                    ':name' => $this->name,
+                    ':credit' => $this->credit,
+                    ':id_enseignant' => $id_enseignant,
+                    ':id_ue' => $id_ue
+                ]);
 
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
+                $response = array(
+                    "status" => "Sucess !",
+                    "message" => "Donnée enregistrées avec succès !",
+                    "code" => 1
+                );
+            }
         } catch (PDOException $e) {
             $response = array(
                 "status" => "Erreur !",
@@ -1103,6 +1257,7 @@ class Ecu
         $pdo = null;
         echo json_encode($response);
     }
+
 
 
     public function totalEcu()
@@ -1168,21 +1323,37 @@ class Departement
     public function addDepartement()
     {
         $pdo = connectToDB();
-
-        $departementQuery = "INSERT INTO departement (name) VALUES (:name)";
-        $stmt = $pdo->prepare($departementQuery);
+        $checkQuery = "SELECT COUNT(*) FROM departement WHERE name = :name";
+        $insertQuery = "INSERT INTO departement (name) VALUES (:name)";
 
         try {
-            $stmt->execute([':name' => $this->name]);
-            $response = array(
-                "status" => "Sucess !",
-                "message" => "Donnée enregistrées avec succès ! ",
-                "code" => 1
-            );
+            // Préparer la requête de vérification
+            $checkStmt = $pdo->prepare($checkQuery);
+            $checkStmt->execute([':name' => $this->name]);
+            $count = $checkStmt->fetchColumn();
+
+            if ($count > 0) {
+                // Si le département existe déjà
+                $response = array(
+                    "status" => "Erreur !",
+                    "message" => "Ce département existe déjà.",
+                    "code" => 0
+                );
+            } else {
+                // Préparer la requête d'insertion
+                $stmt = $pdo->prepare($insertQuery);
+                $stmt->execute([':name' => $this->name]);
+
+                $response = array(
+                    "status" => "Sucess !",
+                    "message" => "Données enregistrées avec succès !",
+                    "code" => 1
+                );
+            }
         } catch (PDOException $e) {
             $response = array(
                 "status" => "Erreur !",
-                "message" => "Echec d'enregistrement de données !",
+                "message" => "Échec d'enregistrement des données !",
                 "code" => 0,
                 "pdoMessage" => $e->getMessage(),
                 "pdoCode" => $e->getCode()
@@ -1192,6 +1363,8 @@ class Departement
         $pdo = null;
         echo json_encode($response);
     }
+
+
     public function totalDepartement()
     {
         $pdo = connectToDB();
@@ -1310,6 +1483,80 @@ class uefiliere
 
         try {
             $stmt->execute([':id_Ue' => $id_Ue, ':id_filiere' => $id_filiere]);
+
+            $response = array(
+                "status" => "Success!",
+                "message" => "Donnée supprimée avec succès!",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur!",
+                "message" => "Échec de la suppression des données!",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
+}
+
+class enseignantfiliere
+{
+    protected $id_Enseignant;
+    protected $id_filiere;
+
+    public function __construct(int $id1 = null, int $id2 = null)
+    {
+        if ($id1 != null) {
+            $this->id_Enseignant = $id1;
+        }
+
+        if ($id2 != null) {
+            $this->id_filiere = $id2;
+        }
+    }
+
+    public function addEnseignantFiliere()
+    {
+        $pdo = connectToDB();
+        $req = "INSERT INTO enseignantfiliere (id_Enseignant,id_filiere) VALUES (:id_Enseignant, :id_filiere)";
+        $stmt = $pdo->prepare($req);
+
+        try {
+
+            $stmt->execute([':id_Enseignant' => $this->id_Enseignant, ':id_filiere' => $this->id_filiere]);
+
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès ! ",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
+
+    public function deleteEnseignantFiliere(int $id_Enseignant, int $id_filiere)
+    {
+        $pdo = connectToDB();
+        $req = "DELETE FROM enseignantfiliere WHERE id_Enseignant = :id_Enseignant AND id_filiere = :id_filiere";
+        $stmt = $pdo->prepare($req);
+
+        try {
+            $stmt->execute([':id_Enseignant' => $id_Enseignant, ':id_filiere' => $id_filiere]);
 
             $response = array(
                 "status" => "Success!",

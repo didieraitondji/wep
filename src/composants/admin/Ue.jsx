@@ -3,13 +3,17 @@ import { loadGetData, loadPostData, childCliked } from '../Fonctions';
 
 export default function Ue() {
     const [filieres, setFilieres] = useState([]);
+    const [ues, setUes] = useState([]);
     const [totalFiliere, setTotalFiliere] = useState([]);
     const [postData, setPostData] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [formData, setFormeData] = useState("");
+    const [formData2, setFormeData2] = useState("");
+    const [formData3, setFormeData3] = useState("");
 
     useEffect(() => {
-        loadGetData('ues', setFilieres);
+        loadGetData('ues', setUes);
+        loadGetData('filieres', setFilieres);
         loadGetData('total/ue', setTotalFiliere);
     }, []);
 
@@ -17,10 +21,12 @@ export default function Ue() {
     const handleAddFiliere = (e) => {
         const data = {
             name: formData,
+            credit: formData2,
+            filiere: formData3,
         }
 
         loadPostData('ue', data, setPostData, () => {
-            loadGetData('ues', setFilieres);
+            loadGetData('ues', setUes);
             loadGetData('total/ue', setTotalFiliere);
             setConfirm(!confirm);
         });
@@ -30,6 +36,8 @@ export default function Ue() {
         e.preventDefault();
         setConfirm(!confirm);
         setFormeData(document.getElementById("nameue").value);
+        setFormeData2(document.getElementById("creditNumber").value);
+        setFormeData3(document.getElementById("filieresel").value);
     }
 
     return (
@@ -47,18 +55,30 @@ export default function Ue() {
                         </span>
                     </div>
                     <div className='border border-c1 text-c3'>
-                        <div className=' grid grid-cols-[80px_1fr] font-bold bg-c1'>
+                        <div className=' grid grid-cols-[80px_1fr_1fr_1fr] font-bold bg-c1'>
                             <span className='text-center border border-c1 p-2'>N°</span>
                             <span className='p-2 border border-c1'>
                                 Libellé
                             </span>
+                            <span className='p-2 border border-c1'>
+                                Crédit
+                            </span>
+                            <span className='p-2 border border-c1'>
+                                Filière
+                            </span>
                         </div>
                         {
-                            filieres.map((item, index) => (
-                                <div key={item.id} className='grid grid-cols-[80px_1fr] font-bold'>
+                            ues.map((item, index) => (
+                                <div key={item.id} className='grid grid-cols-[80px_1fr_1fr_1fr] font-bold'>
                                     <span className='flex items-center text-center bg-c2 border border-c1 p-2'>{index + 1}</span>
                                     <span className='flex items-center bg-c2 p-2 border border-c1'>
                                         {item.name}
+                                    </span>
+                                    <span className='flex items-center bg-c2 p-2 border border-c1'>
+                                        {item.credit}
+                                    </span>
+                                    <span className='flex items-center bg-c2 p-2 border border-c1'>
+                                        {item.fname}
                                     </span>
                                 </div>
                             ))
@@ -74,6 +94,22 @@ export default function Ue() {
                             <div className='flex flex-row items-center'>
                                 <label htmlFor="" className='w-1/3 text-center'>Nom :</label>
                                 <input type="text" name='name' className='border border-c3 w-2/3 p-2 rounded-lg text-sm' autoComplete='on' id='nameue' required placeholder="entrer le nom de l'UE" />
+                            </div>
+                            <div className='flex flex-row items-center mt-8'>
+                                <label htmlFor="" className='w-1/3 text-center'>Crédit :</label>
+                                <input min={1} type="number" name='credit' className='border border-c3 w-2/3 p-2 rounded-lg text-sm' autoComplete='on' id='creditNumber' required placeholder="entrer le crédit" />
+                            </div>
+                            <div className='flex flex-row items-center mt-8'>
+                                <label htmlFor="" className='w-1/3 text-center'>Filière :</label>
+
+                                <select name="filieressel" id="filieresel" className='border border-c3 w-2/3 p-2 rounded-lg text-sm' required >
+                                    <option value=""> Choisissez la filière </option>
+                                    {
+                                        filieres.map((item) => (
+                                            <option key={item.id} value={item.id}>{item.name}</option>
+                                        ))
+                                    }
+                                </select>
                             </div>
                             <div className='flex flex-row pt-5'>
                                 <span className='w-1/3'></span>
