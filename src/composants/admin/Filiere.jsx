@@ -65,22 +65,26 @@ export default function Filiere() {
                             </span>
                         </div>
                         <div className='border border-c1 text-c3'>
-                            <div className=' grid grid-cols-[80px_1fr] font-bold bg-c1'>
-                                <span className='text-center border border-c1 p-2'>N°</span>
-                                <span className='p-2 border border-c1'>
-                                    Libellé
-                                </span>
-                            </div>
-                            {
-                                filieres.map((item, index) => (
-                                    <div key={item.id} className='grid grid-cols-[80px_1fr] font-bold'>
-                                        <span className='flex items-center justify-center text-center border bg-c2 border-c1 p-2'>{index + 1}</span>
-                                        <span className='p-2 border border-c1 bg-c2 flex items-center'>
-                                            {item.name}
-                                        </span>
-                                    </div>
-                                ))
-                            }
+                            <table className='w-[100%]'>
+                                <thead>
+                                    <tr className='bg-c1'>
+                                        <th className='p-2'>N°</th>
+                                        <th className='p-2 text-left'>Libellé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        filieres.map((item, index) => (
+                                            <tr key={item.id} className='border border-c1 bg-c2'>
+                                                <td className='border-c1 p-2 text-center'>{index + 1}</td>
+                                                <td className='p-2 border border-c1'>
+                                                    {item.name}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

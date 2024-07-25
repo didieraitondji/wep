@@ -73,34 +73,28 @@ export default function EcuAdmin() {
               </span>
             </div>
             <div className='border border-c1 text-c3'>
-              <div className=' grid grid-cols-[80px_1fr_1fr_1fr] font-bold bg-c1'>
-                <span className='text-center border border-c1 p-2'>N°</span>
-                <span className='p-2 border border-c1'>
-                  Libellé
-                </span>
-                <span className='p-2 border border-c1'>
-                  Crédit
-                </span>
-                <span className='p-2 border border-c1'>
-                  UE & Filiere
-                </span>
-              </div>
-              {
-                ecus.map((item, index) => (
-                  <div key={item.id} className='grid grid-cols-[80px_1fr_1fr_1fr] font-bold'>
-                    <span className='flex items-center justify-center text-center border bg-c2 border-c1 p-2'>{index + 1}</span>
-                    <span className='p-2 border border-c1 bg-c2 flex items-center'>
-                      {item.ecuname}
-                    </span>
-                    <span className='p-2 border border-c1 bg-c2 flex items-center'>
-                      {item.credit}
-                    </span>
-                    <span className='p-2 border border-c1 bg-c2 flex items-center'>
-                      {item.uename + ", " + item.fname}
-                    </span>
-                  </div>
-                ))
-              }
+              <table className='w-[100%] border border-collapse'>
+                <thead>
+                  <tr className='font-bold bg-c1'>
+                    <th className='p-2 text-center'>N°</th>
+                    <th className='p-2 text-left'>Libellé</th>
+                    <th className='p-2 text-left'>Crédit</th>
+                    <th className='p-2 text-left'>UE & Filiere</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    ecus.map((item, index) => (
+                      <tr className='border border-c1 bg-c2' key={item.id}>
+                        <td className='p-2 text-center border border-c1'>{index + 1}</td>
+                        <td className='p-2 border border-c1'>{item.ecuname}</td>
+                        <td className='p-2 border border-c1'>{item.credit}</td>
+                        <td className='p-2 border border-c1'>{item.uename + ", " + item.fname}</td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
