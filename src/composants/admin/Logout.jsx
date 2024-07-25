@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { childCliked } from '../Fonctions';
 
 export default function LogoutAdmin() {
     const navigate = useNavigate();
@@ -12,10 +13,6 @@ export default function LogoutAdmin() {
     const handleOkay = () => {
         localStorage.removeItem("userData");
         navigate("/admin-connexion/");
-    }
-
-    const childCliked = (e) => {
-        e.stopPropagation();
     }
 
     return (

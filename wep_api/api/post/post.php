@@ -65,6 +65,7 @@ if (empty($url[0])) {
         case 'enseignantfiliere':
             $efiliere = new enseignantfiliere($data['id_Enseignant'], $data['id_filiere']);
             $efiliere->addEnseignantFiliere();
+            break;
         case 'ecu':
             $ecu = new Ecu($data['name'], $data['credit'], $data['id_Ue']);
             $ecu->addEcu();

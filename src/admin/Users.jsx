@@ -5,6 +5,7 @@ import TopBarAdmin from '../composants/admin/TopBar';
 import AddEnseignant from '../composants/admin/AddEnseignant';
 import AddEtudiant from '../composants/admin/AddEtudiant';
 import EnseignantFiliere from '../composants/admin/EnseignantFiliere';
+import EnseignantUe from '../composants/admin/EnseignantUe';
 
 export default function Utilisateurs() {
 
@@ -102,6 +103,8 @@ export default function Utilisateurs() {
                             isEF && (
                                 <div>
                                     <EnseignantFiliere />
+                                    <br />
+                                    <EnseignantUe />
                                 </div>
                             )
                         }

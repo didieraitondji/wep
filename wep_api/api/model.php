@@ -842,7 +842,6 @@ class Filiere
             $this->name = $name;
         }
     }
-
     public function toutLesFiliere()
     {
         $pdo = connectToDB();
@@ -858,7 +857,6 @@ class Filiere
         echo $jsonData;
         $pdo = null;
     }
-
     public function uneFiliere($id)
     {
         $pdo = connectToDB();
@@ -874,7 +872,6 @@ class Filiere
         echo $jsonData;
         $pdo = null;
     }
-
     public function addFiliere()
     {
         $pdo = connectToDB();
@@ -918,8 +915,6 @@ class Filiere
         $pdo = null;
         echo json_encode($response);
     }
-
-
     public function totalFiliere()
     {
         $pdo = connectToDB();
@@ -935,7 +930,6 @@ class Filiere
         echo json_encode(["total" => count($filiere), "type" => "Filière (s)"]);
         $pdo = null; // Fermer la connexion
     }
-
     public function ecusFiliere(int $id)
     {
         $pdo = connectToDB();
@@ -965,7 +959,6 @@ class Filiere
             echo json_encode(['error' => 'Erreur de connexion à la base de données']);
         }
     }
-
     public function uesFiliere(int $id)
     {
         try {
@@ -1000,7 +993,6 @@ class Filiere
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
-
     public function nuesFiliere(int $id)
     {
         try {
@@ -1176,7 +1168,6 @@ class Ecu
             $this->ue = $ue;
         }
     }
-
     public function toutLesEcu()
     {
         $pdo = connectToDB();
@@ -1194,7 +1185,6 @@ class Ecu
         echo $jsonData;
         $pdo = null;
     }
-
     public function unEcu($id)
     {
         $pdo = connectToDB();
@@ -1210,7 +1200,6 @@ class Ecu
         echo $jsonData;
         $pdo = null;
     }
-
     public function addEcu()
     {
         $pdo = connectToDB();
@@ -1258,9 +1247,6 @@ class Ecu
         $pdo = null;
         echo json_encode($response);
     }
-
-
-
     public function totalEcu()
     {
         $pdo = connectToDB();
@@ -1523,8 +1509,9 @@ class enseignantfiliere
 
     public function addEnseignantFiliere()
     {
+
         $pdo = connectToDB();
-        $req = "INSERT INTO enseignantfiliere (id_Enseignant,id_filiere) VALUES (:id_Enseignant, :id_filiere)";
+        $req = "INSERT INTO enseignantfiliere (id_Enseignant, id_filiere) VALUES (:id_Enseignant, :id_filiere)";
         $stmt = $pdo->prepare($req);
 
         try {

@@ -3,8 +3,7 @@ import { loadDeleteData, loadGetData, loadPostData } from '../Fonctions';
 import Loader from '../Loader';
 import Succefful from '../Succefful';
 
-export default function EnseignantFiliere() {
-
+export default function EnseignantUe() {
     const [enseignants, setEnseignants] = useState([]);
     const [filiereEnseignant, setFiliereEnseignant] = useState([])
     const [nfiliereEnseignant, setNFiliereEnseignant] = useState([])

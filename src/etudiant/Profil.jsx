@@ -34,9 +34,7 @@ export default function ProfilEtudiant() {
     return (
         <>
             <div className='font-poppins'>
-                <div className='bg-c3 fixed left-0 top-0 bottom-0 w-[80px] px-2 py-2'>
-                    <MenuEtudiant page={"profil"} />
-                </div>
+                
                 <div className='bg-c1 fixed left-[80px] right-0 top-0 h-[54px]'>
                     <TopBarEtudiant text={"Profil Personel"} prenom={userData.firstName} />
                 </div>
@@ -44,6 +42,9 @@ export default function ProfilEtudiant() {
                     {
                         // le corps de chaque page restera dans ce div juste après l'accollade suivante 
                     }
+                </div>
+                <div className='bg-c3 fixed left-0 top-0 bottom-0 w-[80px] px-2 py-2'>
+                    <MenuEtudiant page={"profil"} />
                 </div>
             </div>
         </>
