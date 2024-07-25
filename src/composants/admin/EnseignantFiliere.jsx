@@ -19,11 +19,16 @@ export default function EnseignantFiliere() {
     const [loadAdd, setLoadAdd] = useState(false);
     const [loadMov, setLoadMov] = useState(false);
 
+    const [idEnseignantSelAdd, setidEnseignantSelAdd] = useState("");
+    const [idEnseignantSelMov, setidEnseignantSelMov] = useState("");
+
     const handleFiliereEnseignant = () => {
         let valeur = document.getElementById("idEnseignant").value;
         if (valeur != "") {
 
             setAutoAdd(true);
+
+            setidEnseignantSelAdd(valeur);
 
             let chemin1 = "enseignant/" + valeur + "/filieres/";
             let chemin2 = "enseignant/" + valeur + "/nfilieres/";
@@ -41,6 +46,7 @@ export default function EnseignantFiliere() {
         let valeur = document.getElementById("idEnseignant2").value;
         if (valeur != "") {
             setAutoMov(true);
+            setidEnseignantSelMov(valeur);
             let chemin1 = "enseignant/" + valeur + "/filieres/";
             loadGetData(chemin1, setFiliereEnseignant2);
         }
@@ -61,13 +67,11 @@ export default function EnseignantFiliere() {
         let val1 = document.getElementById("idEnseignant").value;
         let val2 = document.getElementById("filiereEn").value;
 
-        let val3 = document.getElementById("idEnseignant2").value;
-
         let chemin1 = "enseignant/" + val1 + "/filieres/";
         let chemin2 = "enseignant/" + val1 + "/nfilieres/";
 
-        let chemin3 = "enseignant/" + val3 + "/filieres/";
-        let chemin4 = "enseignant/" + val3 + "/nfilieres/";
+        let chemin3 = "enseignant/" + idEnseignantSelMov + "/filieres/";
+        let chemin4 = "enseignant/" + idEnseignantSelMov + "/nfilieres/";
 
         if (val1 != "" && val2 != "") {
             const data = {
@@ -78,7 +82,7 @@ export default function EnseignantFiliere() {
             loadPostData("enseignantfiliere/", data, setAddData, () => {
                 loadGetData(chemin1, setFiliereEnseignant);
                 loadGetData(chemin2, setNFiliereEnseignant);
-                if (val3 != "") {
+                if (idEnseignantSelMov != "") {
                     loadGetData(chemin3, setFiliereEnseignant2);
                     loadGetData(chemin4, setNFiliereEnseignant2);
                 }
@@ -96,13 +100,12 @@ export default function EnseignantFiliere() {
         e.preventDefault();
         let val1 = document.getElementById("idEnseignant2").value;
         let val2 = document.getElementById("filiereEn2").value;
-        let val3 = document.getElementById("idEnseignant").value;
-        let val4 = document.getElementById("filiereEn").value;
 
         let chemin1 = "enseignant/" + val1 + "/filieres/";
         let chemin2 = "enseignant/" + val1 + "/nfilieres/";
-        let chemin3 = "enseignant/" + val1 + "/filieres/";
-        let chemin4 = "enseignant/" + val1 + "/nfilieres/";
+
+        let chemin3 = "enseignant/" + idEnseignantSelAdd + "/filieres/";
+        let chemin4 = "enseignant/" + idEnseignantSelAdd + "/nfilieres/";
 
         if (val1 != "" && val2 != "") {
             const data = {
@@ -114,8 +117,11 @@ export default function EnseignantFiliere() {
                 loadGetData(chemin1, setFiliereEnseignant2);
                 loadGetData(chemin2, setNFiliereEnseignant2);
 
-                loadGetData(chemin3, setFiliereEnseignant);
-                loadGetData(chemin4, setNFiliereEnseignant);
+                if (idEnseignantSelAdd) {
+                    loadGetData(chemin3, setFiliereEnseignant);
+                    loadGetData(chemin4, setNFiliereEnseignant);
+                }
+
             });
 
             setInterval(() => {
@@ -129,7 +135,14 @@ export default function EnseignantFiliere() {
     // retour HTML
     return (
         <>
-            <div className='h-full bg-c5 pt-6 flex flex-row flex-wrap'>
+            <div className='h-full bg-c5 pt-6 flex flex-row flex-wrap shadow-lg rounded-xl border border-c3'>
+
+                <div className='text-center w-[100%] mb-4 px-4'>
+                    <div className='bg-c3 py-5 px-3 text-c1 font-bold text-2xl'>
+                        Attribution & Restriction de Filières
+                    </div>
+                </div>
+
                 <div className=' w-[100%] lg:w-1/2 px-4 mb-8'>
                     <div className='bg-c3 pb-1 rounded-xl'>
                         <div className='bg-c1 px-2 py-3 font-bold rounded-xl'>
@@ -140,7 +153,7 @@ export default function EnseignantFiliere() {
                         <div className='px-2 py-5'>
                             <form onSubmit={handleAddEnseignantFiliere} className='py-4 flex flex-col px-5'>
                                 <div className='px-3 py-3'>
-                                    <select name="idEnseignant" id="idEnseignant" className='p-2 w-[100%] cursor-pointer rounded-full' onChange={handleFiliereEnseignant} >
+                                    <select name="idEnseignant" id="idEnseignant" className='p-2 w-[100%] cursor-pointer rounded-full' onChange={handleFiliereEnseignant} required>
                                         <option value="">Choisissez l'enseignant</option>
                                         {
                                             enseignants.map((item) => (
@@ -152,7 +165,7 @@ export default function EnseignantFiliere() {
 
                                 <div className='flex flex-wrap pt-5 pb-5'>
                                     <div className='w-1/2 px-3'>
-                                        <select name="filiereEn" id="filiereEn" className='w-[100%] p-2 cursor-pointer rounded-full'>
+                                        <select name="filiereEn" id="filiereEn" className='w-[100%] p-2 cursor-pointer rounded-full' required>
                                             <option value="">Choisissez la filière</option>
                                             {
                                                 autoAdd && nfiliereEnseignant.map((item) => (
@@ -197,7 +210,7 @@ export default function EnseignantFiliere() {
                         <div className='px-2 py-5'>
                             <form onSubmit={handleMovEnseignantFiliere} className="py-4 flex flex-col px-5">
                                 <div className='px-3 py-3'>
-                                    <select name="filieresb" id="idEnseignant2" className='p-2 w-[100%] cursor-pointer rounded-full' onChange={handleFiliereEnseignant2}>
+                                    <select name="filieresb" id="idEnseignant2" className='p-2 w-[100%] cursor-pointer rounded-full' onChange={handleFiliereEnseignant2} required>
                                         <option value="">Choisissez l'Enseignant</option>
                                         {
                                             enseignants.map((item) => (
@@ -208,7 +221,7 @@ export default function EnseignantFiliere() {
                                 </div>
                                 <div className='flex flex-wrap pt-5 pb-5'>
                                     <div className="w-1/2 px-3">
-                                        <select name="ecub" id="filiereEn2" className='p-2 w-[100%] rounded-full cursor-pointer'>
+                                        <select name="ecub" id="filiereEn2" className='p-2 w-[100%] rounded-full cursor-pointer' required>
                                             <option value=""> Choisissez la filière </option>
                                             {
                                                 autoMov && filiereEnseignant2.map((item) => (

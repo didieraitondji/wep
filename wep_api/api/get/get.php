@@ -29,14 +29,45 @@ switch (strtolower($url[0])) {
                     case 'filieres':
                         $enseignant->filieresEnseignants($url[1]);
                         break;
+                    case 'filiere':
+                        if (!empty($url[3])) {
+                            switch (strtolower($url[4])) {
+                                case 'ecus':
+                                    $enseignant->ecusEnseignants($url[1], $url[3]);
+                                    break;
+                                case 'necus':
+                                    $enseignant->necusEnseignants($url[1], $url[3]);
+                                    break;
+                                default:
+                                    $jsonData = json_encode(array(
+                                        "status" => "Erreur",
+                                        "message" => "Identifiant invalide",
+                                        "code" => 0
+                                    ));
+                                    break;
+                            }
+                        } else {
+                            $jsonData = json_encode(array(
+                                "status" => "Erreur",
+                                "message" => "Identifiant invalide",
+                                "code" => 0
+                            ));
+                        }
+                        break;
                     case 'nfilieres':
                         $enseignant->nfilieresEnseignants($url[1]);
+                        break;
+                    case 'ecus':
+                        $enseignant->ecusEnseignants($url[1]);
+                        break;
+                    case 'necus':
+                        $enseignant->necusEnseignants($url[1]);
                         break;
                     default:
                         $jsonData = json_encode(array(
                             "status" => "Erreur",
                             "message" => "Identifiant invalide",
-                            "code" => 1
+                            "code" => 0
                         ));
                         echo $jsonData;
                 }

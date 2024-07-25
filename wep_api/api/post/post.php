@@ -81,6 +81,10 @@ if (empty($url[0])) {
             $departement = new Departement($data["name"]);
             $departement->addDepartement();
             break;
+        case 'enseignantecu':
+            $en = new Enseignant();
+            $en->addEcueEnseignant($data['id_Enseignant'], $data['id_ecue']);
+            break;
         default:
             echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
             break;

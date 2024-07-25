@@ -270,6 +270,77 @@ class Enseignant extends Utilisateur
             }
         }
     }
+    public function ecusEnseignants($id1, $id2)
+    {
+        try {
+            $pdo = connectToDB();
+
+            $sql = 'SELECT E.id, E.id_Enseignant, EF.id_Enseignant AS efId, E.name AS ename, U.name AS uname, F.name AS fname FROM ecu E
+                    INNER JOIN ue U ON E.id_Ue = U.id
+                    INNER JOIN filiere F ON U.id_filiere = F.id
+                    INNER JOIN enseignantfiliere EF ON F.id = EF.id_filiere
+                    WHERE E.id_Enseignant IS NOT NULL AND EF.id_Enseignant = :id_f1 AND F.id = :id_f2';
+
+            $req = $pdo->prepare($sql);
+            $req->execute([':id_f1' => $id1, ':id_f2' => $id2]);
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            // Encoder en JSON et envoyer la réponse
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            // Fermer la connexion à la base de données
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
+    public function necusEnseignants($id_en, $id_filiere)
+    {
+        try {
+            $pdo = connectToDB();
+
+            $sql = 'SELECT E.id, E.id_Enseignant, EF.id_Enseignant AS efId, E.name AS ename, U.name AS uname, F.name AS fname FROM ecu E
+                    INNER JOIN ue U ON E.id_Ue = U.id
+                    INNER JOIN filiere F ON U.id_filiere = F.id
+                    INNER JOIN enseignantfiliere EF ON F.id = EF.id_filiere
+                    WHERE E.id_Enseignant IS NULL AND EF.id_Enseignant = :id_f1 AND F.id = :id_f2';
+
+            $req = $pdo->prepare($sql);
+            //$req->execute([':id_f1' => $id1, ':id_f2' => $id2]);
+            $req->execute([':id_f1' => $id_en, ':id_f2' => $id_filiere]);
+            //$req->execute([':id_f1' => $id_en]);
+            $req->execute();
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            // Encoder en JSON et envoyer la réponse
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            // Fermer la connexion à la base de données
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
 
     public function nfilieresEnseignants($id)
     {
@@ -350,6 +421,77 @@ class Enseignant extends Utilisateur
         header('Content-Type: application/json');
         echo json_encode(["total" => count($enseignant), "type" => "enseignant (s) "]);
         $pdo = null; // Fermer la connexion
+    }
+
+    public function addEcueEnseignant($id_enseignant, $id_ecue)
+    {
+        $pdo = connectToDB();
+
+        $sql = "UPDATE ecu E SET E.id_Enseignant = :id_f1 WHERE E.id = :id_f2";
+        $checkStmt = $pdo->prepare($sql);
+
+        try {
+            $checkStmt->execute([":id_f1" => $id_enseignant, ":id_f2" => $id_ecue]);
+            $response = array(
+                "status" => "Sucess !",
+                "message" => "Donnée enregistrées avec succès !",
+                "code" => 1
+            );
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur !",
+                "message" => "Echec d'enregistrement de données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        $pdo = null;
+        echo json_encode($response);
+    }
+
+    public function deleteEcueEnseignant($id_enseignant, $id_ecue)
+    {
+        $pdo = connectToDB();
+
+        // Préparation de la requête de mise à jour
+        $sql = "UPDATE ecu E SET E.id_Enseignant = NULL WHERE E.id = :id_ecue AND E.id_Enseignant = :id_enseignant";
+        $checkStmt = $pdo->prepare($sql);
+
+        try {
+            // Exécution de la requête avec les paramètres
+            $checkStmt->bindParam(':id_ecue', $id_ecue, PDO::PARAM_INT);
+            $checkStmt->bindParam(':id_enseignant', $id_enseignant, PDO::PARAM_INT);
+            $checkStmt->execute();
+
+            // Vérification du nombre de lignes affectées
+            if ($checkStmt->rowCount() > 0) {
+                $response = array(
+                    "status" => "Success",
+                    "message" => "Donnée mise à jour avec succès !",
+                    "code" => 1
+                );
+            } else {
+                $response = array(
+                    "status" => "Erreur",
+                    "message" => "Aucune donnée mise à jour. Vérifiez les identifiants fournis.",
+                    "code" => 0
+                );
+            }
+        } catch (PDOException $e) {
+            $response = array(
+                "status" => "Erreur",
+                "message" => "Echec de la mise à jour des données !",
+                "code" => 0,
+                "pdoMessage" => $e->getMessage(),
+                "pdoCode" => $e->getCode()
+            );
+        }
+
+        // Fermeture de la connexion à la base de données
+        $pdo = null;
+        echo json_encode($response);
     }
 }
 

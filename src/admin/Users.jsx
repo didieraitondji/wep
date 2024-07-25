@@ -101,7 +101,7 @@ export default function Utilisateurs() {
                         {
                             // ajouter etudiant
                             isEF && (
-                                <div>
+                                <div className='px-3 pt-10'>
                                     <EnseignantFiliere />
                                     <br />
                                     <EnseignantUe />

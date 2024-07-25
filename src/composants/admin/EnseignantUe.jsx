@@ -4,158 +4,246 @@ import Loader from '../Loader';
 import Succefful from '../Succefful';
 
 export default function EnseignantUe() {
-    const [enseignants, setEnseignants] = useState([]);
-    const [filiereEnseignant, setFiliereEnseignant] = useState([])
-    const [nfiliereEnseignant, setNFiliereEnseignant] = useState([])
-    const [autoAdd, setAutoAdd] = useState(false);
-    const [autoMov, setAutoMov] = useState(false);
 
-    const [filiereEnseignant2, setFiliereEnseignant2] = useState([])
-    const [nfiliereEnseignant2, setNFiliereEnseignant2] = useState([])
-
-    const [addData, setAddData] = useState(false);
-    const [movData, setMovData] = useState(false);
     const [loadAdd, setLoadAdd] = useState(false);
     const [loadMov, setLoadMov] = useState(false);
+    const [addData, setAddData] = useState(false);
+    const [movData, setMovData] = useState(false);
 
-    const handleFiliereEnseignant = () => {
-        let valeur = document.getElementById("idEnseignant").value;
-        if (valeur != "") {
+    const [allEnseignant, setAllEnseignant] = useState([]);
+    const [filieresDeEnseignant, setFiliereDeEnseignant] = useState([]);
 
-            setAutoAdd(true);
+    const [idAddFiliere, setIdAddFiliere] = useState("");
+    const [idAddEcue, setIdAddEcue] = useState("");
 
-            let chemin1 = "enseignant/" + valeur + "/filieres/";
-            let chemin2 = "enseignant/" + valeur + "/nfilieres/";
+    const [idMovFiliere, setIdMovFiliere] = useState("");
+    const [idMovEcue, setIdMovEcue] = useState("");
 
-            loadGetData(chemin1, setFiliereEnseignant);
-            loadGetData(chemin2, setNFiliereEnseignant);
-        }
-        else {
-            setAutoAdd(false);
-        }
-    }
+    // fonction pour pour mettre à jours les filières
+    // fonction 1
+    const [addECUEFilieres, setAddECUEFiliere] = useState([]);
+    const [addECUEecue, setAddECUEecue] = useState([]);
+    const [addECUENecue, setAddECUENecue] = useState([]);
 
-    // fonction qui s'exécute pour le retrait de filière
-    const handleFiliereEnseignant2 = () => {
-        let valeur = document.getElementById("idEnseignant2").value;
-        if (valeur != "") {
-            setAutoMov(true);
-            let chemin1 = "enseignant/" + valeur + "/filieres/";
-            loadGetData(chemin1, setFiliereEnseignant2);
-        }
-        else {
-            setAutoMov(false);
+    const handleUpdateAddECUEFilieres = (e) => {
+        let id = e.target.value;
+        if (id != "") {
+            setIdAddFiliere(id);
+            let chemin = "enseignant/" + id + "/filieres/";
+            loadGetData(chemin, setAddECUEFiliere);
         }
     }
 
-    // chargement par défaut avant le chargement du composant
+    const handleUpdateAddECUEecue = (e) => {
+        let id = e.target.value;
+        if (id != "") {
+            setIdAddEcue(id);
+            let chemin1 = "enseignant/" + idAddFiliere + "/filiere/" + id + "/ecus";
+            let chemin2 = "enseignant/" + idAddFiliere + "/filiere/" + id + "/necus";
+
+            console.log(chemin1);
+            console.log(chemin2);
+
+            loadGetData(chemin1, setAddECUEecue);
+            loadGetData(chemin2, setAddECUENecue);
+        }
+    }
+
     useEffect(() => {
-        loadGetData('enseignants', setEnseignants);
-    }, [filiereEnseignant, nfiliereEnseignant])
 
-    // fonction qui se charge pour ajouter de filière à un enseignant
-    const handleAddEnseignantFiliere = (e) => {
+    }, [addECUEecue, addECUENecue]);
+
+    useEffect(() => {
+
+    }, [addECUEFilieres]);
+
+    // fonction appelée à l'envois deu formulaire
+    const handleAddEcueEnseignant = (e) => {
         e.preventDefault();
 
-        let val1 = document.getElementById("idEnseignant").value;
-        let val2 = document.getElementById("filiereEn").value;
+        setLoadAdd(true);
 
-        let val3 = document.getElementById("idEnseignant2").value;
+        // récupération de l'id de l'ecu
+        let idEcue = document.getElementById("ecueId").value;
 
-        let chemin1 = "enseignant/" + val1 + "/filieres/";
-        let chemin2 = "enseignant/" + val1 + "/nfilieres/";
+        if (idEcue != "") {
 
-        let chemin3 = "enseignant/" + val3 + "/filieres/";
-        let chemin4 = "enseignant/" + val3 + "/nfilieres/";
-
-        if (val1 != "" && val2 != "") {
             const data = {
-                id_Enseignant: val1,
-                id_filiere: val2,
+                id_ecue: idEcue,
+                id_Enseignant: idAddFiliere,
             }
 
-            loadPostData("enseignantfiliere/", data, setAddData, () => {
-                loadGetData(chemin1, setFiliereEnseignant);
-                loadGetData(chemin2, setNFiliereEnseignant);
-                if (val3 != "") {
-                    loadGetData(chemin3, setFiliereEnseignant2);
-                    loadGetData(chemin4, setNFiliereEnseignant2);
+            let chemin1 = "enseignant/" + idAddFiliere + "/filiere/" + idAddEcue + "/ecus";
+            let chemin2 = "enseignant/" + idAddFiliere + "/filiere/" + idAddEcue + "/necus";
+
+            let chemin3 = "enseignant/" + idMovFiliere + "/filiere/" + idMovEcue + "/ecus";
+
+            loadPostData("enseignantecu/", data, setAddData, () => {
+                loadGetData(chemin1, setAddECUEecue);
+                loadGetData(chemin2, setAddECUENecue);
+
+                if (idMovFiliere != "" && idMovEcue != "") {
+                    loadGetData(chemin3, setMovECUEecue);
                 }
             });
+        }
 
-            setInterval(() => {
-                setAddData(false);
-                setLoadAdd(false);
-            }, 1500);
+        setInterval(() => {
+            setAddData(false);
+            setLoadAdd(false);
+        }, 2000);
+    }
+
+
+
+
+
+
+
+
+
+    // fonction 2
+    const [movECUEFiliere, setMovECUEFiliere] = useState([]);
+    const [movECUEecue, setMovECUEecue] = useState([]);
+
+    const handleUpdateMovECUEFilieres = (e) => {
+        let id = e.target.value;
+        if (id != "") {
+            setIdMovFiliere(id);
+            let chemin = "enseignant/" + id + "/filieres/";
+            loadGetData(chemin, setMovECUEFiliere);
         }
     }
 
-    // fonction pour retirer de filière à un enseignant
-    const handleMovEnseignantFiliere = (e) => {
+
+    const handleUpdateMovECUEecue = (e) => {
+        let id = e.target.value;
+        if (id != "") {
+            setIdMovEcue(id);
+            let chemin = "enseignant/" + idMovFiliere + "/filiere/" + id + "/ecus";
+            loadGetData(chemin, setMovECUEecue);
+        }
+    }
+
+    useEffect(() => {
+
+    }, [movECUEecue]);
+
+    useEffect(() => {
+
+    }, [movECUEFiliere]);
+
+    // fonctions pour mettre à jour les ECUE
+    const handleMovEcueEnseignant = (e) => {
         e.preventDefault();
-        let val1 = document.getElementById("idEnseignant2").value;
-        let val2 = document.getElementById("filiereEn2").value;
-        let val3 = document.getElementById("idEnseignant").value;
-        let val4 = document.getElementById("filiereEn").value;
 
-        let chemin1 = "enseignant/" + val1 + "/filieres/";
-        let chemin2 = "enseignant/" + val1 + "/nfilieres/";
-        let chemin3 = "enseignant/" + val1 + "/filieres/";
-        let chemin4 = "enseignant/" + val1 + "/nfilieres/";
+        setLoadMov(true);
+        // récupération de l'id de l'ecu
+        let idEcue = document.getElementById("ecueId2").value;
 
-        if (val1 != "" && val2 != "") {
+        if (idEcue != "") {
+
             const data = {
-                id_Enseignant: val1,
-                id_filiere: val2,
+                id_ecue: idEcue,
+                id_Enseignant: idMovFiliere,
             }
 
-            loadDeleteData("enseignantfiliere/", data, setMovData, () => {
-                loadGetData(chemin1, setFiliereEnseignant2);
-                loadGetData(chemin2, setNFiliereEnseignant2);
+            let chemin1 = "enseignant/" + idMovFiliere + "/filiere/" + idMovEcue + "/ecus";
 
-                loadGetData(chemin3, setFiliereEnseignant);
-                loadGetData(chemin4, setNFiliereEnseignant);
+            let chemin2 = "enseignant/" + idAddFiliere + "/filiere/" + idAddEcue + "/ecus";
+            let chemin3 = "enseignant/" + idAddFiliere + "/filiere/" + idAddEcue + "/necus";
+
+            loadDeleteData("enseignantecu/", data, setMovData, () => {
+                loadGetData(chemin1, setMovECUEecue);
+                if (idAddFiliere != "" && idAddEcue != "") {
+                    loadGetData(chemin2, setAddECUEecue);
+                    loadGetData(chemin3, setAddECUENecue);
+                }
             });
-
-            setInterval(() => {
-                setMovData(false);
-                setLoadMov(false);
-            }, 1500);
         }
+
+        setInterval(() => {
+            setMovData(false);
+            setLoadMov(false);
+        }, 2000);
     }
+
+
+
+    // configuration des userEffect 
+
+    useEffect(() => {
+        loadGetData("enseignants", setAllEnseignant);
+    }, [])
 
 
     // retour HTML
     return (
         <>
-            <div className='h-full bg-c5 pt-6 flex flex-row flex-wrap'>
+            <div className='h-full bg-c5 pt-6 flex flex-row flex-wrap shadow-lg rounded-xl border border-c3'>
+                <div className='text-center w-[100%] mb-4 px-4'>
+                    <div className='bg-c3 py-5 px-3 text-c1 font-bold text-2xl'>
+                        Attribution & Restriction d'ECUE
+                    </div>
+                </div>
+
                 <div className=' w-[100%] lg:w-1/2 px-4 mb-8'>
                     <div className='bg-c3 pb-1 rounded-xl'>
                         <div className='bg-c1 px-2 py-3 font-bold rounded-xl'>
                             <h1>
-                                Attribuer une Filière à un Enseignant
+                                Attribuer un ECUE à un Enseignant
                             </h1>
                         </div>
                         <div className='px-2 py-5'>
-                            <form onSubmit={handleAddEnseignantFiliere} className='py-4 flex flex-col px-5'>
-                                <div className='px-3 py-3'>
-                                    <select name="idEnseignant" id="idEnseignant" className='p-2 w-[100%] cursor-pointer rounded-full' onChange={handleFiliereEnseignant} >
-                                        <option value="">Choisissez l'enseignant</option>
-                                        {
-                                            enseignants.map((item) => (
-                                                <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
-                                            ))
-                                        }
-                                    </select>
+                            <form onSubmit={handleAddEcueEnseignant} className='py-4 flex flex-col px-5'>
+                                <div className='flex flex-wrap pt-5 pb-5'>
+                                    <div className='w-1/2 px-3'>
+                                        <select
+                                            name="Enseignant"
+                                            id="idEnseignant"
+                                            className='p-2 w-[100%] cursor-pointer rounded-full'
+                                            required
+                                            onChange={handleUpdateAddECUEFilieres}
+                                        >
+                                            <option value="">Choisissez l'enseignant</option>
+                                            {
+                                                allEnseignant.map((item) => (
+                                                    <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                    <div className='w-1/2 px-3'>
+                                        <select
+                                            name="FiliereEnseignant"
+                                            id="idFiliereEnseignant"
+                                            className='p-2 w-[100%] cursor-pointer rounded-full'
+                                            required
+                                            onChange={handleUpdateAddECUEecue}
+                                        >
+                                            <option value=""> Filière de l'enseignant </option>
+                                            {
+                                                addECUEFilieres.map((item) => (
+                                                    <option key={item.id} value={item.id}>{item.fname}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+
                                 </div>
 
                                 <div className='flex flex-wrap pt-5 pb-5'>
                                     <div className='w-1/2 px-3'>
-                                        <select name="filiereEn" id="filiereEn" className='w-[100%] p-2 cursor-pointer rounded-full'>
-                                            <option value="">Choisissez la filière</option>
+                                        <select
+                                            name="filiereEn"
+                                            id="ecueId"
+                                            className='w-[100%] p-2 cursor-pointer rounded-full'
+                                            required
+                                        >
+                                            <option value=""> Choisissez l'ECUE </option>
                                             {
-                                                autoAdd && nfiliereEnseignant.map((item) => (
-                                                    <option key={item.id} value={item.id}>{item.fname}</option>
+                                                addECUENecue.map((item) => (
+                                                    <option key={item.id} value={item.id}>{item.ename}</option>
                                                 ))
                                             }
                                         </select>
@@ -169,11 +257,11 @@ export default function EnseignantUe() {
                         </div>
                         <div className='px-10'>
                             <div className='bg-c5 rounded-2xl px-2 mb-5 pb-2'>
-                                <h1 className=' text-c3 p-2 font-bold rounded-full text-center'> Les filières actuelles de l'enseignant sélectionné </h1>
+                                <h1 className=' text-c3 p-2 font-bold rounded-full text-center'> Les ECUE actuels de l'enseignant sélectionné </h1>
                                 <div className='w-max max-w-[100%]  p-4 text-center rounded-2xl text-wrap bg-c4'>
                                     {
-                                        autoAdd && filiereEnseignant.map((item) => (
-                                            <span key={item.id} className='italic px-2 mr-1 bg-c1 rounded-full w-max inline-block font-bold my-1'>{item.fname}</span>
+                                        addECUEecue.map((item) => (
+                                            <span key={item.id} className='italic px-2 mr-1 bg-c1 rounded-full w-max inline-block font-bold my-1'>{item.ename}</span>
                                         ))
                                     }
                                 </div>
@@ -183,59 +271,90 @@ export default function EnseignantUe() {
                 </div>
 
                 {
-                    // formulaire de retrait de filière
+                    // formulaire de retrait de l'ecu
                 }
 
                 <div className=' w-[100%] lg:w-1/2 px-4 mb-8'>
                     <div className='bg-c3 pb-1 rounded-xl'>
                         <div className='bg-c1 px-2 py-3 font-bold rounded-xl'>
                             <h1>
-                                Retirer une filiere à un Enseignant
+                                Retirer un ECUE à un Enseignant
                             </h1>
                         </div>
+
                         <div className='px-2 py-5'>
-                            <form onSubmit={handleMovEnseignantFiliere} className="py-4 flex flex-col px-5">
-                                <div className='px-3 py-3'>
-                                    <select name="filieresb" id="idEnseignant2" className='p-2 w-[100%] cursor-pointer rounded-full' onChange={handleFiliereEnseignant2}>
-                                        <option value="">Choisissez l'Enseignant</option>
-                                        {
-                                            enseignants.map((item) => (
-                                                <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
+                            <form onSubmit={handleMovEcueEnseignant} className='py-4 flex flex-col px-5'>
                                 <div className='flex flex-wrap pt-5 pb-5'>
-                                    <div className="w-1/2 px-3">
-                                        <select name="ecub" id="filiereEn2" className='p-2 w-[100%] rounded-full cursor-pointer'>
-                                            <option value=""> Choisissez la filière </option>
+                                    <div className='w-1/2 px-3'>
+                                        <select
+                                            name="Enseignant2"
+                                            id="idEnseignant2"
+                                            className='p-2 w-[100%] cursor-pointer rounded-full'
+                                            required
+                                            onChange={handleUpdateMovECUEFilieres}
+                                        >
+                                            <option value="">Choisissez l'enseignant</option>
                                             {
-                                                autoMov && filiereEnseignant2.map((item) => (
+                                                allEnseignant.map((item) => (
+                                                    <option key={item.id} value={item.id}>{item.firstName + " " + item.surName + ", " + item.dname}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                    <div className='w-1/2 px-3'>
+                                        <select
+                                            name="FiliereEnseignant2"
+                                            id="idFiliereEnseignant2"
+                                            className='p-2 w-[100%] cursor-pointer rounded-full'
+                                            required
+                                            onChange={handleUpdateMovECUEecue}
+                                        >
+                                            <option value=""> Filière de l'enseignant </option>
+                                            {
+                                                movECUEFiliere.map((item) => (
                                                     <option key={item.id} value={item.id}>{item.fname}</option>
                                                 ))
                                             }
                                         </select>
                                     </div>
-                                    <div className="w-1/2 px-3">
-                                        <button type="submit" className='bg-c1 w-[100%] hover:font-bold px-6 py-2 rounded-full'>Retirer</button>
+
+                                </div>
+
+                                <div className='flex flex-wrap pt-5 pb-5'>
+                                    <div className='w-1/2 px-3'>
+                                        <select
+                                            name="filiereEn2"
+                                            id="ecueId2"
+                                            className='w-[100%] p-2 cursor-pointer rounded-full'
+                                            required
+                                        >
+                                            <option value=""> Choisissez l'ECUE </option>
+                                            {
+                                                movECUEecue.map((item) => (
+                                                    <option key={item.id} value={item.id}>{item.ename}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                    <div className="w-1/2 px-3" >
+                                        <button type="submit" className='bg-c1 w-[100%] max-lg:mx-auto hover:font-bold px-6 py-2 rounded-full'>Retirer</button>
                                     </div>
                                 </div>
+
                             </form>
                         </div>
-
                         <div className='px-10'>
                             <div className='bg-c5 rounded-2xl px-2 mb-5 pb-2'>
-                                <h1 className=' text-c3 p-2 font-bold rounded-full text-center'> Les filières actuelles de l'enseignant sélectionné </h1>
+                                <h1 className=' text-c3 p-2 font-bold rounded-full text-center'> Les ECUE actuels de l'enseignant sélectionné </h1>
                                 <div className='w-max max-w-[100%]  p-4 text-center rounded-2xl text-wrap bg-c4'>
                                     {
-                                        autoMov && filiereEnseignant2.map((item) => (
-                                            <span key={item.id} className='italic px-2 mr-1 bg-c1 rounded-full w-max inline-block font-bold my-1'>{item.fname}</span>
+                                        movECUEecue.map((item) => (
+                                            <span key={item.id} className='italic px-2 mr-1 bg-c1 rounded-full w-max inline-block font-bold my-1'>{item.ename}</span>
                                         ))
                                     }
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -243,9 +362,9 @@ export default function EnseignantUe() {
             </div>
 
             <Loader value={loadAdd} />
-            <Succefful value={addData} text={"Filière ajoutée à l'enseignant avec succès !"} />
+            <Succefful value={addData} text={"ECUE attribué avec succès !"} />
             <Loader value={loadMov} />
-            <Succefful value={movData} text={"Filière retirée à l'enseignant avec succès !"} />
+            <Succefful value={movData} text={"ECUE retiré avec succès !"} />
 
         </>
     )
