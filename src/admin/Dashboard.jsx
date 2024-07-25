@@ -52,7 +52,7 @@ export default function DashboardAdmin() {
                     {
                         // quelques chiffres
                     }
-                    <div className='px-5 py-5 bg-c5  shadow-md'>
+                    <div className='px-5 py-5 bg-c5 shadow-md rounded-lg'>
                         <h1 className='text-lg font-bold pb-2 border-b border-b-c3'>We Pratice, c'est : </h1>
                         <div className='mt-4 pt-3 grid sm:grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr]'>
                             <div className='px-2'>

@@ -48,7 +48,7 @@ export default function Departement() {
 
     return (
         <>
-            <div className='p-3 h-full bg-c5 grid grid-rows-[1fr_auto]'>
+            <div className='p-3 h-full bg-c5 grid grid-rows-[1fr_auto] shadow-md rounded-lg'>
                 <div>
                     <div className='p-2'>
                         <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-lg'>

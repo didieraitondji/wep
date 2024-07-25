@@ -59,7 +59,7 @@ export default function EcuAdmin() {
   // retour HTML
   return (
     <>
-      <div className='p-3 h-full bg-c5 grid grid-rows-[1fr_auto]'>
+      <div className='p-3 h-full bg-c5 grid grid-rows-[1fr_auto] shadow-md rounded-lg'>
         <div>
           <div className='p-2'>
             <div className='grid grid-cols-[auto_100px] border border-c1 rounded-t-lg'>
@@ -138,7 +138,7 @@ export default function EcuAdmin() {
           <div onClick={handleAcceptAddECUE} className='fixed top-0 left-[80px] right-0 bottom-0 bg-[#00000065] flex items-center justify-center'>
             <div onClick={childCliked} className='bg-c2 p-5 shadow-lg rounded-md slide-down min-w-[200px]'>
               <div>
-                Ajouter le departement "{document.getElementById("nameecu").value}" ?
+                Ajouter l'ECUE "{document.getElementById("nameecu").value}" ?
               </div>
               <div className='pt-10 flex'>
                 <div className='w-1/2 flex items-center justify-center font-bold'>
