@@ -270,6 +270,42 @@ class Enseignant extends Utilisateur
             }
         }
     }
+
+    public function enseignantEcues($id)
+    {
+        try {
+            $pdo = connectToDB();
+
+            $sql = 'SELECT E.id, E.id_Enseignant, EF.id_Enseignant AS efId, E.name AS ename, U.name AS uname, F.name AS fname FROM ecu E
+                    INNER JOIN ue U ON E.id_Ue = U.id
+                    INNER JOIN filiere F ON U.id_filiere = F.id
+                    INNER JOIN enseignantfiliere EF ON F.id = EF.id_filiere
+                    WHERE E.id_Enseignant IS NOT NULL AND EF.id_Enseignant = :id_f1';
+
+            $req = $pdo->prepare($sql);
+            $req->execute([':id_f1' => $id]);
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            // Encoder en JSON et envoyer la réponse
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            // Fermer la connexion à la base de données
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
+
     public function ecusEnseignants($id1, $id2)
     {
         try {
@@ -1077,7 +1113,7 @@ class Filiere
         $pdo = connectToDB();
 
         if ($pdo) {
-            $sql = 'SELECT E.id, E.name AS ecuName FROM ecu E 
+            $sql = 'SELECT E.id, U.name AS ueName, E.name AS ecuName FROM ecu E 
                 INNER JOIN ue U ON E.id_Ue = U.id 
                 INNER JOIN filiere F ON F.id = U.id_filiere 
                 WHERE F.id = :id_f';

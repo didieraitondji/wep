@@ -313,6 +313,13 @@ switch (strtolower($url[0])) {
             echo $jsonData;
         }
         break;
+    case 'ecuesenseignant':
+        if (!empty($url[1])) {
+            $enseignant->enseignantEcues($url[1]);
+        } else {
+            echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
+        }
+        break;
     default:
         echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
         break;
