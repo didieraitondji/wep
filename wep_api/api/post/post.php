@@ -71,7 +71,18 @@ if (empty($url[0])) {
             $ecu->addEcu();
             break;
         case 'tp':
-            $tp = new TravailPratique();
+            $datax = array(
+                "title" => $_POST["title"],
+                "datePublication" => $_POST["datePublication"],
+                "dateSoumission" => $_POST["dateSoumission"],
+                "id_filiere" => $_POST["id_filiere"],
+                "id_ecue" => $_POST["id_ecue"],
+                "description" => $_POST["description"],
+                "id_Enseignant" => $_POST["id_Enseignant"],
+                "filePath" => $_POST['filePath'],
+            );
+            $tp = new TravailPratique($datax['title'], $datax['description'], $datax['datePublication'], $datax['dateSoumission'], $datax['filePath']);
+            $tp->addTP($datax["id_Enseignant"], $datax['id_ecue'], $datax["id_filiere"]);
             break;
         case 'admin':
             $admin = new Admin($data['firstName'], $data['surName'], $data['email'], $data['motDePasse'], null, null, $data['telephone']);

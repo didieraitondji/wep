@@ -820,8 +820,23 @@ class TravailPratique
     protected $dateSoumission;
     protected $filePath;
 
-    public function __construct()
+    public function __construct($title = null, $description = null, $datePublier = null, $dateSoumission = null, $filePath = null)
     {
+        if ($title !== null) {
+            $this->title = $title;
+        }
+        if ($description !== null) {
+            $this->description = $description;
+        }
+        if ($datePublier !== null) {
+            $this->datePublier = $datePublier;
+        }
+        if ($dateSoumission !== null) {
+            $this->dateSoumission = $dateSoumission;
+        }
+        if ($filePath !== null) {
+            $this->filePath = $filePath;
+        }
     }
 
     public function toutLesTPs()

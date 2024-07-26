@@ -23,7 +23,7 @@ export default function MenuEnseignant({ page }) {
                         <path d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m3 4a1 1 0 0 0-1 1v6.5a.5.5 0 0 0 1 0v-2h1.188a2.75 2.75 0 0 0 0-5.5z" />
                     </svg>
                     <span className='text-[0.7em] py-2 font-bold'>
-                        TPs
+                        TP
                     </span>
                 </a>
                 <a href='/enseignant/travaux/' className={`flex flex-col items-center justify-center text-c1 cursor-pointer pt-2 px-2 rounded-md hover:bg-gray-500 my-2 ${page == "travaux" ? "bg-gray-500" : "bg-gray-700"}`} title='Voir les soumissions'>
@@ -32,7 +32,7 @@ export default function MenuEnseignant({ page }) {
                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M8.5 5h2A1.5 1.5 0 0 1 12 6.5v2a1.5 1.5 0 0 1-1.5 1.5h-.473l.447 1.342a.5.5 0 0 1-.948.316L8.973 10H8.5v1a.5.5 0 0 1-1 0v-1h-.473l-.553 1.658a.5.5 0 1 1-.948-.316L5.973 10H5.5A1.5 1.5 0 0 1 4 8.5v-2A1.5 1.5 0 0 1 5.5 5h2a.5.5 0 0 1 1 0" />
                     </svg>
                     <span className='text-[0.7em] py-2 font-bold'>
-                        Travaux
+                        Envois
                     </span>
                 </a>
                 <a href='/enseignant/profil/' className={`flex flex-col items-center justify-center text-c1 cursor-pointer pt-2 px-2 rounded-md hover:bg-gray-500 my-2 ${page == "profil" ? "bg-gray-500" : "bg-gray-700"}`} title='Gérer Profil'>
