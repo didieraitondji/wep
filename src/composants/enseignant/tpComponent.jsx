@@ -1,126 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { addDaysToDate, loadGetData, loadMultyData, loadPostData } from '../Fonctions';
+import { addDaysToDate, childCliked, loadGetData, loadMultyData, loadPostData } from '../Fonctions';
 import Loader from '../Loader';
 import Succefful from '../Succefful';
 
 export default function TPComponent() {
 
-    /* const today = new Date();
-
-
+    // les states pour l'ajout de TP
+    const today = new Date();
     const [formattedPubDate, setformattedPubDate] = useState(today.toISOString().split('T')[0]);
     const [formattedSendDate, setformattedSendDate] = useState(today.toISOString().split('T')[0]);
-
     const [filieres, setFilieres] = useState([]);
     const [ecues, setEcues] = useState([]);
     const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")).data);
     const [idFiliere, setIdFiliere] = useState("");
     const [idEcue, setIdEcue] = useState("");
-
-    const [title, setTitle] = useState("");
-    const [fichier, setFichier] = useState("");
-    const [description, setDescription] = useState("");
-
-    const handleformattedDate = () => {
-        setformattedSendDate(addDaysToDate(formattedPubDate, 7))
-    }
-
-    const handleChangePubDate = (e) => {
-        setformattedPubDate(e.target.value);
-    }
-
-    const handleChageTitle = (e) => {
-        setTitle(e.target.value);
-    }
-
-    const handleChargeFichier = (e) => {
-        setFichier(e.target.value);
-    }
-
-    const handleChargeDescription = (e) => {
-        setDescription(e.target.value);
-    }
-
-    const handleChangeSendDate = (e) => {
-        setformattedSendDate(e.target.value);
-    }
-
-    useEffect(() => {
-        handleformattedDate();
-        loadGetData(`enseignant/${userData.id}/filieres/`, setFilieres);
-    }, [setFilieres]);
-
-    useEffect(() => {
-
-    }, [idEcue])
-
-    useEffect(() => {
-
-    }, [ecues])
-
-    // les fonction de mises à jour de données
-    const handleChargeEcue = (e) => {
-        let id = e.target.value;
-        if (id != "") {
-            setIdFiliere(id);
-            let chemin = `enseignant/${userData.id}/filiere/` + id + "/ecus/";
-            loadGetData(chemin, setEcues);
-        }
-    }
-
-    const handelChargeIdEcue = (e) => {
-        let id = e.target.value;
-        if (id != "") {
-            setIdEcue(id);
-        }
-    }
-
-
     const [addTP, setAddTP] = useState(false);
     const [loadAdd, setLoadAdd] = useState(false);
-
-    // fonction pour enrégistrer un tp.
-    const handleSubmit = (e) => {
-        setLoadAdd(true);
-        e.preventDefault();
-
-        const data = {
-            title: title,
-            datePublication: formattedPubDate,
-            dateSoumission: formattedSendDate,
-            id_filiere: idFiliere,
-            id_ecue: idEcue,
-            fichier: fichier,
-            description: description,
-            id_Enseignant: userData.id,
-        }
-
-        loadPostData("tp/", data, setAddTP, () => {
-
-        })
-
-        setInterval(() => {
-            setLoadAdd(false);
-            setAddTP(false);
-        }, 1500);
-    }
-
-*/
-
-    const today = new Date();
-
-    const [formattedPubDate, setformattedPubDate] = useState(today.toISOString().split('T')[0]);
-    const [formattedSendDate, setformattedSendDate] = useState(today.toISOString().split('T')[0]);
-
-    const [filieres, setFilieres] = useState([]);
-    const [ecues, setEcues] = useState([]);
-    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")).data);
-    const [idFiliere, setIdFiliere] = useState("");
-    const [idEcue, setIdEcue] = useState("");
-
     const [title, setTitle] = useState("");
-    const [fichier, setFichier] = useState(null); // Changer en null pour stocker le fichier
+    const [fichier, setFichier] = useState(null);
     const [description, setDescription] = useState("");
+    const [confirm, setConfirm] = useState(false);
 
     const handleformattedDate = () => {
         setformattedSendDate(addDaysToDate(formattedPubDate, 7))
@@ -135,7 +34,7 @@ export default function TPComponent() {
     }
 
     const handleChargeFichier = (e) => {
-        setFichier(e.target.files[0]); // Stocker le fichier sélectionné
+        setFichier(e.target.files[0]);
     }
 
     const handleChargeDescription = (e) => {
@@ -146,6 +45,7 @@ export default function TPComponent() {
         setformattedSendDate(e.target.value);
     }
 
+    // les userEffects pour l'ajout de TP
     useEffect(() => {
         handleformattedDate();
         loadGetData(`enseignant/${userData.id}/filieres/`, setFilieres);
@@ -158,6 +58,8 @@ export default function TPComponent() {
     useEffect(() => {
 
     }, [ecues])
+
+    // quelques fonction pour l'ajout de TP
 
     const handleChargeEcue = (e) => {
         let id = e.target.value;
@@ -175,13 +77,8 @@ export default function TPComponent() {
         }
     }
 
-    const [addTP, setAddTP] = useState(false);
-    const [loadAdd, setLoadAdd] = useState(false);
-
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
         setLoadAdd(true);
-        e.preventDefault();
-
         const data = new FormData();
         data.append('title', title);
         data.append('datePublication', formattedPubDate);
@@ -192,15 +89,29 @@ export default function TPComponent() {
         data.append('description', description);
         data.append('id_Enseignant', userData.id);
 
+        // appel à la fonction de stockage de données concernant le TP
         loadMultyData("tp/", data, setAddTP, () => {
 
         });
 
+        // confirmation d'ajout avec retour à l'ordre
         setInterval(() => {
             setLoadAdd(false);
             setAddTP(false);
-        }, 3000);
+        }, 2000);
+
+        setConfirm(false);
     }
+
+    // fonction pour enclancher le processus de confirmation d'ajout de TP
+    const handleConfirmAddTP = (e) => {
+        e.preventDefault();
+        setConfirm(!confirm);
+    }
+
+
+
+    // mise en place des states pour l'affichage de TP.
 
 
     return (
@@ -211,15 +122,15 @@ export default function TPComponent() {
                         <h1 className='font-bold'>Créer un nouveau TP </h1>
                     </div>
                     <div className='p-6'>
-                        <form onSubmit={handleSubmit} className='flex w-full flex-wrap items-start border border-c3 p-3 rounded-2xl'>
+                        <form onSubmit={handleConfirmAddTP} className='flex w-full flex-wrap items-start border border-c3 p-3 rounded-2xl'>
                             <div className='flex flex-row flex-wrap w-full lg:w-1/2 px-2 text-sm'>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'>Titre :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Titre :</label>
                                     <input
                                         type="text"
-                                        name=""
-                                        id=""
-                                        className=' text-center w-3/5 p-2 rounded-full'
+                                        name="titre"
+                                        id="titre"
+                                        className='text-center w-3/5 p-2 rounded-full'
                                         required
                                         placeholder='titre du TP'
                                         value={title}
@@ -227,10 +138,10 @@ export default function TPComponent() {
                                     />
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'>Date de publication :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Date de publication :</label>
                                     <input
                                         type="date"
-                                        name=""
+                                        name="date"
                                         id="dateInput"
                                         className="text-center w-3/5 p-2 rounded-full"
                                         required
@@ -240,10 +151,10 @@ export default function TPComponent() {
                                     />
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'>Date de Soumission :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Date de Soumission :</label>
                                     <input
                                         type="date"
-                                        name=""
+                                        name="date"
                                         id="dateSend"
                                         className="text-center w-3/5 p-2 rounded-full"
                                         required
@@ -253,7 +164,7 @@ export default function TPComponent() {
                                     />
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'> Filière :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'> Filière :</label>
                                     <select
                                         name="filiere"
                                         id="filiere"
@@ -270,7 +181,7 @@ export default function TPComponent() {
                                     </select>
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'> ECUE :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'> ECUE :</label>
                                     <select
                                         name="ecus"
                                         id="ecus"
@@ -290,11 +201,11 @@ export default function TPComponent() {
                             </div>
                             <div className='flex flex-row flex-wrap w-full lg:w-1/2 px-2'>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'> Fichier :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold '> Fichier :</label>
                                     <div className='w-3/5 p-2 rounded-full bg-c2 text-center'>
                                         <input
                                             type="file"
-                                            name=""
+                                            name="fichier"
                                             id="fichier"
                                             className="w-full"
                                             onChange={handleChargeFichier}
@@ -302,10 +213,10 @@ export default function TPComponent() {
                                     </div>
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold'>Description :</label>
+                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Description :</label>
                                     <textarea
                                         name="description"
-                                        id=""
+                                        id="description"
                                         cols="30"
                                         rows="6"
                                         className='w-3/5 rounded-2xl px-2 py-1'
@@ -320,7 +231,6 @@ export default function TPComponent() {
                                     <label htmlFor="" className='w-2/5 text-center font-bold text-c5'>Description :</label>
                                     <input type="submit" value="Créer TP" className="text-center w-3/5 p-2 rounded-full bg-c1 hover:font-bold cursor-pointer" />
                                 </div>
-
                             </div>
                         </form>
                     </div>
@@ -332,6 +242,30 @@ export default function TPComponent() {
                     <h1 className='font-bold'>Tous Travaux Pratiques</h1>
                 </div>
             </div>
+
+            {
+                // autorisation pour ajouter un TP
+            }
+
+            {
+                confirm && (
+                    <div onClick={handleConfirmAddTP} className='fixed z-50 top-0 left-[80px] right-0 bottom-0 bg-[#00000065] flex items-center justify-center'>
+                        <div onClick={childCliked} className='bg-c2 p-5 shadow-lg rounded-md slide-down min-w-[200px]'>
+                            <div>
+                                Ajouter le Travail Pratique "{title}" ?
+                            </div>
+                            <div className='pt-10 flex'>
+                                <div className='w-1/2 flex items-center justify-center font-bold'>
+                                    <span onClick={handleSubmit} className='px-4 py-2 bg-c1 rounded-md cursor-pointer'>Oui</span>
+                                </div>
+                                <div className='w-1/2 flex items-center justify-center font-bold'>
+                                    <span onClick={handleConfirmAddTP} className='px-4 py-2 cursor-pointer hover:bg-c3 hover:text-c2 rounded-md'>Non</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
 
             <Loader value={loadAdd} />
             <Succefful value={addTP} text={"TP créer et publié avec succès !"} />
