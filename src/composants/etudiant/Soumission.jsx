@@ -33,9 +33,7 @@ export default function SoumissionEtudiant() {
 
     const handleSetLien = (e) => {
         let id = e.target.value;
-        if (id != "") {
-            setLien(id);
-        }
+        setLien(id);
     }
 
     const handleSetFichier = (e) => {
@@ -108,6 +106,7 @@ export default function SoumissionEtudiant() {
                                         className='w-2/3 p-2 rounded-full'
                                         value={idEcu}
                                         onChange={handleSetIdEcu}
+                                        required
                                     >
                                         <option value="">Choisissez un ECUE</option>
                                         {
@@ -127,6 +126,7 @@ export default function SoumissionEtudiant() {
                                         className='w-2/3 p-2 rounded-full'
                                         value={lien}
                                         onChange={handleSetLien}
+                                        required
                                     />
                                 </div>
                             </div>
@@ -141,6 +141,7 @@ export default function SoumissionEtudiant() {
                                         className='w-2/3 p-2 rounded-full'
                                         value={idTp}
                                         onChange={handleSetIdTp}
+                                        required
                                     >
                                         <option value="">TP encours </option>
                                         {
@@ -158,6 +159,7 @@ export default function SoumissionEtudiant() {
                                         id="fichiers"
                                         className='w-2/3 p-2 rounded-full bg-c2'
                                         onChange={handleSetFichier}
+                                        required
                                     />
                                 </div>
                                 <div className='flex flex-row flex-wrap items-center justify-end mb-4'>
