@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { addDaysToDate, childCliked, loadGetData, loadMultyData, loadPostData } from '../Fonctions';
 import Loader from '../Loader';
 import Succefful from '../Succefful';
+import TpModel from '../TpModel';
 
 export default function TPComponent() {
 
@@ -111,8 +112,50 @@ export default function TPComponent() {
 
 
 
-    // mise en place des states pour l'affichage de TP.
 
+
+    // mise en place des states pour l'affichage de TP.
+    const [lesTp, setLesTp] = useState([]);
+
+    const [filiereSel, setfiliereSel] = useState([]);
+    const [ecueSel, setecueSel] = useState([]);
+
+    const [filiereSelid, setfiliereSelid] = useState("");
+    const [ecueSelid, setecueSelid] = useState("");
+
+
+    const handlefiliereSel = (e) => {
+        let id = e.target.value;
+        if (id !== "") {
+            setfiliereSelid(id);
+            loadGetData(`enseignant/${userData.id}/filiere/${id}/ecus/`, setecueSel);
+        }
+    }
+
+
+
+
+    const handleecueSel = (e) => {
+        let id = e.target.value;
+        if (id != "") {
+            setecueSelid(id);
+        }
+    }
+
+
+
+    useEffect(() => {
+        loadGetData(`enseignant/${userData.id}/filieres/`, setfiliereSel);
+    }, []);
+
+
+    // fonction qui affiche les TPs filtré
+    const handleAfficheTP = (e) => {
+        e.preventDefault();
+        loadGetData(`enseignant/${userData.id}/filiere/${filiereSelid}/ecu/${ecueSelid}/tps/`, setLesTp);
+    }
+
+    console.log(lesTp)
 
     return (
         <>
@@ -125,12 +168,12 @@ export default function TPComponent() {
                         <form onSubmit={handleConfirmAddTP} className='flex w-full flex-wrap items-start border border-c3 p-3 rounded-2xl'>
                             <div className='flex flex-row flex-wrap w-full lg:w-1/2 px-2 text-sm'>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Titre :</label>
+                                    <label htmlFor="" className='w-3/12 text-right pr-10 font-bold'>Titre :</label>
                                     <input
                                         type="text"
                                         name="titre"
                                         id="titre"
-                                        className='text-center w-3/5 p-2 rounded-full'
+                                        className='text-center w-9/12 p-2 rounded-full'
                                         required
                                         placeholder='titre du TP'
                                         value={title}
@@ -138,12 +181,12 @@ export default function TPComponent() {
                                     />
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Date de publication :</label>
+                                    <label htmlFor="" className='w-4/12 text-right pr-10 font-bold'>Date de publication :</label>
                                     <input
                                         type="date"
                                         name="date"
                                         id="dateInput"
-                                        className="text-center w-3/5 p-2 rounded-full"
+                                        className="text-center w-8/12 p-2 rounded-full"
                                         required
                                         placeholder="today"
                                         value={formattedPubDate}
@@ -151,12 +194,12 @@ export default function TPComponent() {
                                     />
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Date de Soumission :</label>
+                                    <label htmlFor="" className='w-4/12 text-right pr-10 font-bold'>Date de Soumission :</label>
                                     <input
                                         type="date"
                                         name="date"
                                         id="dateSend"
-                                        className="text-center w-3/5 p-2 rounded-full"
+                                        className="text-center w-8/12 p-2 rounded-full"
                                         required
                                         placeholder="today"
                                         value={formattedSendDate}
@@ -164,11 +207,11 @@ export default function TPComponent() {
                                     />
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'> Filière :</label>
+                                    <label htmlFor="" className='w-3/12 text-right pr-10 font-bold'> Filière :</label>
                                     <select
                                         name="filiere"
                                         id="filiere"
-                                        className="text-center w-3/5 p-2 rounded-full"
+                                        className="text-center w-9/12 p-2 rounded-full"
                                         required
                                         onChange={handleChargeEcue}
                                     >
@@ -181,11 +224,11 @@ export default function TPComponent() {
                                     </select>
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'> ECUE :</label>
+                                    <label htmlFor="" className='w-3/12 text-right pr-10 font-bold'> ECUE :</label>
                                     <select
                                         name="ecus"
                                         id="ecus"
-                                        className="text-center w-3/5 p-2 rounded-full"
+                                        className="text-center w-9/12 p-2 rounded-full"
                                         required
                                         onChange={handelChargeIdEcue}
                                     >
@@ -197,12 +240,11 @@ export default function TPComponent() {
                                         }
                                     </select>
                                 </div>
-
                             </div>
                             <div className='flex flex-row flex-wrap w-full lg:w-1/2 px-2'>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold '> Fichier :</label>
-                                    <div className='w-3/5 p-2 rounded-full bg-c2 text-center'>
+                                    <label htmlFor="" className='w-3/12 text-right pr-10 font-bold '> Fichier :</label>
+                                    <div className='w-9/12 p-2 rounded-full bg-c2 text-center'>
                                         <input
                                             type="file"
                                             name="fichier"
@@ -213,13 +255,13 @@ export default function TPComponent() {
                                     </div>
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-right pr-10 font-bold'>Description :</label>
+                                    <label htmlFor="" className='w-3/12 text-right pr-10 font-bold'>Description :</label>
                                     <textarea
                                         name="description"
                                         id="description"
                                         cols="30"
                                         rows="6"
-                                        className='w-3/5 rounded-2xl px-2 py-1'
+                                        className='w-9/12 rounded-2xl px-2 py-1'
                                         required
                                         value={description}
                                         onChange={handleChargeDescription}
@@ -228,8 +270,8 @@ export default function TPComponent() {
                                     </textarea>
                                 </div>
                                 <div className='flex w-full items-center mb-4'>
-                                    <label htmlFor="" className='w-2/5 text-center font-bold text-c5'>Description :</label>
-                                    <input type="submit" value="Créer TP" className="text-center w-3/5 p-2 rounded-full bg-c1 hover:font-bold cursor-pointer" />
+                                    <label htmlFor="" className='w-6/12 text-center font-bold text-c5'>Description :</label>
+                                    <input type="submit" value="Créer TP" className="text-center w-6/12 p-2 rounded-full bg-c1 hover:font-bold cursor-pointer" />
                                 </div>
                             </div>
                         </form>
@@ -240,6 +282,56 @@ export default function TPComponent() {
                 }
                 <div className='flex bg-c3 text-c1 w-full h-max items-center p-2'>
                     <h1 className='font-bold'>Tous Travaux Pratiques</h1>
+                </div>
+                <div className='p-3'>
+                    <form onSubmit={handleAfficheTP} className='flex flex-wrap p-3 bg-c4 rounded-full items-center justify-center'>
+                        <div className='px-4 flex items-center justify-center w-full lg:w-1/3'>
+                            <label htmlFor="" className='pr-4 font-bold '>Filière : </label>
+                            <select
+                                name="filiereSel"
+                                id="filiereSel"
+                                value={filiereSelid}
+                                onChange={handlefiliereSel}
+                                className='p-2 rounded-full w-2/3'
+                            >
+                                <option value=""> Choisissez une Filière </option>
+                                {
+                                    filiereSel.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.fname}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className='px-4 flex items-center justify-center w-full lg:w-1/3'>
+                            <label htmlFor="" className='pr-4'> ECUE : </label>
+                            <select
+                                name="ecueSel"
+                                id="ecueSel"
+                                value={ecueSelid}
+                                onChange={handleecueSel}
+                                className='p-2 rounded-full w-2/3'
+                            >
+                                <option value=""> Choisissez une Filière </option>
+                                {
+                                    ecueSel.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.ename}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className='px-4 flex items-center justify-start'>
+                            <button type="submit" className='rounded-full px-6 py-2 bg-c1 hover:font-bold'>Afficher</button>
+                        </div>
+                    </form>
+                </div>
+                <div className='p-3'>
+                    <div className='h-[70vh] bg-c4 w-full rounded-3xl p-8 overflow-auto'>
+                        {
+                            lesTp.map((item, index) => (
+                                <TpModel key={item.id} index={index + 1} title={item.title} description={item.description} pubdate={item.datePublier} senddate={item.dateSoumission} filiere={item.fname} ecue={item.ename} file={item.filePath} enseignant={item.efirstName + " " + item.esurName} />
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
 

@@ -73,6 +73,8 @@ if ($method == 'POST') {
     $fileUploadResult = handleFileUpload();
     if ($fileUploadResult['status'] === 'success') {
         $_POST['filePath'] = "/uploaded_files/" . $fileUploadResult['fileName'];
+    } else {
+        $_POST['filePath'] = null;
     }
 }
 

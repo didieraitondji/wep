@@ -38,6 +38,28 @@ switch (strtolower($url[0])) {
                                 case 'necus':
                                     $enseignant->necusEnseignants($url[1], $url[3]);
                                     break;
+                                case 'ecu':
+                                    if (!empty($url[5])) {
+                                        switch ($url[6]) {
+                                            case 'tps':
+                                                $enseignant->tpsEnseignant($url[1], $url[3], $url[5]);
+                                                break;
+                                            default:
+                                                $jsonData = json_encode(array(
+                                                    "status" => "Erreur",
+                                                    "message" => "Identifiant invalide",
+                                                    "code" => 0
+                                                ));
+                                                break;
+                                        }
+                                    } else {
+                                        $jsonData = json_encode(array(
+                                            "status" => "Erreur",
+                                            "message" => "Identifiant invalide",
+                                            "code" => 0
+                                        ));
+                                    }
+                                    break;
                                 default:
                                     $jsonData = json_encode(array(
                                         "status" => "Erreur",
@@ -319,6 +341,9 @@ switch (strtolower($url[0])) {
         } else {
             echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);
         }
+        break;
+    case 'tpsenseignant':
+
         break;
     default:
         echo json_encode(["status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => 0]);

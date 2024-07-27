@@ -529,6 +529,41 @@ class Enseignant extends Utilisateur
         $pdo = null;
         echo json_encode($response);
     }
+
+    public function tpsEnseignant($id_Enseignant, $id_filiere, $id_ecus)
+    {
+        try {
+            $pdo = connectToDB();
+
+            $sql = 'SELECT tp.id, tp.title, tp.description, tp.datePublier, tp.dateSoumission, tp.filePath, tp.id_Enseignant, tp.id_filiere, tp.id_Ecu, E.surName AS esurName, E.firstName AS efirstName, EC.name AS ename, F.name AS fname FROM travailpratique tp
+                    INNER JOIN enseignant E ON tp.id_Enseignant = E.id
+                    INNER JOIN ecu EC ON tp.id_Ecu = EC.id
+                    INNER JOIN filiere F ON tp.id_filiere = F.id 
+                    WHERE tp.id_Enseignant = :id_f1 AND tp.id_Ecu = :id_f3 AND tp.id_filiere=:id_f2 ORDER BY tp.id';
+
+            $req = $pdo->prepare($sql);
+            $req->execute([':id_f1' => $id_Enseignant, ':id_f2' => $id_filiere, ":id_f3" => $id_ecus]);
+
+            // Récupérer le résultat
+            $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+            $req->closeCursor();
+
+            // Encoder en JSON et envoyer la réponse
+            $jsonData = json_encode($reqs);
+
+            header('Content-Type: application/json');
+            echo $jsonData;
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => $e->getMessage()]);
+        } finally {
+            // Fermer la connexion à la base de données
+            if (isset($pdo)) {
+                $pdo = null;
+            }
+        }
+    }
 }
 
 class Etudiant extends Utilisateur
