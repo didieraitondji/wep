@@ -79,12 +79,6 @@ switch (strtolower($url[0])) {
                     case 'nfilieres':
                         $enseignant->nfilieresEnseignants($url[1]);
                         break;
-                    case 'ecus':
-                        $enseignant->ecusEnseignants($url[1]);
-                        break;
-                    case 'necus':
-                        $enseignant->necusEnseignants($url[1]);
-                        break;
                     default:
                         $jsonData = json_encode(array(
                             "status" => "Erreur",
@@ -195,9 +189,12 @@ switch (strtolower($url[0])) {
                         if (!empty($url[3])) {
                             switch (strtolower($url[4])) {
                                 case 'tps':
-                                    $filiere->tpsEcus($url[1], $url[3]);
+                                    if (!empty($url[5])) {
+                                        $filiere->nstpsEcus($url[1], $url[3], $url[5]);
+                                    } else {
+                                        $filiere->tpsEcus($url[1], $url[3]);
+                                    }
                                     break;
-
                                 default:
                                     $jsonData = json_encode(array(
                                         "status" => "Erreur",
@@ -277,7 +274,23 @@ switch (strtolower($url[0])) {
         break;
     case 'tp':
         if (!empty($url[1])) {
-            $tp->unTP($url[1]);
+            if (!empty($url[2])) {
+                switch (strtolower($url[2])) {
+                    case 'enseignant':
+                        $tp->enseignant($url[1]);
+                        break;
+                    default:
+                        $jsonData = json_encode(array(
+                            "status" => "Erreur",
+                            "message" => "Identifiant invalide",
+                            "code" => 1
+                        ));
+                        echo $jsonData;
+                        break;
+                }
+            } else {
+                $tp->unTP($url[1]);
+            }
         } else {
             $jsonData = json_encode(array(
                 "status" => "Erreur",

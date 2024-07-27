@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import MenuEtudiant from '../composants/etudiant/Menu';
 import TopBarEtudiant from '../composants/etudiant/TopBar';
+import SoumissionEtudiant from '../composants/etudiant/Soumission';
 
 export default function TravauxEtudiant() {
     document.getElementsByTagName("title")[0].innerHTML = "Soumissions | Etudiant";
@@ -41,6 +42,7 @@ export default function TravauxEtudiant() {
                     {
                         // le corps de chaque page restera dans ce div juste après l'accollade suivante 
                     }
+                    <SoumissionEtudiant />
                 </div>
                 <div className='bg-c3 fixed left-0 top-0 bottom-0 w-[80px] px-2 py-2'>
                     <MenuEtudiant page={"travaux"} />

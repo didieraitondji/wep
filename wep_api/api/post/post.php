@@ -48,7 +48,16 @@ if (empty($url[0])) {
 
             break;
         case 'travail':
-
+            $datax = array(
+                'lien' => $_POST['lien'],
+                'id_Etudiant' => $_POST['id_Etudiant'],
+                'id_Tp' => $_POST['id_Tp'],
+                'filePath' => $_POST['filePath'],
+                'dateSoumission' => $_POST['dateSoumission'],
+                'id_Enseignant' => $_POST['id_Enseignant'],
+            );
+            $travail = new Travail($datax['lien'], $datax['id_Etudiant'], $datax['id_Tp'], $datax['dateSoumission'], $datax['id_Enseignant'], $datax['filePath']);
+            $travail->addTravail();
             break;
         case 'ue':
             $ue = new Ue($data['name'], $data['credit'], $data['filiere']);

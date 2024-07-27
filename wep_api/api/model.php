@@ -906,6 +906,25 @@ class TravailPratique
         $pdo = null;
     }
 
+    public function enseignant($id)
+    {
+        $pdo = connectToDB();
+
+        $sql = 'SELECT tp.id, E.id FROM travailpratique tp
+                INNER JOIN enseignant E ON E.id = tp.id_Enseignant
+                WHERE E.id =' . $id . '';
+
+        $req = $pdo->prepare($sql);
+        $req->execute();
+        $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        $jsonData = json_encode($reqs);
+        header('Content-Type: application/json');
+
+        echo $jsonData;
+        $pdo = null;
+    }
+
     public function addTP(int $id_enseignant = null, int $id_ecu = null, int $id_filiere = null)
     {
         $pdo = connectToDB();
@@ -969,9 +988,35 @@ class Travail
     protected $note;
     protected $dateSoumission;
     protected $filePath;
+    protected $etudiant;
+    protected $tp;
+    protected $id_Enseignant;
 
-    public function __construct()
+    public function __construct($lien = null, $etudiant = null, $tp = null, $dateSoumission = null, $id_Enseignant = null, $filePath = null)
     {
+        if ($lien !== null) {
+            $this->lien = $lien;
+        }
+
+        if ($etudiant !== null) {
+            $this->etudiant = $etudiant;
+        }
+
+        if ($tp !== null) {
+            $this->tp = $tp;
+        }
+
+        if ($dateSoumission !== null) {
+            $this->dateSoumission = $dateSoumission;
+        }
+
+        if ($id_Enseignant !== null) {
+            $this->id_Enseignant = $id_Enseignant;
+        }
+
+        if ($filePath !== null) {
+            $this->filePath = $filePath;
+        }
     }
 
     public function toutLesTravaux()
@@ -1006,11 +1051,11 @@ class Travail
         $pdo = null;
     }
 
-    public function addTravail(int $id_etudiant = null, int $id_travailpratique = null, int $id_enseignant = null)
+    public function addTravail()
     {
         $pdo = connectToDB();
-        $travailQuery = "INSERT INTO travail (filePath, limiteNote, lien, id_etudiant, id_travailpratique, id_enseignant) 
-                     VALueS (:filePath, :limiteNote, :lien, :id_etudiant, :id_travailpratique, :id_enseignant)";
+        $travailQuery = "INSERT INTO travail (filePath, limiteNote, lien, id_etudiant, id_travailpratique, dateSoumission, id_Enseignant) 
+                     VALUES (:filePath, :limiteNote, :lien, :id_etudiant, :id_travailpratique, :dateSoumission, :id_Enseignant)";
         $stmt = $pdo->prepare($travailQuery);
 
         try {
@@ -1019,9 +1064,10 @@ class Travail
                 ':filePath' => $this->filePath,
                 ':limiteNote' => 3,
                 ':lien' => $this->lien,
-                ':id_etudiant' => $id_etudiant,
-                ':id_travailpratique' => $id_travailpratique,
-                ':id_enseignant' => $id_enseignant
+                ':id_etudiant' => $this->etudiant,
+                ':id_travailpratique' => $this->tp,
+                ':dateSoumission' => $this->dateSoumission,
+                ':id_Enseignant' => $this->id_Enseignant,
             ]);
 
             $response = array(
@@ -1274,6 +1320,47 @@ class Filiere
 
                 $req = $pdo->prepare($sql);
                 $req->execute([':id_f1' => $id_filiere, ':id_f2' => $id_ecu]);
+
+                // Récupérer le résultat
+                $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+                $req->closeCursor();
+
+                $jsonData = json_encode($reqs);
+                header('Content-Type: application/json');
+                echo $jsonData;
+
+                // Fermer la connexion à la base de données
+                $pdo = null;
+            } else {
+                // Gérer l'erreur de connexion à la base de données
+                header('HTTP/1.1 500 Internal Server Error');
+                echo json_encode(['error' => 'Erreur de connexion à la base de données']);
+            }
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => 'Une erreur s\'est produite : ' . $e->getMessage()]);
+        }
+    }
+
+    public function nstpsEcus($id_filiere, $id_ecu, $id_etudiant)
+    {
+        try {
+            $pdo = connectToDB();
+            if ($pdo) {
+                // SQL pour sélectionner les UE qui ne sont pas associées à la filière donnée
+                $sql = 'SELECT tp.id, tp.title, tp.dateSoumission FROM travailpratique tp
+                    INNER JOIN enseignant E ON tp.id_Enseignant = E.id
+                    INNER JOIN ecu EC ON tp.id_Ecu = EC.id
+                    INNER JOIN filiere F ON tp.id_filiere = F.id
+                    WHERE tp.id_Ecu = :id_f2 AND tp.id_filiere=:id_f1 AND tp.dateSoumission > CURDATE() AND tp.id NOT IN (
+                        SELECT T.id_travailPratique 
+                        FROM travail T 
+                        WHERE T.id_Etudiant = :id_f3 
+                    ) ORDER BY tp.id DESC';
+
+                $req = $pdo->prepare($sql);
+                $req->execute([':id_f1' => $id_filiere, ':id_f2' => $id_ecu, ':id_f3' => $id_etudiant]);
 
                 // Récupérer le résultat
                 $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
