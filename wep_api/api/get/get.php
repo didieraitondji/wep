@@ -191,6 +191,29 @@ switch (strtolower($url[0])) {
                     case 'ecus':
                         $filiere->ecusFiliere($url[1]);
                         break;
+                    case 'ecu':
+                        if (!empty($url[3])) {
+                            switch (strtolower($url[4])) {
+                                case 'tps':
+                                    $filiere->tpsEcus($url[1], $url[3]);
+                                    break;
+
+                                default:
+                                    $jsonData = json_encode(array(
+                                        "status" => "Erreur",
+                                        "message" => "Identifiant invalide",
+                                        "code" => 1
+                                    ));
+                                    break;
+                            }
+                        } else {
+                            $jsonData = json_encode(array(
+                                "status" => "Erreur",
+                                "message" => "Identifiant invalide",
+                                "code" => 1
+                            ));
+                        }
+                        break;
                     case 'ues':
                         $filiere->uesFiliere($url[1]);
                         break;

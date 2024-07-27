@@ -539,7 +539,7 @@ class Enseignant extends Utilisateur
                     INNER JOIN enseignant E ON tp.id_Enseignant = E.id
                     INNER JOIN ecu EC ON tp.id_Ecu = EC.id
                     INNER JOIN filiere F ON tp.id_filiere = F.id 
-                    WHERE tp.id_Enseignant = :id_f1 AND tp.id_Ecu = :id_f3 AND tp.id_filiere=:id_f2 ORDER BY tp.id';
+                    WHERE tp.id_Enseignant = :id_f1 AND tp.id_Ecu = :id_f3 AND tp.id_filiere=:id_f2 ORDER BY tp.id DESC';
 
             $req = $pdo->prepare($sql);
             $req->execute([':id_f1' => $id_Enseignant, ':id_f2' => $id_filiere, ":id_f3" => $id_ecus]);
@@ -1237,6 +1237,43 @@ class Filiere
 
                 $req = $pdo->prepare($sql);
                 $req->execute([':id_f' => $id]);
+
+                // Récupérer le résultat
+                $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+                $req->closeCursor();
+
+                $jsonData = json_encode($reqs);
+                header('Content-Type: application/json');
+                echo $jsonData;
+
+                // Fermer la connexion à la base de données
+                $pdo = null;
+            } else {
+                // Gérer l'erreur de connexion à la base de données
+                header('HTTP/1.1 500 Internal Server Error');
+                echo json_encode(['error' => 'Erreur de connexion à la base de données']);
+            }
+        } catch (Exception $e) {
+            // Gérer les exceptions
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['error' => 'Une erreur s\'est produite : ' . $e->getMessage()]);
+        }
+    }
+
+    public function tpsEcus($id_filiere, $id_ecu)
+    {
+        try {
+            $pdo = connectToDB();
+            if ($pdo) {
+                // SQL pour sélectionner les UE qui ne sont pas associées à la filière donnée
+                $sql = 'SELECT tp.id, tp.title, tp.description, tp.datePublier, tp.dateSoumission, tp.filePath, tp.id_Enseignant, tp.id_filiere, tp.id_Ecu, E.surName AS esurName, E.firstName AS efirstName, EC.name AS ename, F.name AS fname FROM travailpratique tp
+                    INNER JOIN enseignant E ON tp.id_Enseignant = E.id
+                    INNER JOIN ecu EC ON tp.id_Ecu = EC.id
+                    INNER JOIN filiere F ON tp.id_filiere = F.id 
+                    WHERE tp.id_Ecu = :id_f2 AND tp.id_filiere=:id_f1 ORDER BY tp.id DESC';
+
+                $req = $pdo->prepare($sql);
+                $req->execute([':id_f1' => $id_filiere, ':id_f2' => $id_ecu]);
 
                 // Récupérer le résultat
                 $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
