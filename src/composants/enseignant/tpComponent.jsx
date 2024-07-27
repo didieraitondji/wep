@@ -328,7 +328,7 @@ export default function TPComponent() {
                     <div className='h-[70vh] bg-c4 w-full rounded-3xl p-8 overflow-auto'>
                         {
                             lesTp.map((item, index) => (
-                                <TpModel key={item.id} index={index + 1} title={item.title} description={item.description} pubdate={item.datePublier} senddate={item.dateSoumission} filiere={item.fname} ecue={item.ename} file={item.filePath} enseignant={item.efirstName + " " + item.esurName} />
+                                <TpModel key={item.id} index={index + 1} title={item.title} description={item.description} pubdate={item.datePublier} senddate={item.dateSoumission} filiere={item.fname} ecue={item.ename} file={item.filePath} enseignant={"vous"} />
                             ))
                         }
                     </div>

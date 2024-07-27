@@ -66,7 +66,7 @@ export default function TpModel({ index, title, description, pubdate, senddate, 
                                         01 fichier associé
                                     </div>
                                     <div className='p-2 w-1/2 flex items-center justify-center'>
-                                        <a href={`${file}`} target='_blank' className='bg-c1 px-3 py-1 rounded-full hover:font-bold'>Télécharger ici !</a>
+                                        <a href={`${file}`} download target='_blank' className='bg-c1 px-3 py-1 rounded-full hover:font-bold'>Télécharger ici !</a>
                                     </div>
                                 </div>
                             ) : (
@@ -74,7 +74,7 @@ export default function TpModel({ index, title, description, pubdate, senddate, 
 
                                     <div className='p-2 w-full flex items-center justify-center text-red-600'>
                                         <span className='pr-6'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
                                                 <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                                             </svg>
                                         </span>
@@ -89,11 +89,11 @@ export default function TpModel({ index, title, description, pubdate, senddate, 
 
                     </div>
                 </div>
-                <div className='p-2 w-full bg-c1 rounded-b-2xl flex flex-row flex-wrap'>
-                    <div className='w-full lg:w-1/2 flex flex-row px-3'>
+                <div className='p-2 w-full bg-c1 rounded-b-2xl flex flex-row flex-wrap items-center'>
+                    <div className='w-full md:w-1/2 flex flex-row px-3 items-center'>
                         Prof : <span className='px-3 font-bold'>{enseignant}</span>
                     </div>
-                    <div className='w-full lg:w-1/2 flex flex-row-reverse'>
+                    <div className='w-full md:w-1/2 flex flex-row-reverse items-center'>
                         {
                             onGoing < 0 && (
                                 <span className='pr-10 flex items-center'>
