@@ -37,7 +37,6 @@ export default function TpModel({ index, title, description, pubdate, senddate, 
                         </div>
                         <div className='px-3'>
                             {description}
-                            {onGoing}
                         </div>
                     </div>
                     <div className='w-full lg:w-1/2 min-h-[220px] rounded-2xl p-3 px-5'>
