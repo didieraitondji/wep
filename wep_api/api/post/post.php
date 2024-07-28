@@ -30,7 +30,7 @@ if (empty($url[0])) {
             $admin->logAdmin($data['email'], $data['motDePasse']);
             break;
         default:
-            echo json_encode(["code" => 0, "type" => "none", "status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url", "code" => "se229"]);
+            echo json_encode(["code" => 0, "type" => "none", "status" => "Erreur", "message" => "La demande n'est pas valide, vérifiez l'url"]);
             break;
     }
 } else {
