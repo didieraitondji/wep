@@ -742,6 +742,22 @@ class Etudiant extends Utilisateur
         echo json_encode(["total" => count($etudiant), "type" => "etudiant (s) "]);
         $pdo = null; // Fermer la connexion
     }
+
+    public function soumissions($id)
+    {
+        $pdo = connectToDB();
+
+        $sql = 'SELECT T.id, T.filePath, T.dateSoumission FROM travail T WHERE  T.id_Etudiant = ' . $id . '';
+        $req = $pdo->prepare($sql);
+        $req->execute();
+        $reqs = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        $jsonData = json_encode($reqs);
+        header('Content-Type: application/json');
+
+        echo $jsonData;
+        $pdo = null;
+    }
 }
 
 class Admin extends Utilisateur
@@ -1353,7 +1369,7 @@ class Filiere
                     INNER JOIN enseignant E ON tp.id_Enseignant = E.id
                     INNER JOIN ecu EC ON tp.id_Ecu = EC.id
                     INNER JOIN filiere F ON tp.id_filiere = F.id
-                    WHERE tp.id_Ecu = :id_f2 AND tp.id_filiere=:id_f1 AND tp.dateSoumission > CURDATE() AND tp.id NOT IN (
+                    WHERE tp.id_Ecu = :id_f2 AND tp.id_filiere=:id_f1 AND tp.dateSoumission >= CURDATE() AND tp.id NOT IN (
                         SELECT T.id_travailPratique 
                         FROM travail T 
                         WHERE T.id_Etudiant = :id_f3 

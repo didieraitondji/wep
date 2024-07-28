@@ -118,7 +118,23 @@ switch (strtolower($url[0])) {
         break;
     case 'etudiant':
         if (!empty($url[1])) {
-            $etudiant->unEtudiant($url[1]);
+            if (!empty($url[2])) {
+                switch (strtolower($url[2])) {
+                    case 'soumissions':
+                        $etudiant->soumissions($url[1]);
+                        break;
+                    default:
+                        $jsonData = json_encode(array(
+                            "status" => "Erreur",
+                            "message" => "Identifiant invalide",
+                            "code" => 1
+                        ));
+                        echo $jsonData;
+                        break;
+                }
+            } else {
+                $etudiant->unEtudiant($url[1]);
+            }
         } else {
             $jsonData = json_encode(array(
                 "status" => "Erreur",

@@ -84,6 +84,12 @@ export default function SoumissionEtudiant() {
         setConfirm(!confirm);
     }
 
+    // sélection des soumissions
+    const [soumissions, setSoumissions] = useState([]);
+
+    useEffect(() => {
+        loadGetData(`etudiant/${userData.id}/soumissions`, setSoumissions);
+    }, []);
 
 
     return (
@@ -176,8 +182,30 @@ export default function SoumissionEtudiant() {
                 }
                 <div className='bg-c3 text-c1 p-2 '>
                     <h1 className='font-bold'>
-                        Voir les Anciennes Soumissions & Les Notes
+                        Soumissions, Notes et Chat
                     </h1>
+                </div>
+                <div className='p-4'>
+                    <div className=''>
+                        <form className='bg-c4 p-5 rounded-full flex items-center justify-center'>
+                            <div className='flex w-1/2 items-center'>
+                                <label htmlFor="" className='px-3 w-1/2 text-right'> Soumissions : </label>
+                                <select
+                                    name=""
+                                    id=""
+                                    className=' p-2 rounded-full w-2/3'
+                                >
+                                    <option value="">Choisissez une soumission</option>
+                                    {
+
+                                    }
+                                </select>
+                            </div>
+                            <div className='w-1/2 items-center justify-start pl-10'>
+                                <input type="submit" value="Afficher" className='p-2 px-5 bg-c1 rounded-full cursor-pointer hover:font-bold' />
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
             </div>
